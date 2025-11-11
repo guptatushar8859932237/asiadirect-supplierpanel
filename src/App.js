@@ -71,6 +71,7 @@ import ViewDetails from "./pages/ViewDetails";
 import Editclearenceuser from "./pages/Editclearenceuser";
 import BookingInsForm from "./pages/BookingInsForm";
 import Clearenceorderdetailspage from "./pages/Clearenceorderdetailspage";
+import Contactus from "./components/Warehouse/Contactus";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Users = lazy(() => import("./pages/Users"));
 const Messages = lazy(() => import("./pages/Messages"));
@@ -234,6 +235,11 @@ export default function App() {
                   index
                   path="/Admin/privacy-policy"
                   element={<PrivacyPolicy />}
+                />
+                <Route
+                  index
+                  path="/Admin/contactus"
+                  element={<Contactus />}
                 />
                 <Route
                   index

@@ -221,6 +221,11 @@ const userControlRoutes = {
     //   name: "Files & Storage",
     //   icon: <NotificationsActiveOutlinedIcon />,
     // },
+     {
+      path: "/Admin/contactus",
+      name: "Contact Us",
+      icon: <OtherHousesOutlinedIcon />,
+    },
     {
       path: "/Admin/link",
       name: "Add Links",

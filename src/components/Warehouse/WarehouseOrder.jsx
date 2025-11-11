@@ -1496,7 +1496,7 @@ export default function WarehouseOrder() {
         setLoader(true);
         try {
           const response = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}GetWarehouseOrders`
+            `${process.env.REACT_APP_BASE_URL}GetWarehouseOrders`,{user_id:userid, user_type:usertype}
           );
 
           setLoader(false);
@@ -1967,6 +1967,8 @@ const handpechangepro = () => {
       endDate: data1.endDate,
       freightType: data1.freight,
       freightSpeed: data1.type,
+      user_id:userid,
+        user_type:usertype,
     };
     axios
       .post(`${process.env.REACT_APP_BASE_URL}GetWarehouseOrders`, data3)

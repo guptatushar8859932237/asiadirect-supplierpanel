@@ -255,6 +255,8 @@ export default function Order() {
       const pagedata = {
         page: page,
         limit: 10,
+       user_id:userid,
+        user_type:usertype,
       };
       setLoader(true);
       const response = await axios.post(

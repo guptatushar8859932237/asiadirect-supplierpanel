@@ -1,170 +1,3 @@
-// import axios from "axios";
-// import React, { useEffect, useState } from "react";
-// import { Button } from "react-bootstrap";
-// import { useLocation } from "react-router-dom";
-// export default function BookingInsForm() {
-//   const [data, setData] = useState({
-//     id: "",
-//     order_id: "",
-//     bk_shipper: "",
-//     bk_ship_add: "",
-//     bk_ship_contact: "",
-//     bk_ship_tel_email: "",
-//     bk_ship_poNo: "",
-//     bk_ship_custCode: "",
-//     bk_ship_regNum: "",
-//     bk_ship_refNo: "",
-//     bk_consignee: "",
-//     bk_consg_add: "",
-//     bk_consg_notfParty: "",
-//     bk_consg_ContPersn: "",
-//     bk_consg_tel: "",
-//     bk_consg_portDischg: "",
-//     bk_xdoc_provider: "",
-//     bk_comm_Invoice: "",
-//     bk_count_CommInv: "",
-//     bk_packing_list: "",
-//     bk_custm_doc: "",
-//     bk_trasprt_doc: "",
-//     bk_MSDS: "",
-//     bk_CuntyTrd_SADC: "",
-//     bk_letter_credit: "",
-//     bk_track_contPersn: "",
-//     bk_podDoc_contPersn: "",
-//     bk_exprt_modTransport: "",
-//     bk_comTerm_sales: "",
-//     bk_Instru_origin: "",
-//     bk_Instru_des: "",
-//     bk_Insur_cover: "",
-//     bk_estim_supp: "",
-//     bk_estim_ref: "",
-//     bk_org_exptCharge: "",
-//     bk_intenFreig_charge: "",
-//     bk_duties_taxes: "",
-//     bk_hazard_cargo: "",
-//     bk_cargo_packed: "",
-//     bk_battery_MSDS: "",
-//     bk_cnsolid_mulShipp: "",
-//     bk_preship_insp: "",
-//     bk_export_Import: "",
-//     bk_coll_dddress: "",
-//     bk_opening_times: "",
-//     bk_conName_tel: "",
-//     bk_loading_facilities: "",
-//     bk_desc_goods: "",
-//     bk_handling_req: "",
-//   });
-
-//   const location = useLocation();
-//   const getdat = location.state.data;
-//   console.log(getdat);
-//   useEffect(() => {
-//     getStackta();
-//     GetBookingInstructionById();
-//   }, []);
-
-//   const getStackta = async () => {
-//     const postdata = {
-//       orderId: getdat.order_id,
-//     };
-//     const response = await axios.post(
-//       `${process.env.REACT_APP_BASE_URL}OrderDetailsById`,
-//       postdata
-//     );
-
-//     console.log(response.data);
-//     if (response.data.success === true) {
-//       setData(response.data.data[0]);
-//     } else {
-//       console.log("error");
-//     }
-//   };
-
-//   const GetBookingInstructionById = async () => {
-//     try {
-//       const datapost = {
-//         order_id: getdat?.order_id,
-//       };
-//       const getdatafromip = await axios.post(
-//         `${process.env.REACT_APP_BASE_URL}GetBookingInstructionById`,
-//         datapost
-//       );
-//       console.log(getdatafromip);
-//       setData(getdatafromip.data.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const handlechnage = (e) => {
-//     const { name, email } = e.target;
-//     setData((prevState) => ({
-//       ...prevState,
-//       [name]: email,
-//     }));
-//     console.log(data);
-//   };
-
-//   const handleclick = async () => {
-//     const postdatapi = {
-//       // id: getdat.id,
-//       order_id: data?.order_id,
-//       bk_shipper: data?.bk_shipper,
-//       bk_ship_add: data?.bk_ship_add,
-//       bk_ship_contact: data?.bk_ship_contact,
-//       bk_ship_tel_email: data?.bk_ship_tel_email,
-//       bk_ship_poNo: data?.bk_ship_poNo,
-//       bk_ship_custCode: data?.bk_ship_custCode,
-//       bk_ship_regNum: data?.bk_ship_regNum,
-//       bk_ship_refNo: data?.bk_ship_refNo,
-//       bk_consignee: data?.bk_consignee,
-//       bk_consg_add: data?.bk_consg_add,
-//       bk_consg_notfParty: data?.bk_consg_notfParty,
-//       bk_consg_ContPersn: data?.bk_consg_ContPersn,
-//       bk_consg_tel: data?.bk_consg_tel,
-//       bk_consg_portDischg: data?.bk_consg_portDischg,
-//       bk_xdoc_provider: data?.bk_xdoc_provider,
-//       bk_comm_Invoice: data?.bk_comm_Invoice,
-//       bk_count_CommInv: data?.bk_count_CommInv,
-//       bk_packing_list: data?.bk_packing_list,
-//       bk_custm_doc: data?.bk_custm_doc,
-//       bk_trasprt_doc: data?.bk_trasprt_doc,
-//       bk_MSDS: data?.bk_MSDS,
-//       bk_CuntyTrd_SADC: data?.bk_CuntyTrd_SADC,
-//       bk_letter_credit: data?.bk_letter_credit,
-//       bk_track_contPersn: data?.bk_track_contPersn,
-//       bk_podDoc_contPersn: data?.bk_podDoc_contPersn,
-//       bk_exprt_modTransport: data?.bk_exprt_modTransport,
-//       bk_comTerm_sales: data?.bk_comTerm_sales,
-//       bk_Instru_origin: data?.bk_Instru_origin,
-//       bk_Instru_des: data?.bk_Instru_des,
-//       bk_Insur_cover: data?.bk_Insur_cover,
-//       bk_estim_supp: data?.bk_estim_supp,
-//       bk_estim_ref: data?.bk_estim_ref,
-//       bk_org_exptCharge: data?.bk_org_exptCharge,
-//       bk_intenFreig_charge: data?.bk_intenFreig_charge,
-//       bk_duties_taxes: data?.bk_duties_taxes,
-//       bk_hazard_cargo: data?.bk_hazard_cargo,
-//       bk_cargo_packed: data?.bk_cargo_packed,
-//       bk_battery_MSDS: data?.bk_battery_MSDS,
-//       bk_cnsolid_mulShipp: data?.bk_cnsolid_mulShipp,
-//       bk_preship_insp: data?.bk_preship_insp,
-//       bk_export_Import: data?.bk_export_Import,
-//       bk_coll_dddress: data?.bk_coll_dddress,
-//       bk_opening_timesbk_coll_dddress: data?.bk_opening_timesbk_coll_dddress,
-//       bk_conName_tel: data?.bk_conName_tel,
-//       bk_loading_facilities: data?.bk_loading_facilities,
-//       bk_desc_goods: data?.bk_desc_goods,
-//       bk_handling_req: data?.bk_handling_req,
-//     };
-//     console.log(postdatapi);
-//     // const response = await axios.post(
-//     //   `${process.env.REACT_APP_BASE_URL}AddOrUpdateBookingInstruction`,
-//     //   postdatapi
-//     // );
-//     // console.log(response);
-//   };
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
@@ -243,6 +76,7 @@ export default function BookingInsForm() {
       );
 
       if (response.data.success) {
+        console.log(response.data.data[0])
         setData(response.data.data[0]);
       } else {
         console.error("Error fetching order details");
@@ -1288,7 +1122,7 @@ export default function BookingInsForm() {
                                   checked={data.bk_comTerm_sales === term}
                                   onChange={handlechnage}
                                   name="bk_comTerm_sales"
-                                  // value={term}
+                                  value={term}
                                 />
                                 <label htmlFor={id}> {term}</label>
                               </div>

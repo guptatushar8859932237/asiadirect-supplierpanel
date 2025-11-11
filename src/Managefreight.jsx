@@ -190,6 +190,7 @@ const handleSave = () => {
         staff_id: userid,
         route_url: "/freight-list",
         user_type: usertype,
+       
       };
       const permission = await axios.post(
         `${process.env.REACT_APP_BASE_URL}CheckPermission`,
@@ -199,7 +200,7 @@ const handleSave = () => {
       if (permission.data.success) {
         try {
           const response = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}freight-list`
+            `${process.env.REACT_APP_BASE_URL}freight-list`,{  user_id:userid, user_type: usertype }
           );
           setLoader(false);
           setData(response.data.data);

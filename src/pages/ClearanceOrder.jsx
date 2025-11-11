@@ -39,7 +39,8 @@ export default function ClearanceOrder() {
       setOpenSubmenu(null);
     }
   };
-
+  const userid = JSON.parse(localStorage.getItem("data123"))?.id;
+  const usertype = JSON.parse(localStorage.getItem("data123"))?.user_type;
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -78,7 +79,7 @@ export default function ClearanceOrder() {
     setLoader(true);
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}getCleranceOrder`
+        `${process.env.REACT_APP_BASE_URL}getCleranceOrder`,{ user_id:userid, user_type:usertype }
       );
       console.log(response.data.data);
       setData1(response.data.data);
@@ -92,8 +93,7 @@ export default function ClearanceOrder() {
   const handleChange = (event) => {
     setAge(event.target.value);
   };
-  const userid = JSON.parse(localStorage.getItem("data123"))?.id;
-  const usertype = JSON.parse(localStorage.getItem("data123"))?.user_type;
+
   const handleclick = async (item) => {
     try {
       const postdata = {
@@ -257,6 +257,7 @@ export default function ClearanceOrder() {
       startDate: data.startDate,
       endDate: data.endDate,
       clearingType: data.clearingType,
+      user_id:userid, usertype: usertype,
     };
     axios
       .post(`${process.env.REACT_APP_BASE_URL}getCleranceOrder`, datapost)
@@ -278,13 +279,11 @@ export default function ClearanceOrder() {
     setClearanceid(item.clearance_id);
   };
   const handleCloseModal1 = () => setIsModalOpen1(false);
-
   const handlecciew = async (item) => {
     navigate("/Admin/Clearancedetails", {
       state: { clearance_id: item },
     });
   };
-
   const handleclickdelete12 = async (item) => {
     console.log(item);
     const datauser = item;
@@ -302,7 +301,6 @@ export default function ClearanceOrder() {
       state: { data: [datauser], data1 },
     });
   };
-
   const handleclickdelete = async (item) => {
     try {
       const datapost = {
@@ -347,7 +345,6 @@ export default function ClearanceOrder() {
       }
     } catch (error) {
       console.error("Error checking permission:", error);
-
       if (error.response && error.response.status === 400) {
         toast.error("Permission Denied: You don’t have access to this page");
       } else {
@@ -355,12 +352,10 @@ export default function ClearanceOrder() {
       }
     }
   };
-
   const handlechangefile = (e) => {
     const file = e.target.files[0];
     setFile(file);
   };
-
   const docupload = async () => {
     if (!file) {
       toast.error("Please select a file to upload.");
@@ -396,12 +391,10 @@ export default function ClearanceOrder() {
     setApidata(id);
     handleOpenModal4();
   };
-
   const handlechnageupdate = (e) => {
     const { name, value } = e.target;
     setApidata({ ...apidata, [name]: value });
   };
-
    const handleFileChange = (e, fieldName) => {
     const files = Array.from(e.target.files);
     setFormFiles((prev) => ({
@@ -409,7 +402,6 @@ export default function ClearanceOrder() {
       [fieldName]: files,
     }));
   };  
-  
   const handleupdateupdate = async () => {
     try {
       const formdata = new FormData();
@@ -443,7 +435,6 @@ export default function ClearanceOrder() {
         `${process.env.REACT_APP_BASE_URL}update-clearing`,
         formdata
       );
-
       toast.success(response.data.message);
       getdata();
       handleCloseModal4(false);
@@ -452,7 +443,6 @@ export default function ClearanceOrder() {
       toast.error(error?.response?.data?.message || "Something went wrong");
     }
   };
-
   return (
     <>
       <Modal
@@ -592,7 +582,6 @@ export default function ClearanceOrder() {
                     {country &&
                       country.length > 0 &&
                       country.map((item, index) => {
-                        // console.log(item);
                         return (
                           <>
                             <option key={index} value={item.id}>
@@ -684,8 +673,7 @@ export default function ClearanceOrder() {
                   <select
                     name="packing_type"
                     value={apidata.packing_type}
-                    onChange={handlechnageupdate}
-                  >
+                    onChange={handlechnageupdate}>
                     <option>Select...</option>
                     <option value="box">Box</option>
                     <option value="crate">Crate</option>

@@ -207,8 +207,6 @@ const Addfright = () => {
     setError(error);
   };
   const apihit = () => {
-    // const useridsales = (localStorage.getItem("data123"));
-    // console.log(useridsales);
     setLoader(true);
     console.log(reemail?.clientemail);
     console.log(selectedOption);
@@ -245,6 +243,7 @@ const Addfright = () => {
     formdata.append("ready_for_collection", data.ready_for_collection);
     formdata.append("transit_time", data.transit_time);
     formdata.append("priority", data.priority);
+    formdata.append("user_id", useridsales.id);
     formdata.append(
       "client_email",
       reemail?.clientemail === undefined ? reemail : reemail.clientemail
@@ -266,9 +265,8 @@ const Addfright = () => {
     formdata.append("fcl_lcl", data.fcl_lcl);
    selectedDocs.forEach(doc => {
   console.log("Doc Type:", doc.name);
-
   doc.files.forEach(file => {
-    formdata.append(doc.name, file); // 👈 each file append
+    formdata.append(doc.name, file); 
     console.log("File:", file.name, "| Size:", file.size, "bytes");
   });
 });
@@ -410,7 +408,6 @@ const Addfright = () => {
   };
   const [show, setShow] = useState(false);
   const [selectedDocs, setSelectedDocs] = useState([]);
-
  const docOptions = [
   { id: "Customs Documents", label: "Customs docs" },
   { id: "Supporting Documents", label: "Supporting docs" },
@@ -424,16 +421,12 @@ const Addfright = () => {
 ];
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-
-  // Handle dropdown change
   const handleSelect = (e) => {
     const selected = e.target.value;
     if (selected && !selectedDocs.find((doc) => doc.name === selected)) {
       setSelectedDocs([...selectedDocs, { name: selected, files: [] }]);
     }
   };
-
-  // Handle file upload for each document type
   const handleFileChangefil = (e, docName) => {
     const files = Array.from(e.target.files);
     setSelectedDocs((prev) =>
@@ -442,19 +435,14 @@ const Addfright = () => {
       )
     );
   };
-
-  // For saving data (you can send to API)
 const handleSave = () => {
   console.log("Uploaded Documents:", selectedDocs);
-
-  // To see filenames instead of [object Object]
   selectedDocs.forEach(doc => {
     console.log("Doc Type:", doc);
     doc.files.forEach(file => {
       console.log("File:", file.name, "| Size:", file.size, "bytes");
     });
   });
-
   handleClose();
 };
   return (

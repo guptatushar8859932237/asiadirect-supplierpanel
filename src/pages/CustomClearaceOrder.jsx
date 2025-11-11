@@ -134,6 +134,7 @@ const CustomClearaceOrder = () => {
     formdata.append("comment_on_docs", data?.comment_on_docs);
     formdata.append("documentName", data?.documentName);
     formdata.append("sales_representative", data?.sales_representative);
+    formdata.append("added_user_id",userid);
     console.log(formdata);
      selectedDocs.forEach(doc => {
   console.log("Doc Type:", doc.name);
