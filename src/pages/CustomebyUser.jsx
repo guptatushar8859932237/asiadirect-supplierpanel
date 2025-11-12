@@ -256,11 +256,9 @@ export default function CustomebyUserap() {
       toast.error("error");
     }
   };
-
   useEffect(() => {
     getdata();
   }, []);
-
   const handleclicknva = (id) => {
     const datauser = constgetdata.filter((item) => {
       return item.id === id;
@@ -268,14 +266,11 @@ export default function CustomebyUserap() {
     navigate("/Admin/clearenceeditview", { state: { data: datauser } });
   };
   ////////////////////////////////////////////////////////////update data//////////////////////////
-
   const handlegetid = (id) => {
     setErd(id);
-
     const selectuser = constgetdata.filter((item) => {
       return item.id === id;
     });
-
     const getdata = selectuser[0];
     console.log(getdata);
     setInputdata((previData) => ({
@@ -297,7 +292,6 @@ export default function CustomebyUserap() {
     }));
     console.log(inputdata);
   };
-
   const updatedata = () => {
     const formdata = new FormData();
     formdata.append("clearing_id", eids);
@@ -324,10 +318,8 @@ export default function CustomebyUserap() {
     formdata.append("total_dimension", inputdata.total_dimension);
     formdata.append("comment_on_docs", inputdata.comment_on_docs);
     formdata.append("documentName", inputdata.documentName);
-
         selectedDocs.forEach(doc => {
   console.log("Doc Type:", doc.name);
-
   doc.files.forEach(file => {
     formdata.append(doc.name, file); // 👈 each file append
     console.log("File:", file.name, "| Size:", file.size, "bytes");

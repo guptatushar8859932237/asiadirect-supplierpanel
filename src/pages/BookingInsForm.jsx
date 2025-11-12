@@ -3,10 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-
 export default function BookingInsForm() {
   const [data, setData] = useState({
-    // id: "",
     order_id: "",
     bk_shipper: "",
     bk_ship_add: "",
@@ -56,15 +54,12 @@ export default function BookingInsForm() {
     bk_desc_goods: "",
     bk_handling_req: "",
   });
-
   const location = useLocation();
   const getdat = location.state.data;
-
   useEffect(() => {
     getStackta();
     GetBookingInstructionById();
   }, []);
-
   const getStackta = async () => {
     const postdata = {
       orderId: getdat.order_id,
@@ -85,7 +80,6 @@ export default function BookingInsForm() {
       console.error("Error fetching order details:", error);
     }
   };
-
   const GetBookingInstructionById = async () => {
     try {
       const datapost = {
@@ -100,7 +94,6 @@ export default function BookingInsForm() {
       console.error("Error fetching booking instruction:", error);
     }
   };
-
   const handlechnage = (e) => {
     const { name, value } = e.target;
     setData((prevState) => ({
@@ -108,11 +101,9 @@ export default function BookingInsForm() {
       [name]: value,
     }));
   };
-
   const handleclick = async () => {
     console.log("Value of bk_comm_Invoice:", data.bk_comm_Invoice);
     const postdatapi = {
-      // order_id: data?.order_id,
       order_id: data?.order_id,
       bk_shipper:
         data?.shipment_ref === "shipper" ? data?.client_name : "Asia Direct",
@@ -121,7 +112,7 @@ export default function BookingInsForm() {
           ? data?.address_1
           : " Johannesburg, South Africa",
       bk_ship_contact:
-        getdat?.shipment_ref === "shipper"
+        getdat?.shipment_ref==="shipper"
           ? getdat?.telephone
           : "+27 10 448 0733",
       bk_ship_tel_email:
@@ -222,9 +213,9 @@ export default function BookingInsForm() {
                             type="text"
                             disabled
                             value={
-                              data?.shipment_ref === "shipper"
-                                ? data?.shipper_name
-                                : "Asia Direct"
+                               data.shipment_ref === "consignee"
+                              ? data.client_name
+                              : data.shipper_name
                             }
                           />
                         </div>
@@ -237,9 +228,9 @@ export default function BookingInsForm() {
                             type="text"
                             disabled
                             value={
-                              data?.shipment_ref === "shipper"
-                                ? data?.address_1
-                                : " Johannesburg, South Africa"
+                              data.shipment_ref === "consignee"
+                              ? data?.address_1 +" " + data.address_2 + " " +data.province+ " " + data.delivery_to_name
+                              : data.supplier_address
                             }
                           />
                         </div>
@@ -251,28 +242,23 @@ export default function BookingInsForm() {
                             className="mb-2 border ps-2 py-2 rounded w-100"
                             type="number"
                             disabled
-                            value={
-                              getdat?.shipment_ref === "shipper"
-                                ? getdat?.telephone
-                                : "+27 10 448 0733"
-                            }
+                         value=    {data.shipment_ref === "consignee"
+                              ? data.cellphone
+                              : data.telephone}
                           />
                         </div>
                         <div className="col-lg-6">
                           <label className="ware_label" htmlFor="">
                             Tel. No / Email
                           </label>
-                          {/* <input placeholder="search"></input> */}
                           <input
                             className="mb-2 border ps-2 py-2 rounded w-100"
                             type="number"
                             disabled
                             placeholder="seargh"
-                            // defaultValue={"fjghhg"}
-                            value={
-                              getdat?.shipment_ref === "shipper"
-                                ? getdat?.cellphone
-                                : "+27 10 448 0733"
+                            value={data.shipment_ref === "consignee"
+                              ? data.client_email
+                              : "+27 10 448 0733"
                             }
                           />
                         </div>
@@ -890,11 +876,20 @@ export default function BookingInsForm() {
                           className="mb-2 border ps-2 py-2 rounded w-100"
                           type="text"
                           disabled
-                          value={
-                            data?.shipment_ref === "shipper"
-                              ? "Asia Direct"
-                              : data?.shipper_name
-                          }
+                          // value={
+                          //   data?.shipment_ref === "shipper"
+                          //     ? "Asia Direct"
+                          //     : data?.shipper_name
+                          // }
+                            value={
+                              // data?.shipment_ref === "shipper"
+                              //   ? data?.shipper_name
+                              //   : "Asia Direct"
+                               data.shipment_ref === "consignee"
+                              ? data.shipper_name
+                              :  data.client_name
+                            }
+                            
                         />
                       </div>
                       <div className="col-lg-6">
@@ -906,11 +901,11 @@ export default function BookingInsForm() {
                           type="text"
                           disabled
                           value={
-                            data?.shipment_ref === "shipper"
-                              ? "Unit 4 Villa Valencia2 Anemoon Road Glen Marais 1619 South Africa"
-                              : data?.address_1
-                          }
-                        />
+                              data.shipment_ref === "consignee"
+                              ? data.supplier_address
+                              :  data?.address_1 +" " + data.address_2 + " " +data.province+ " " + data.delivery_to_name
+                            }
+                          />
                       </div>
                       <div className="col-lg-6">
                         <label className="ware_label" htmlFor="">
@@ -946,8 +941,8 @@ export default function BookingInsForm() {
                           disabled
                           value={
                             data?.shipment_ref === "shipper"
-                              ? "+27 10 448 0733"
-                              : data?.shipper_name
+                              ?data?.cellphone
+                              : data?.telephone
                           }
                         />
                       </div>
@@ -959,7 +954,7 @@ export default function BookingInsForm() {
                           className="mb-2 border ps-2 py-2 rounded w-100"
                           type="text"
                           disabled
-                          value={data.post_of_discharge}
+                          value={data?.post_of_discharge}
                         />
                       </div>
                     </div>

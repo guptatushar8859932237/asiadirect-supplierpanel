@@ -25,6 +25,7 @@ try {
   const response =await axios.post(`${process.env.REACT_APP_BASE_URL}GetBookingInstructionById`,orde)
   console.log(response.data.data)
 if(response.data.success===true){
+  console.log(response.data.data)
   setData(response.data.data)
 }
 } catch (error) {
@@ -93,9 +94,18 @@ if(response.data.success===true){
                                     borderLeft: "1px solid #000",
                                   }}
                                 >
-                                  {info?.shipment_ref === "shipper"
+                                  {/* {info?.shipment_ref === "shipper"
                                     ? "Asia Direct"
-                                    : info?.client_name}
+                                    : info?.client_name} */}
+                                  {
+                              // data?.shipment_ref === "shipper"
+                              //   ? data?.shipper_name
+                              //   : "Asia Direct"
+                              info.shipment_ref === "consignee"
+                              ? info.client_name
+                              : info.shipper_name
+                            }
+
                                 </td>
                               </tr>
                               <tr>
@@ -109,9 +119,9 @@ if(response.data.success===true){
                                   ADDRESS
                                 </th>
                                 <td style={{ borderBottom: "1px solid #000" }}>
-                                  {info?.shipment_ref === "shipper"
-                                    ? "Johannesburg, South Africa"
-                                    : info?.address_1}
+                                  {  info.shipment_ref === "consignee"
+                              ? info?.address_1 +" " + info.address_2 + " " +info.province+ " " + info.delivery_to_name
+                              : info.supplier_address}
                                 </td>
                               </tr>
                               <tr>
@@ -141,9 +151,9 @@ if(response.data.success===true){
                                     borderLeft: "1px solid #000",
                                   }}
                                 >
-                                  {info?.shipment_ref === "shipper"
-                                    ? "+27 10 448 0733"
-                                    : info?.telephone}
+                                  {info.shipment_ref === "consignee"
+                              ? info.cellphone
+                              : info.telephone}
                                 </td>
                               </tr>
                               <tr>
@@ -163,9 +173,9 @@ if(response.data.success===true){
                                     borderLeft: "1px solid #000",
                                   }}
                                 >
-                                  {info?.shipment_ref === "shipper"
-                                    ? "sa@asiadirect.africa"
-                                    : info?.client_email}
+                                  {info.shipment_ref === "consignee"
+                              ? info.client_email
+                              : "+27 10 448 0733"}
                                 </td>
                               </tr>
                               <tr>
@@ -853,9 +863,9 @@ if(response.data.success===true){
                                   }}
                                 >
                                   {" "}
-                                  {info?.shipment_ref === "shipper"
-                                    ? info?.shipper_name
-                                    : "Asia Direct"}
+                                  {   info.shipment_ref === "consignee"
+                              ?  info.shipper_name
+                              :info.client_name }
                                 </td>
                               </tr>
                               <tr>
@@ -870,9 +880,9 @@ if(response.data.success===true){
                                 </th>
                                 <td style={{ borderBottom: "1px solid #000" }}>
                                   {/* address_1 */}
-                                  {info?.shipment_ref === "shipper"
-                                    ? info?.address_1
-                                    : "Johannesburg, South Africa"}
+                                  { info.shipment_ref === "consignee"
+                              ?  info.supplier_address 
+                              :info?.address_1 +" " + info.address_2 + " " +info.province+ " " + info.delivery_to_name}
                                 </td>
                               </tr>
                               <tr>
@@ -919,9 +929,9 @@ if(response.data.success===true){
                                     borderLeft: "1px solid #000",
                                   }}
                                 >
-                                  {info?.shipment_ref === "shipper"
-                                    ? info?.cellphone
-                                    : "+27 10 448 0733"}
+                                  {info.shipment_ref === "consignee"
+                              ?  info.telephone
+                              :info.cellphone }
                                 </td>
                                 <td
                                   style={{
@@ -939,9 +949,9 @@ if(response.data.success===true){
                                     borderBottom: "1px solid #000",
                                   }}
                                 >
-                                  {info?.shipment_ref === "shipper"
-                                    ? info?.telephone
-                                    : ""}
+                                  {info.shipment_ref === "consignee"
+                              ?  info.telephone
+                              : info.cellphone}
                                 </td>
                               </tr>
                             </table>
