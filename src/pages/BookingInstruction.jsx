@@ -79,7 +79,7 @@ if(response.data.success===true){
                               <tr>
                                 <th
                                   style={{
-                                    width: "40%",
+                                    width: "45%",
                                     borderBottom: "1px solid #000",
                                     borderRight: "1px solid #000",
                                   }}
@@ -88,7 +88,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderLeft: "1px solid #000",
                                   }}
@@ -136,7 +136,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderLeft: "1px solid #000",
                                   }}
@@ -158,7 +158,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderLeft: "1px solid #000",
                                   }}
@@ -180,7 +180,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderLeft: "1px solid #000",
                                   }}
@@ -198,7 +198,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderLeft: "1px solid #000",
                                   }}
@@ -217,7 +217,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderLeft: "1px solid #000",
                                   }}
@@ -245,7 +245,7 @@ if(response.data.success===true){
                               <tr>
                                 <th
                                   style={{
-                                    width: "40%",
+                                    width: "45%",
                                     borderTop: "1px solid #000",
                                     borderRight: "1px solid #000",
                                     borderBottom: "1px solid #000",
@@ -255,7 +255,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderTop: "1px solid #000",
 
@@ -282,7 +282,7 @@ if(response.data.success===true){
                               <tr>
                                 <th
                                   style={{
-                                    width: "40%",
+                                    width: "45%",
                                     borderTop: "1px solid #000",
                                     borderRight: "1px solid #000",
                                   }}
@@ -336,7 +336,7 @@ if(response.data.success===true){
                               <tr>
                                 <th
                                   style={{
-                                    width: "40%",
+                                    width: "45%",
                                     borderRight: "1px solid #000",
                                   }}
                                 >
@@ -356,7 +356,7 @@ if(response.data.success===true){
                               <tr>
                                 <th
                                   style={{
-                                    width: "40%",
+                                    width: "45%",
                                     borderTop: "1px solid #000",
                                     borderBottom: "1px solid #000",
                                     borderRight: "1px solid #000",
@@ -531,7 +531,7 @@ if(response.data.success===true){
                                 <th
                                   rowSpan={2}
                                   style={{
-                                    width: "40%",
+                                    width: "45%",
                                     borderTop: "1px solid #000",
                                     borderBottom: "1px solid #000",
                                     borderRight: "1px solid #000",
@@ -581,7 +581,7 @@ if(response.data.success===true){
                                 <th
                                   rowSpan={2}
                                   style={{
-                                    width: "40%",
+                                    width: "45%",
                                     borderBottom: "1px solid #000",
                                     borderRight: "1px solid #000",
                                   }}
@@ -730,7 +730,7 @@ if(response.data.success===true){
                                 <td
                                   style={{
                                     borderBottom: "1px solid #000",
-                                    width: "40%",
+                                    width: "45%",
                                   }}
                                 >
                                   INTERNATIONAL FREIGHT CHARGES
@@ -847,7 +847,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderLeft: "1px solid #000",
                                   }}
@@ -863,7 +863,7 @@ if(response.data.success===true){
                                   rowspan="2"
                                   style={{
                                     borderRight: "1px solid #000",
-                                    width: "40%",
+                                    width: "45%",
                                   }}
                                 >
                                   ADDRESS
@@ -892,7 +892,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderLeft: "1px solid #000",
                                   }}
                                 >
@@ -957,7 +957,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderLeft: "1px solid #000",
                                   }}
                                 >
@@ -994,7 +994,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderTop: "1px solid #000",
 
@@ -1015,7 +1015,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderTop: "1px solid #000",
 
@@ -1182,187 +1182,31 @@ if(response.data.success===true){
                                 </td>
                               </tr>
                             </table>
-                            <table className="selectRight">
-                              <tr>
-                                <th
-                                  style={{
-                                    borderTop: "1px solid #000",
-                                    borderRight: "1px solid #000",
-                                    width: "95px",
-                                    borderBottom: "1px solid #000",
-                                  }}
-                                >
-                                  NAMED PLACE
-                                </th>
-                                <td
-                                  className="exWidth"
-                                  style={{
-                                    border: "1px solid #000",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  {data.bk_comTerm_sales}
-                                </td>
-                                <td
-                                  className="exWidth"
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                  }}
-                                ></td>
-                                <td
-                                  className="exWidth"
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                  }}
-                                ></td>
-                                <td
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    width: "70px",
-                                  }}
-                                ></td>
-                                <td
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    width: "70px",
-                                  }}
-                                ></td>
-                                <td
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    width: "70px",
-                                  }}
-                                ></td>
-                                <td
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    width: "70px",
-                                  }}
-                                ></td>
-                              </tr>
-                            </table>
-                            <table className="selectRight">
-                              <tr>
-                                <th
-                                  style={{
-                                    borderRight: "1px solid #000",
-                                    borderBottom: "1px solid #000",
-                                    width: "95px",
-                                  }}
-                                ></th>
-                                <td
-                                  className="exWidth"
-                                  style={{
-                                    border: "1px solid #000",
-                                    textAlign: "center",
-                                    borderTop: "none",
-                                  }}
-                                ></td>
-                                <td
-                                  className="exWidth"
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    borderTop: "none",
-                                  }}
-                                ></td>
-                                <td
-                                  className="exWidth"
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    borderTop: "none",
-                                  }}
-                                ></td>
-                                <td
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    width: "140px",
-                                    borderTop: "none",
-                                  }}
-                                ></td>
-                                <td
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    width: "140px",
-                                    borderTop: "none",
-                                  }}
-                                ></td>
-                              </tr>
-                            </table>
-                            <table className="selectRight">
-                              <tr>
-                                <th
-                                  style={{
-                                    borderTop: "1px solid #000",
-                                    borderRight: "1px solid #000",
-                                    width: "95px",
-                                    borderTop: "none",
-                                    borderBottom: "1px solid #000",
-                                  }}
-                                >
-                                  EXPORTERS BANK NAME
-                                </th>
-                                <td
-                                  rowSpan={2}
-                                  style={{
-                                    width: "195px",
-                                    border: "1px solid #000",
-                                    textAlign: "center",
-                                    borderTop: "none",
-                                    borderBottom: "1px solid #000",
-                                  }}
-                                ></td>
-                                <td
-                                  style={{
-                                    width: "140px",
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    borderTop: "none",
-                                  }}
-                                >
-                                  DO YOU WANT Africa Gobal Logistics TO ALLOCATE
-                                  UCR REFERENCE
-                                </td>
+                            {/* namePlace */}
+                           <table className="selectRight">
+  <tr>
+    <th style={{border: "1px solid #000", width:"95px", borderLeft: "none",}}>NAMED PLACE</th>
+    <td style={{border: "1px solid #000", textAlign: "center"}}>{data.bk_comTerm_sales}</td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center"}}></td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center"}}></td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center", width:"70px"}}></td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center", width:"70px"}}></td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center", width:"70px"}}></td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center", width:"70px"}}></td>
+  </tr>
+   <tr>
+    <th style={{border: "1px solid #000", width:"95px", borderLeft: "none",}}></th>
+    <td style={{border: "1px solid #000", textAlign: "center"}}></td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center"}}></td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center"}}></td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center", width:"140px"}} colSpan={2}></td>
+    <td style={{border: "1px solid #000", borderRight: "none", textAlign: "center", width:"140px"}} colSpan={2}></td>
+  </tr>
+</table>
 
-                                <td
-                                  className="lclWidth"
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    borderTop: "none",
-                                  }}
-                                ></td>
-                                <td
-                                  className="lclWidth"
-                                  style={{
-                                    border: "1px solid #000",
-                                    borderRight: "none",
-                                    textAlign: "center",
-                                    borderTop: "none",
-                                  }}
-                                ></td>
-                              </tr>
+                            {/* namePlace */}
+                            <table className="selectRight">
+                             <tr> <th style={{ borderTop: "1px solid #000", borderRight: "1px solid #000", width: "95px", borderTop: "none", borderBottom: "1px solid #000", }} > EXPORTERS BANK NAME </th> <td rowSpan={2} style={{ width: "195px", border: "1px solid #000", textAlign: "center", borderTop: "none", borderBottom: "1px solid #000", }} ></td> <td style={{ width: "140px", border: "1px solid #000", borderRight: "none", textAlign: "center", borderTop: "none", }} > DO YOU WANT Africa Gobal Logistics TO ALLOCATE UCR REFERENCE </td> <td className="lclWidth" style={{ border: "1px solid #000", borderRight: "none", textAlign: "center", borderTop: "none", }} ></td> <td className="lclWidth" style={{ border: "1px solid #000", borderRight: "none", textAlign: "center", borderTop: "none", }} ></td> </tr>
                             </table>
                             <table className="">
                               <tr>
@@ -1898,7 +1742,7 @@ if(response.data.success===true){
                               <tr>
                                 <th
                                   style={{
-                                    width: "40%",
+                                    width: "45%",
                                     borderBottom: "1px solid #000",
                                     borderRight: "1px solid #000",
                                   }}
@@ -1907,7 +1751,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderLeft: "1px solid #000",
                                   }}
@@ -1953,7 +1797,7 @@ if(response.data.success===true){
                                 </th>
                                 <td
                                   style={{
-                                    width: "60%",
+                                    width: "55%",
                                     borderBottom: "1px solid #000",
                                     borderLeft: "1px solid #000",
                                   }}
