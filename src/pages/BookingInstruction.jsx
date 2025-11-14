@@ -97,14 +97,9 @@ if(response.data.success===true){
                                   {/* {info?.shipment_ref === "shipper"
                                     ? "Asia Direct"
                                     : info?.client_name} */}
-                                  {
-                              // data?.shipment_ref === "shipper"
-                              //   ? data?.shipper_name
-                              //   : "Asia Direct"
-                              info.shipment_ref === "consignee"
-                              ? info.client_name
-                              : info.shipper_name
-                            }
+                                   {info.shipment_ref === "consignee"
+                              ? info.shipper_name
+                              : info.client_name}
 
                                 </td>
                               </tr>
@@ -119,9 +114,9 @@ if(response.data.success===true){
                                   ADDRESS
                                 </th>
                                 <td style={{ borderBottom: "1px solid #000" }}>
-                                  {  info.shipment_ref === "consignee"
-                              ? info?.address_1 +" " + info.address_2 + " " +info.province+ " " + info.delivery_to_name
-                              : info.supplier_address}
+                                  {info.shipment_ref === "consignee"
+                              ? info.supplier_address
+                              :  info?.address_1 +" " + info.address_2 + " "+ <br /> +info.province+ " " +<br />+ info.delivery_to_name}
                                 </td>
                               </tr>
                               <tr>
@@ -151,9 +146,9 @@ if(response.data.success===true){
                                     borderLeft: "1px solid #000",
                                   }}
                                 >
-                                  {info.shipment_ref === "consignee"
-                              ? info.cellphone
-                              : info.telephone}
+                                   {info.shipment_ref === "consignee"
+                              ? info.telephone
+                              :info.cellphone}
                                 </td>
                               </tr>
                               <tr>
@@ -174,8 +169,8 @@ if(response.data.success===true){
                                   }}
                                 >
                                   {info.shipment_ref === "consignee"
-                              ? info.client_email
-                              : "+27 10 448 0733"}
+                              ? info.telephone
+                              :info.cellphone}
                                 </td>
                               </tr>
                               <tr>
@@ -664,7 +659,7 @@ if(response.data.success===true){
                                 >
                                   <strong>
                                     {" "}
-                                    Africa Gobal Logistics BILLING REQUIREMENTS{" "}
+                                    Asia Direct - Africa Logistics BILLING REQUIREMENTS{" "}
                                   </strong>
                                 </td>
                               </tr>
@@ -863,9 +858,9 @@ if(response.data.success===true){
                                   }}
                                 >
                                   {" "}
-                                  {   info.shipment_ref === "consignee"
-                              ?  info.shipper_name
-                              :info.client_name }
+                                {info.shipment_ref === "consignee"
+                              ? info.client_name
+                              : info.shipper_name}
                                 </td>
                               </tr>
                               <tr>
@@ -880,9 +875,9 @@ if(response.data.success===true){
                                 </th>
                                 <td style={{ borderBottom: "1px solid #000" }}>
                                   {/* address_1 */}
-                                  { info.shipment_ref === "consignee"
-                              ?  info.supplier_address 
-                              :info?.address_1 +" " + info.address_2 + " " +info.province+ " " + info.delivery_to_name}
+                                  {info.shipment_ref === "consignee"
+                              ? info?.address_1 +" " + info.address_2 + " " +info.province
+                              : info.supplier_address}
                                 </td>
                               </tr>
                               <tr>
@@ -929,9 +924,9 @@ if(response.data.success===true){
                                     borderLeft: "1px solid #000",
                                   }}
                                 >
-                                  {info.shipment_ref === "consignee"
-                              ?  info.telephone
-                              :info.cellphone }
+                                   {info.shipment_ref === "consignee"
+                              ? info.client_email
+                              : ""}
                                 </td>
                                 <td
                                   style={{
@@ -949,9 +944,9 @@ if(response.data.success===true){
                                     borderBottom: "1px solid #000",
                                   }}
                                 >
-                                  {info.shipment_ref === "consignee"
-                              ?  info.telephone
-                              : info.cellphone}
+          {info?.shipment_ref === "shipper"
+                                    ? ""
+                                    : info?.cellphone}                         
                                 </td>
                               </tr>
                             </table>
@@ -1216,7 +1211,7 @@ if(response.data.success===true){
 
                             {/* namePlace */}
                             <table className="selectRight">
-                             <tr> <th style={{ borderTop: "1px solid #000", borderRight: "1px solid #000", width: "95px", borderTop: "none", borderBottom: "1px solid #000", }} > EXPORTERS BANK NAME </th> <td rowSpan={2} style={{ width: "195px", border: "1px solid #000", textAlign: "center", borderTop: "none", borderBottom: "1px solid #000", }} ></td> <td style={{ width: "140px", border: "1px solid #000", borderRight: "none", textAlign: "center", borderTop: "none", }} > DO YOU WANT Africa Gobal Logistics TO ALLOCATE UCR REFERENCE </td> <td className="lclWidth" style={{ border: "1px solid #000", borderRight: "none", textAlign: "center", borderTop: "none", }} ></td> <td className="lclWidth" style={{ border: "1px solid #000", borderRight: "none", textAlign: "center", borderTop: "none", }} ></td> </tr>
+                             <tr> <th style={{ borderTop: "1px solid #000", borderRight: "1px solid #000", width: "95px", borderTop: "none", borderBottom: "1px solid #000", }} > EXPORTERS BANK NAME </th> <td rowSpan={2} style={{ width: "195px", border: "1px solid #000", textAlign: "center", borderTop: "none", borderBottom: "1px solid #000", }} ></td> <td style={{ width: "140px", border: "1px solid #000", borderRight: "none", textAlign: "center", borderTop: "none", }} > DO YOU WANT Asia Direct - Africa Logistics TO ALLOCATE UCR REFERENCE </td> <td className="lclWidth" style={{ border: "1px solid #000", borderRight: "none", textAlign: "center", borderTop: "none", }} ></td> <td className="lclWidth" style={{ border: "1px solid #000", borderRight: "none", textAlign: "center", borderTop: "none", }} ></td> </tr>
                             </table>
                             <table className="">
                               <tr>
@@ -1519,7 +1514,7 @@ if(response.data.success===true){
                                     borderRight: "1px solid #000",
                                   }}
                                 >
-                                  IS Africa Gobal Logistics TO ARRANGE
+                                  IS Asia Direct - Africa Logistics TO ARRANGE
                                   PRE-SHIPMENT INSPECTION?
                                 </th>
                                 <td
@@ -1699,7 +1694,7 @@ if(response.data.success===true){
                                 >
                                   <strong>
                                     {" "}
-                                    Africa Gobal Logistics BILLING REQUIREMENTS{" "}
+                                    Asia Direct - Africa Logistics BILLING REQUIREMENTS{" "}
                                   </strong>
                                 </td>
                               </tr>

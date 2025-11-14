@@ -22,7 +22,6 @@ export default function MAnageFreightDetails() {
     licenses: [],
     packing_list: [],
   });
-
   const handlechange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });

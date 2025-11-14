@@ -315,35 +315,6 @@ export default function BookingInsForm() {
                     </label>
                     <div className="borderShipRight">
                       <div className="row">
-                        {/* <div className="col-lg-6">
-                          <label className="ware_label" htmlFor="">
-                            Mark with an X the Documents You Are Providing
-                          </label>
-                          <div className="d-flex checkInsForm">
-                            <div>
-                              <input
-                                type="radio"
-                                id="vehicle"
-                                name="bk_xdoc_provider"
-                                defaultValue="Yes"
-                                checked={data.bk_xdoc_provider === "Yes"}
-                                onChange={handlechnage}
-                              />
-                              <label for="vehicle1"> Yes</label>
-                            </div>
-                            <div className="ms-3">
-                              <input
-                                type="radio"
-                                id="vehicle"
-                                name="bk_xdoc_provider"
-                                checked={data.bk_xdoc_provider === "No"}
-                                onChange={handlechnage}
-                                defaultValue="No"
-                              />
-                              <label for="vehicle2"> No</label>
-                            </div>
-                          </div>
-                        </div> */}
                         <div className="col-lg-6">
                           <label className="ware_label">
                             Mark with an X the Documents You Are Providing
@@ -403,36 +374,6 @@ export default function BookingInsForm() {
                             </div>
                           </div>
                         </div>
-
-                        {/* <div className="col-lg-6">
-                          <label className="ware_label" htmlFor="">
-                            Commercial Invoice
-                          </label>
-                          <div className="d-flex checkInsForm">
-                            <div>
-                              <input
-                                type="radio"
-                                id="check"
-                                name="bk_comm_Invoice"
-                                checked={data.bk_comm_Invoice === "Yes"}
-                                onChange={handlechnage}
-                                defaultValue="Yes"
-                              />
-                              <label htmlFor="checkYes"> Yes</label>
-                            </div>
-                            <div className="ms-3">
-                              <input
-                                type="radio"
-                                id="check"
-                                name="bk_comm_Invoice"
-                                onChange={handlechnage}
-                                checked={data.bk_comm_Invoice === "No"}
-                                defaultValue="No"
-                              />
-                              <label htmlFor="checkNo"> No</label>
-                            </div>
-                          </div>
-                        </div> */}
                         <div className="col-lg-6 ">
                           <label className="ware_label" htmlFor="">
                             Total Count of Commercial Invoices on This Shipment
@@ -876,15 +817,7 @@ export default function BookingInsForm() {
                           className="mb-2 border ps-2 py-2 rounded w-100"
                           type="text"
                           disabled
-                          // value={
-                          //   data?.shipment_ref === "shipper"
-                          //     ? "Asia Direct"
-                          //     : data?.shipper_name
-                          // }
                             value={
-                              // data?.shipment_ref === "shipper"
-                              //   ? data?.shipper_name
-                              //   : "Asia Direct"
                                data.shipment_ref === "consignee"
                               ? data.shipper_name
                               :  data.client_name

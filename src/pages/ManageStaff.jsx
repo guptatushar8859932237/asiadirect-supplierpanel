@@ -109,6 +109,9 @@ export default function ManageStaff() {
     if (!value.new_password) {
       error.new_password = "Password is required";
     }
+    if (!value.country) {
+      error.country = "Country is required";
+    }
     if (selectedRoles.length === 0) {
       error.roles = "Please select at least one role";
     }
@@ -150,6 +153,7 @@ export default function ManageStaff() {
       staff_name: input.staff_name,
       roles: selectedRoles,
       new_password: input.new_password,
+      country: input.country,
     };
     axios
       .post(`${process.env.REACT_APP_BASE_URL}add-staff`, apivali)
@@ -208,6 +212,8 @@ export default function ManageStaff() {
   const handleupdateapi = (e) => {
     const { name, value } = e.target;
     setInputdata({ ...inputdata, [name]: value });
+    console.log(inputdata);
+    console.log(e.target)
   };
   const openModal2 = (id) => {
     const userlog = data.find((item) => item.id === id);
@@ -217,8 +223,10 @@ export default function ManageStaff() {
         staff_email: userlog.email,
         staff_name: userlog.full_name,
         roles: userlog.roles || [],
+        country: userlog.country,
       });
     }
+    console.log(userlog);
     setIsModalOpen2(true);
   };
   const postData1234 = () => {
@@ -229,6 +237,7 @@ export default function ManageStaff() {
       staff_name: inputdata.staff_name,
       roles: selectedRoles,
       password: inputdata.new_password,
+      country: inputdata.country,
     };
     if (!selectedRoles || !inputdata.new_password) {
       toast.error("Update Roles and Password");
@@ -340,6 +349,26 @@ export default function ManageStaff() {
                               <p className="text-danger">{error.staff_name}</p>
                             </div>
                           </div>
+                         <div className="mb-3">
+  <label htmlFor="country" className="form-label mb-2 md_staff">
+    Country
+  </label>
+  <div className="col-sm-12">
+    <select
+      name="country"
+      id="country"
+      className="form-control"
+      onChange={handlechange}
+    >
+      <option value="">Select Country</option>
+        <option value="246">Zimbabwe</option>
+      <option value="245">Zambia</option>
+      <option value="202">South Africa</option>
+    </select>
+    <p className="text-danger">{error.country}</p>
+  </div>
+</div>
+
                           <div className="mb-3">
                             <label
                               htmlFor="inputText"
@@ -347,43 +376,6 @@ export default function ManageStaff() {
                             >
                               Assign Roles
                             </label>
-                            {/* <FormControl style={{ width: "100%" }}>
-                              <Select
-                                id="demo-multiple-checkbox"
-                                multiple
-                                value={selectedRoles}
-                                onChange={handleRoleChange}
-                                input={<OutlinedInput />}
-                                renderValue={(selected) =>
-                                  selected
-                                    .map(
-                                      (role) =>
-                                        roleOptions.find(
-                                          (option) => option.value === role
-                                        )?.label
-                                    )
-                                    .join(", ")
-                                }
-                                MenuProps={MenuProps}
-                                className="country_sel"
-                                placeholder="Assign Roles"
-                              >
-                                
-                                {roleOptions.map((option) => (
-                                  <MenuItem
-                                    key={option.value}
-                                    value={option.value}
-                                  >
-                                    <Checkbox
-                                      checked={
-                                        selectedRoles.indexOf(option.value) > -1
-                                      }
-                                    />
-                                    <ListItemText primary={option.label} />
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl> */}
                             <FormControl style={{ width: "100%" }}>
                               <Select
                                 id="demo-multiple-checkbox"
@@ -474,6 +466,7 @@ export default function ManageStaff() {
                           <th scope="col">Sr.No.</th>
                           <th scope="col">Full Name</th>
                           <th scope="col">Email</th>
+                          <th scope="col">Country</th>
                           <th scope="col">Status</th>
                           <th scope="col">View</th>
                           <th scope="col">Action</th>
@@ -488,6 +481,7 @@ export default function ManageStaff() {
                                 <th>{startIndex + index + 1}</th>
                                 <td>{item.full_name}</td>
                                 <td>{item.email}</td>
+                                <td>{item?.country_name}</td>
                                 <td>
                                   {item.status === 1 ? (
                                     <label
@@ -640,6 +634,26 @@ export default function ManageStaff() {
                           />
                         </div>
                       </div>
+                             <div className="mb-3">
+  <label htmlFor="country" className="form-label mb-2 md_staff">
+    Country
+  </label>
+  <div className="col-sm-12">
+    <select
+      name="country"
+      id="country"
+      value={inputdata?.country}
+      className="form-control"
+      onChange={handleupdateapi}
+    >
+      <option value="">Select Country</option>
+        <option value="246">Zimbabwe</option>
+      <option value="245">Zambia</option>
+      <option value="202">South Africa</option>
+    </select>
+    <p className="text-danger">{error.country}</p>
+  </div>
+</div>
                       <div className="row mb-3 ">
                         <div className="col-12">
                           <label
@@ -649,7 +663,6 @@ export default function ManageStaff() {
                             Assign Roles
                           </label>
                           <br />
-
                           <FormControl className="w-100">
                             <Select
                               multiple

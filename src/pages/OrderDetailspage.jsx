@@ -160,7 +160,7 @@ console.log(info?.order_id)
                   />
                 </div>
                 <div>
-                  <h4 className="det_hd ms-3"> Order Freight Details</h4>
+                  <h4 className="det_hd ms-3"> Order Freight Detail's</h4>
                 </div>
               </div>
             </div>
@@ -184,9 +184,9 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1">
-                                  {info?.shipment_ref === "shipper"
-                                    ? info?.shipper_name
-                                    : "Asia Direct"}
+                                  {info.shipment_ref === "consignee"
+                              ? info.shipper_name
+                              : info.client_name}
                                 </p>
                               </td>
                             </tr>
@@ -196,9 +196,9 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1">
-                                  {info?.shipment_ref === "shipper"
-                                    ? info?.contact_person
-                                    : ""}
+                                   {info.shipment_ref === "consignee"
+                              ? ""
+                              :info.client_email }
                                 </p>
                               </td>
                             </tr>
@@ -208,9 +208,9 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1">
-                                  {info?.shipment_ref === "shipper"
-                                    ? info?.cellphone
-                                    : " +27 10 448 0733"}
+                                {info.shipment_ref === "consignee"
+                              ? info.telephone
+                              :info.cellphone}
                                 </p>
                               </td>
                             </tr>
@@ -220,9 +220,9 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1">
-                                  {info?.shipment_ref === "shipper"
-                                    ? info?.telephone
-                                    : ""}
+                                  {info.shipment_ref === "consignee"
+                              ? info.telephone
+                              :info.cellphone}
                                 </p>
                               </td>
                             </tr>
@@ -232,9 +232,9 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1 mb-3">
-                                  {info?.shipment_ref === "shipper"
-                                    ? info?.client_email
-                                    : "sa@asiadirect.africa "}
+                                   {info.shipment_ref === "consignee"
+                              ? ""
+                              :info.client_email }
                                 </p>
                               </td>
                             </tr>
@@ -248,7 +248,9 @@ console.log(info?.order_id)
                                 <p class="client_para1">Address1:</p>
                               </td>
                               <td>
-                                <p class="client_para1">{info?.address_1}</p>
+                                <p class="client_para1">{info.shipment_ref === "consignee"
+                              ? info.supplier_address
+                              :  info?.address_1 +" " + info.address_2 + " "+ <br /> +info.province+ " " +<br />+ info.delivery_to_name}</p>
                               </td>
                             </tr>
                             <tr>
@@ -330,9 +332,9 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1">
-                                  {info?.shipment_ref === "shipper"
-                                    ? "Asia Direct"
-                                    : info?.client_name}
+                                  {info.shipment_ref === "consignee"
+                              ? info.client_name
+                              : info.shipper_name}
                                 </p>
                               </td>
                             </tr>
@@ -342,9 +344,9 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1">
-                                  {info?.shipment_ref === "shipper"
-                                    ? ""
-                                    : info?.contact_person}
+                                 {info.shipment_ref === "consignee"
+                              ? info.client_email
+                              : ""}
                                 </p>
                               </td>
                             </tr>
@@ -354,9 +356,9 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1">
-                                  {info?.shipment_ref === "shipper"
-                                    ? "+27 10 448 0733"
-                                    : info?.telephone}
+                                  {info.shipment_ref === "consignee"
+                              ? info.cellphone
+                              : info.telephone}
                                 </p>
                               </td>
                             </tr>
@@ -378,15 +380,22 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1 mb-3">
-                                  {info?.shipment_ref === "shipper"
-                                    ? "sa@asiadirect.africa"
-                                    : info?.client_email}
+                                {info.shipment_ref === "consignee"
+                              ? info.client_email
+                              : ""}
                                 </p>
                               </td>
                             </tr>
                             <tr>
                               <td>
                                 <p className="ship_hd">Delivery Address</p>
+                              </td>
+                              <td>
+<p className="client_para">
+                            {/* {info.shipment_ref === "consignee"
+                              ? info?.address_1 +" " + info.address_2 + " " +info.province+ " " + info.delivery_to_name
+                              : info.supplier_address} */}
+                                </p>
                               </td>
                             </tr>
                             <tr>
@@ -395,7 +404,10 @@ console.log(info?.order_id)
                               </td>
                               <td>
                                 <p class="client_para1">
-                                  {info?.supplier_address}
+                                  {/* {info?.supplier_address} */}
+                                  {info.shipment_ref === "consignee"
+                              ? info?.address_1 +" " + info.address_2 + " " +info.province
+                              : info.supplier_address}
                                 </p>
                               </td>
                             </tr>
