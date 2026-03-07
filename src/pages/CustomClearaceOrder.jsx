@@ -327,17 +327,17 @@ const CustomClearaceOrder = () => {
   const handleclicknavidata = (id) => {
     const datauser = constgetdata.find((item) => item.id === id);
     console.log(datauser);
-    navigate("/Admin/Custom-details", { state: { data: [datauser] } });
+    navigate("/supplier/Custom-details", { state: { data: [datauser] } });
   };
   const handleclick1212 = (id) => {
     const datauser = constgetdata.find((item) => item.id === id);
     console.log(datauser);
-    navigate("/Admin/AdminclearenceDetails", { state: { data: [datauser] } });
+    navigate("/supplier/AdminclearenceDetails", { state: { data: [datauser] } });
   };
   const handlelcickestrachange = (id) => {
     const datauser = constgetdata.find((item) => item.id === id);
     console.log(datauser);
-    navigate("/Admin/shipping-estimate-clearence", {
+    navigate("/supplier/shipping-estimate-clearence", {
       state: { data: [datauser], data12: "update" },
     });
   };
@@ -492,14 +492,14 @@ const CustomClearaceOrder = () => {
         `${process.env.REACT_APP_BASE_URL}CheckPermission`,
         {
           staff_id: userid,
-          route_url: "/Admin/custom-calcualate",
+          route_url: "/supplier/custom-calcualate",
           user_type: usertype,
         }
       );
 
       if (permission.data.success === true) {
         console.log("a");
-        navigate("/Admin/custom-calcualate", { state: { data: id } });
+        navigate("/supplier/custom-calcualate", { state: { data: id } });
       } else {
         toast.error("Permission Denied");
       }
@@ -535,7 +535,7 @@ const CustomClearaceOrder = () => {
     console.log(id);
     const datauser = constgetdata.find((item) => item.id === id.id);
     console.log(datauser);
-    navigate("/Admin/Editpdfclearence", { state: { data: [datauser] } });
+    navigate("/supplier/Editpdfclearence", { state: { data: [datauser] } });
     // navigate("/Admin/Editpdfclearence", { state: { data: id, secretdata :"dataedit" } });
   };
 

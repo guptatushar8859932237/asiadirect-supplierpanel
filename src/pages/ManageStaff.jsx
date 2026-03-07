@@ -259,7 +259,7 @@ export default function ManageStaff() {
     setIsModalOpen2(false);
   };
   const handleclicknavigate = (item) => {
-    navigate(`/Admin/staff-details`, { state: { data: item } });
+    navigate(`/supplier/staff-details`, { state: { data: item } });
   };
   return (
     <>

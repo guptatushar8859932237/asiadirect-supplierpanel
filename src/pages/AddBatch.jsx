@@ -165,7 +165,7 @@ const AddBatch = () => {
         if (response.data.success === true) {
           setLoader(false);
           setTimeout(() => {
-            navigate("/Admin/Batches");
+            navigate("/supplier/Batches");
           }, [1500]);
         }
       })

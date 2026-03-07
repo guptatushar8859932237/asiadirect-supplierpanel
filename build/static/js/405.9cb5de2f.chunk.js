@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkasia_direct=self.webpackChunkasia_direct||[]).push([[405],{2405:(a,s,e)=>{e.r(s),e.d(s,{default:()=>i});e(5043);var r=e(1318),d=e(579);function i(){return(0,d.jsxs)("div",{children:["working on this page move to dashboard ",(0,d.jsx)(r.N_,{to:"/supplier/dashboard",children:"Dashboard"})]})}}}]);
+//# sourceMappingURL=405.9cb5de2f.chunk.js.map

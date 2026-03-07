@@ -29,7 +29,7 @@ export default function Dashboard() {
       <div className="wpWrapper dash_wrap">
         <div className="container-fluid">
           <div class="row">
-            <div class="col-lg-3" onClick={() => { navigaet('/Admin/manage-customer') }}>
+            <div class="col-lg-3" onClick={() => { navigaet('/supplier/manage-customer') }}>
               <div class="cardDash">
                 <h4 className="hd_dash">Clients</h4>
                 <div class="iconParent">
@@ -46,7 +46,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div class="col-lg-3" onClick={() => { navigaet('/Admin/managefreight') }}>
+            <div class="col-lg-3" onClick={() => { navigaet('/supplier/managefreight') }}>
               <div class="cardDash">
                 <h4 className="hd_dash">Freights</h4>                                                
                 <div class="iconParent">                                                
@@ -63,7 +63,7 @@ export default function Dashboard() {
                 </div>                                                
               </div>                                                
             </div>                                                
-            <div class="col-lg-3" onClick={() => { navigaet('/Admin/order') }}>                                                
+            <div class="col-lg-3" onClick={() => { navigaet('/supplier/order') }}>                                                
               <div class="cardDash">                                                
                 <h4 className="hd_dash">Orders</h4>                                                
                 <div class="iconParent">                                                
@@ -80,7 +80,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div class="col-lg-3" onClick={() => { navigaet('/Admin/custom-clearance-order') }}>
+            <div class="col-lg-3" onClick={() => { navigaet('/supplier/custom-clearance-order') }}>
               <div class="cardDash">
                 <h4 className="hd_dash">Clearances</h4>
                 <div class="iconParent">
@@ -97,7 +97,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div class="col-lg-3" onClick={() => { navigaet('/Admin/calculation-order') }} >
+            <div class="col-lg-3" onClick={() => { navigaet('/supplier/calculation-order') }} >
               <div class="cardDash">
                 <h4 className="hd_dash">Clearance Orders</h4>
                 <div class="iconParent">

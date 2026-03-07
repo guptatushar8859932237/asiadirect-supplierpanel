@@ -166,7 +166,7 @@ export default function Editpdfclearance() {
       console.log(response.data);
       if (response.data.success === true) {
         toast.success(response.data.message);
-        //   navigate("/Admin/custom-clearance-order");
+        //   navigate("//custom-clearance-order");
       }
     } catch (error) {
       console.log(error.response);
@@ -187,7 +187,7 @@ export default function Editpdfclearance() {
   const userid = JSON.parse(localStorage.getItem("data123"));
 
   const handleclicknav = () => {
-    navigate("/Admin/custom-clearance-order");
+    navigate("/supplier/custom-clearance-order");
   };
 
   useEffect(() => {

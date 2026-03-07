@@ -293,14 +293,14 @@ export default function Order() {
       return item.id === id;
     });
     console.log(alldaatat[0]);
-    navigate("/Admin/updateaddress", { state: { data: alldaatat[0] } });
+    navigate("/supplier/updateaddress", { state: { data: alldaatat[0] } });
   };
   const Shippinginstruction = (id) => {
     const alldaatat = data.filter((item) => {
       return item.id === id;
     });
     console.log(alldaatat[0]);
-    navigate("/Admin/bookinginstruction", { state: { data: alldaatat[0] } });
+    navigate("/supplier/bookinginstruction", { state: { data: alldaatat[0] } });
   };
   const Shippingorderedit = (item) => {
     const alldaatat = data.filter((item1) => {
@@ -309,7 +309,7 @@ export default function Order() {
     setIsOpen(true)
     setInputdata(alldaatat[0])
     console.log(alldaatat);
-    // navigate("/Admin/bookinginstruction", { state: { data: alldaatat[0] } });
+    // navigate("/supplier/bookinginstruction", { state: { data: alldaatat[0] } });
   };
   const handledeliveryEye = (id) => {
     console.log(id);
@@ -319,7 +319,7 @@ export default function Order() {
     });
     console.log(alldaatat[0]);
     console.log(alldaatat);
-    navigate("/Admin/OrderDetails", { state: { data: alldaatat[0] } });
+    navigate("/supplier/OrderDetails", { state: { data: alldaatat[0] } });
   };
   const track = async (id) => {
     try {
@@ -327,14 +327,14 @@ export default function Order() {
         `${process.env.REACT_APP_BASE_URL}CheckPermission`,
         {
           staff_id: userid,
-          route_url: "/Admin/trackorder",
+          route_url: "/supplier/trackorder",
           user_type: usertype,
         }
       );
 
       if (permission.data.success) {
         const allData = data.filter((item) => item.id === id);
-        navigate("/Admin/trackorder", { state: { data: allData } });
+        navigate("/supplier/trackorder", { state: { data: allData } });
       } else {
         toast.error("Permission Denied: You don’t have access to this page");
       }
@@ -387,7 +387,7 @@ export default function Order() {
     const alldaatat = data.filter((item) => {
       return item.id === id;
     });
-    navigate("/Admin/OrderDetail", { state: { data: alldaatat } });
+    navigate("/supplier/OrderDetail", { state: { data: alldaatat } });
   };
   const track123 = async (item) => {
     try {
@@ -434,7 +434,7 @@ export default function Order() {
     try {
       const datapost = {
         staff_id: userid,
-        route_url: "/Admin/updatedelivery",
+        route_url: "/supplier/updatedelivery",
         user_type: usertype,
       };
 
@@ -447,7 +447,7 @@ export default function Order() {
       if (permission.data.success) {
         const alldata = data?.filter((item) => item.id === id);
         console.log(alldata);
-        navigate("/Admin/updatedelivery", { state: { data: alldata[0] } });
+        navigate("/supplier/updatedelivery", { state: { data: alldata[0] } });
       } else {
         toast.error("Permission Denied: You don’t have access to this page");
       }
@@ -506,26 +506,26 @@ export default function Order() {
       return item.freight_id === freight_id;
     });
     console.log(alldata);
-    navigate("/Admin/waybill", { state: { data: alldata[0] } });
+    navigate("/supplier/waybill", { state: { data: alldata[0] } });
   };
   const handleclicknaviauthority = (id) => {
     const alldata = data?.filter((item) => {
       return item.id === id;
     });
     console.log(alldata);
-    navigate("/Admin/letterofauhtority", { state: { data: alldata[0] } });
+    navigate("/supplier/letterofauhtority", { state: { data: alldata[0] } });
   };
   const handleclicknavibilloflaadding = (id) => {
     const alldata = data?.filter((item) => {
       return item.id === id;
     });
-    navigate("/Admin/billofladding", { state: { data: alldata[0] } });
+    navigate("/supplier/billofladding", { state: { data: alldata[0] } });
   };
   const handleclicknavibilloflaadding11 = (id) => {
     const alldata = data?.filter((item) => {
       return item.id === id;
     });
-    navigate("/Admin/customesClearings", { state: { data: alldata[0] } });
+    navigate("/supplier/customesClearings", { state: { data: alldata[0] } });
   };
   const openModal = () => {
     setIsModalOpen(true);
@@ -610,9 +610,9 @@ export default function Order() {
   const track12311 = (alldata) => {
     console.log([alldata]);
     if (alldata.added_by === "1") {
-      navigate("/Admin/shipping-estimate", { state: { data: [alldata] } });
+      navigate("/supplier/shipping-estimate", { state: { data: [alldata] } });
     } else {
-      navigate("/Admin/shipping-estimate-client", {
+      navigate("/supplier/shipping-estimate-client", {
         state: { data: [alldata] },
       });
     }
@@ -676,7 +676,7 @@ export default function Order() {
       })
       .then((response) => {
         if (response.data.success === true) {
-          navigate("/Admin/downlaodpdf", {
+          navigate("/supplier/downlaodpdf", {
             state: { data: response.data.data },
           });
         }

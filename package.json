@@ -2,7 +2,7 @@
   "name": "asia_direct",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ship.asiadirect.africa/Admin",
+  "homepage": "https://ship.asiadirect.africa/supplier",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^40.2.0",
     "@ckeditor/ckeditor5-react": "^6.2.0",
@@ -19,6 +19,7 @@
     "@mui/styles": "^5.15.1",
     "@react-oauth/google": "^0.12.1",
     "@react-pdf/renderer": "^3.1.17",
+    "@reduxjs/toolkit": "^2.11.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -31,7 +32,9 @@
     "date-fns": "^3.3.1",
     "framer-motion": "^6.2.3",
     "gapi-script": "^1.2.0",
+    "google-translate-api-browser": "^5.0.0",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.12.1",
     "jquery": "^3.7.1",
     "jspdf": "^3.0.2",
     "jwt-decode": "^4.0.0",
@@ -55,7 +58,6 @@
     "react-transition-group": "^4.4.5",
     "react-vertical-timeline-component": "^3.6.0",
     "recharts": "^2.10.3",
-    "source-map-explorer": "^2.5.3",
     "styled-components": "^6.1.8",
     "sweetalert2": "^11.6.13",
     "web-vitals": "^2.1.4"
@@ -85,6 +87,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "source-map-explorer": "^2.5.3"
   }
 }

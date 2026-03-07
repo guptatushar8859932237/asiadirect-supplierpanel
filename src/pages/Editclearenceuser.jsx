@@ -186,8 +186,8 @@ export default function Editclearenceuser() {
 
   const handleclicknav = () => {
     location1?.state?.data1 === "update"
-      ? navigate("/Admin/calculation-order")
-      : navigate("/Admin/Custom-clearence-byuser");
+      ? navigate("/supplier/calculation-order")
+      : navigate("/supplier/Custom-clearence-byuser");
   };
 
   useEffect(() => {

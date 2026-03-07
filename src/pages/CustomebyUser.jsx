@@ -263,7 +263,7 @@ export default function CustomebyUserap() {
     const datauser = constgetdata.filter((item) => {
       return item.id === id;
     });
-    navigate("/Admin/clearenceeditview", { state: { data: datauser } });
+    navigate("/supplier/clearenceeditview", { state: { data: datauser } });
   };
   ////////////////////////////////////////////////////////////update data//////////////////////////
   const handlegetid = (id) => {
@@ -401,7 +401,7 @@ export default function CustomebyUserap() {
       return item.id === id.id;
     });
     console.log(dataval);
-    navigate("/Admin/Editclearence", {
+    navigate("/supplier/Editclearence", {
       state: { data: dataval },
     });
   };
@@ -409,7 +409,7 @@ export default function CustomebyUserap() {
     const dataval = constgetdata.filter((item) => {
       return item.id === id;
     });
-    navigate("/Admin/shipping-estimate-clearence", {
+    navigate("/supplier/shipping-estimate-clearence", {
       state: { data: dataval },
     });
   };

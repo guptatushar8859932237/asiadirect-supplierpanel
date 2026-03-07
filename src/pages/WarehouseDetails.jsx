@@ -30,7 +30,7 @@ export default function WarehouseDetails() {
     postassiandata();
   }, []);
   const handleclicknav = () => {
-    navigate("/Admin/WarehouseOrder");
+    navigate("/supplier/WarehouseOrder");
   };
 
     const GetFreightImages = () => {

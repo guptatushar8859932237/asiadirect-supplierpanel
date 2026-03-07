@@ -56,7 +56,7 @@ export default function TrackBatch() {
     getorderstatus();
   }, []);
   const handleclicknav = () => {
-    navigate("/Admin/Batches");
+    navigate("/supplier/Batches");
   };
   return (
     <>

@@ -200,7 +200,7 @@ export default function Addshipment() {
       );
       if (response.data.success) {
         toast.success(response.data.message);
-        navigate("/Admin/manage-shipment");
+        navigate("/supplier/manage-shipment");
       }
     } catch (error) {
       toast.error("Error adding shipment");
@@ -255,7 +255,7 @@ export default function Addshipment() {
           <h4 className="freight_hd">
             <ArrowBackIcon
               style={{ cursor: "pointer" }}
-              onClick={() => navigate("/Admin/manage-shipment")}
+              onClick={() => navigate("/supplier/manage-shipment")}
               className="me-2 fw-bold"
             />
             Shipment Details / Form

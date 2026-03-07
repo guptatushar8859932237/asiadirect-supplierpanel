@@ -12,6 +12,7 @@ export default function Admin() {
             navigate('/')
         }
         else {
+            console.log("current user", current_user, pathName)
             navigate(pathName)
         }
     }

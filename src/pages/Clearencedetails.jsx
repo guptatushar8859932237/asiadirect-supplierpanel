@@ -29,8 +29,8 @@ export default function Clearencedetails() {
 
   const handleclicknav = () => {
     location?.state?.data1 ==="update"
-    ? navigate("/Admin/calculation-order")
-    : navigate("/Admin/custom-clearance-order")
+    ? navigate("/supplier/calculation-order")
+    : navigate("/supplier/custom-clearance-order")
   };
   const getdatainthispage = () => {
     axios

@@ -35,7 +35,7 @@ const Header = () => {
   };
   const fetchProfileData = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}get-profile-admin`, { user_id: userId });
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}GetSupplierProfile`, { supplier_id: userId });
       setImage(response.data.data.profile)
       setUserData(response.data.data || {});
     } catch (error) {
@@ -50,7 +50,7 @@ const Header = () => {
     }
   };
   const handleNotificationClick = () => {
-    navigate('/Admin/notifications');
+    navigate('/supplier/notifications');
   };
   const handleLogout = () => {
     localStorage.clear();
@@ -103,8 +103,9 @@ const Header = () => {
           onClose={() => setAnchorEl(null)}
           MenuListProps={{ 'aria-labelledby': 'basic-button' }}
         >
-          <MenuItem onClick={() => { navigate('/Admin/profile'); setAnchorEl(null); }}>Profile</MenuItem>
-          <MenuItem onClick={() => { navigate('/Admin/changepassword'); setAnchorEl(null); }}>Change Password</MenuItem>
+          <MenuItem onClick={() => { navigate('/supplier/profile'); setAnchorEl(null); }}>Profile</MenuItem>
+          <MenuItem onClick={() => { navigate('/supplier/changepassword'); setAnchorEl(null); }}>Change Password</MenuItem>
+          <MenuItem onClick={() => { navigate('/supplier/ProfileSection'); setAnchorEl(null); }}>Profile Section</MenuItem>
           <MenuItem onClick={() => { handleLogout(); setAnchorEl(null); }}>Logout</MenuItem>
         </Menu>
       </div>

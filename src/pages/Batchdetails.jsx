@@ -7,7 +7,7 @@ export default function Batchdetails() {
   const info1 = infolocation?.state?.data;
   console.log(infolocation?.state?.data);
   const handleclicknav = () => {
-    navigate("/Admin/BatchesOrder");
+    navigate("/supplier/BatchesOrder");
   };
   return (
     <div className="wpWrapper">

@@ -13,7 +13,7 @@ export default function Shipmentdeailspage() {
   const datat = location.state.data[0];
   console.log("datat", datat);
   const handleclick = () => {
-    navigate("/admin/manage-shipment");
+    navigate("/supplier/manage-shipment");
   };
   useEffect(() => {
     GetShipmentDetails();

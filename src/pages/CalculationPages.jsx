@@ -55,7 +55,7 @@ export default function CalculationPages() {
     };
     const handleclickfgdfg = (item) => {
         console.log(item)
-        navigate('/Admin/clearencePage', { state: { data: item } })
+        navigate('/supplier/clearencePage', { state: { data: item } })
     }
     return (
         <div className="wpWrapper">

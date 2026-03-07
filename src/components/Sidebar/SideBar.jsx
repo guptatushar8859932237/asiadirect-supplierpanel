@@ -36,107 +36,26 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import { Rule } from "@mui/icons-material";
 const routes = [
   {
-    path: "/Admin/dashboard",
-    name: "Dashboard",
-    icon: <SpeedOutlinedIcon />,
-  },
-  {
     path: "",
     name: "Enquiries",
     icon: <AssignmentIndIcon />,
     subRoutes: [
       {
-        path: "/Admin/managefreight",
-        name: "Freight by Admin",
+        path: "/supplier/managefreight",
+        name: "Freight's",
         icon: <SupervisorAccountOutlinedIcon />,
       },
       {
-        path: "/Admin/freight",
-        name: "Freight by User",
-        icon: <FaUser />,
-      },
-      {
-        path: "/Admin/custom-clearance-order",
-        name: "Custom by Admin",
+        path: "/supplier/custom-clearance-order",
+        name: "Custom Clearing's",
         icon: <SupervisorAccountOutlinedIcon />,
-      },
-      {
-        path: "/Admin/Custom-clearence-byuser",
-        name: "Custom by User",
-        icon: <FaUser />,
-      },
-      {
-        path: "/Admin/query",
-        name: "Dispute",
-        icon: <QueryStatsIcon />,
-      },
-      {
-        path: "/Admin/notifications",
-        name: "Notifications",
-        icon: <NotificationsActiveOutlinedIcon />,
       },
     ],
   },
   {
-    path: "",
-    name: "Manage Invoices",
-    icon: <InsertDriveFileIcon />,
-    subRoutes: [
-      {
-        path: "/Admin/billing",
-        name: "Invoices",
-        icon: <SupervisorAccountOutlinedIcon />,
-      },
-      {
-        path: "/Admin/sageinvoice",
-        name: "Sage Invoices",
-        icon: <FaUser />,
-      },
-      {
-        path: "/Admin/cashbook",
-        name: "Cashbook",
-        icon: <ShoppingCartOutlinedIcon />,
-      },
-      {
-        path: "/Admin/releasedDashboard",
-        name: "Released Dashboard",
-        icon: <DashboardIcon />,
-      },
-    ],
-  },
-  {
-    path: "",
-    name: "Manage Freight",
-    icon: <FlightOutlinedIcon />,
-    subRoutes: [
-      {
-        path: "/Admin/order",
-        name: "Freight Orders",
-        icon: <ShoppingCartOutlinedIcon />,
-      },
-      {
-        path: "/Admin/manage-shipment",
-        name: "Shipments",
-        icon: <PeopleAltOutlinedIcon />,
-      },
-    ],
-  },
-  {
-    path: "",
-    name: "Custom Clearance",
-    icon: <PlaylistAddCheckOutlinedIcon />,
-    subRoutes: [
-      {
-        path: "/Admin/calculation-order",
-        name: "Clearance Order",
-        icon: <ShoppingCartOutlinedIcon />,
-      },
-      {
-        path: "/Admin/google_drive",
-        name: "Google drive",
-        icon: <ShoppingCartOutlinedIcon />,
-      },
-    ],
+    path: "/supplier/manageTasks       ",
+    name: "Assigned Tasks",
+    icon: <AssignmentIndIcon />,
   },
   {
     path: "",
@@ -144,7 +63,7 @@ const routes = [
     icon: <WorkspacePremiumOutlinedIcon />,
     subRoutes: [
       {
-        path: "/Admin/Batches",
+        path: "/supplier/Batches",
         name: "Batches",
         icon: <MilitaryTechOutlinedIcon />,
       },
@@ -155,34 +74,22 @@ const routes = [
     name: "Warehouse",
     icon: <WarehouseOutlinedIcon />,
     subRoutes: [
+       {
+        path: "/supplier/AddWarehouse",
+        name: "Admin Warehouse",
+        icon: <WarehouseOutlinedIcon />,
+      },
       {
-        path: "/Admin/WarehouseOrder",
-        name: "Warehouse Order",
+        path: "/supplier/WarehouseOrder",
+        name: "Supplier Warehouse Order",
         icon: <ShoppingCartOutlinedIcon />,
       },
     ],
   },
   {
-    path: "",
-    name: "Imports ",
-    icon: <FileUploadOutlinedIcon />,
-    subRoutes: [
-      {
-        path: "/Admin/oploadfile",
-        name: "Excel",
-        icon: <DriveFileMoveOutlinedIcon />,
-      },
-    ],
-  },
-  {
-    path: "/Admin/countryoforigin",
-    name: "Country Of Origin",
-    icon: <LanguageOutlinedIcon />,
-  },
-  {
-    path: "/Admin/manage-customer",
-    name: "Manage Customers",
-    icon: <PeopleAltOutlinedIcon />,
+    path: "/supplier/ProfileSection",
+    name: "Employee Portal",
+    icon: <WarehouseOutlinedIcon />,
   },
 ];
 const userControlRoutes = {
@@ -191,53 +98,37 @@ const userControlRoutes = {
   icon: <SecurityOutlinedIcon />,
   subRoutes: [
     {
-      path: "/Admin/manage-staff",
+      path: "/supplier/manage-staff",
       name: "Manage Staff",
       icon: <Groups2OutlinedIcon />,
     },
-    // {
-    //   path: "/Admin/manage-roles",
-    //   name: "Manage Roles",
-    //   icon: <Rule />,
-    // },
-    // {
-    //   path: "/Admin/manage-roles-permission",
-    //   name: "Manage Permissions",
-    //   icon: <Rule />,
-    // },
     {
-      path: "/Admin/Warehouse",
+      path: "/supplier/Warehouse",
       name: "Warehouse",
       icon: <OtherHousesOutlinedIcon />,
     },
-    // {
-    //   path: "/Admin/manage-supplier",
-    //   name: "Manage Suppliers",
-    //   icon: <LocalShippingOutlinedIcon />,
-    // },
-   
-    // {
-    //   path: "/Admin/Notificaionstorage",
-    //   name: "Files & Storage",
-    //   icon: <NotificationsActiveOutlinedIcon />,
-    // },
+    {
+      path: "/supplier/manage-supplier",
+      name: "Manage Suppliers",
+      icon: <LocalShippingOutlinedIcon />,
+    },
      {
-      path: "/Admin/contactus",
+      path: "/supplier/contactus",
       name: "Contact Us",
       icon: <OtherHousesOutlinedIcon />,
     },
     {
-      path: "/Admin/link",
+      path: "/supplier/link",
       name: "Add Links",
       icon: <AddLinkIcon />,
     },
     {
-      path: "/Admin/term-conditions",
+      path: "/supplier/term-conditions",
       name: "Terms and Conditions",
       icon: <DescriptionOutlinedIcon />,
     },
     {
-      path: "/Admin/privacy-policy",
+      path: "/supplier/privacy-policy",
       name: "Privacy Policy",
       icon: <PrivacyTipOutlinedIcon />,
     },
@@ -322,28 +213,6 @@ const SideBar = ({ children }) => {
           </div>):(   <BiRightArrowCircle size={30}  onClick={toggle}  color="blue" />)
           }
          
-        </div>
-        <div className="text-center">
-          <div>
-            <button
-              className="search"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                navigate("/Admin/Addfreight");
-              }}
-            >
-              <AnimatePresence>
-                <span>
-                  <ControlPointRoundedIcon />
-                </span>
-                {isOpen && (
-                  <p className="addF" style={{ cursor: "pointer" }}>
-                    Add Freight
-                  </p>
-                )}
-              </AnimatePresence>
-            </button>
-          </div>
         </div>
         <section className="routes">
           {filteredRoutes.map((route, index) => {

@@ -155,7 +155,7 @@ try {
   console.log(response.data)
   if (response.data.success === true) {
     toast.success(response.data.message);
-      navigate("/Admin/custom-clearance-order");
+      navigate("/supplier/custom-clearance-order");
   }
 } catch (error) {
   console.log(error.response)
@@ -174,7 +174,7 @@ try {
   const userid = JSON?.parse(localStorage?.getItem("data123"));
 console.log(userid);  
   const handleclicknav = () => {
-    navigate("/Admin/custom-clearance-order");
+    navigate("/supplier/custom-clearance-order");
   };
 
   return (

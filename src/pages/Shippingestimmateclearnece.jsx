@@ -45,7 +45,7 @@ export default function ShippingEstimateClearance() {
             if (response.data.success) {
                 setTimeout(() => {
                     if(location.state)
-                    navigate('/Admin/Custom-clearence-byuser')
+                    navigate('/supplier/Custom-clearence-byuser')
                 }, [1500])
             }
             console.log(response.data)
@@ -54,7 +54,7 @@ export default function ShippingEstimateClearance() {
         })
     }
 const handleclicknav =() =>{
-    navigate('/Admin/Custom-clearence-byuser')
+    navigate('/supplier/Custom-clearence-byuser')
 }
    
     return (

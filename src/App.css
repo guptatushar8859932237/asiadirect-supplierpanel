@@ -3438,6 +3438,24 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
   font-size: 14px;
   font-weight: 500;
 }
+.ship_btn1 {
+  padding: 5px 20px;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+  background-color: rgb(65, 88, 29);
+  font-size: 14px;
+  font-weight: 500;
+}
+.ship_btn2 {
+  padding: 5px 20px;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+  background-color: var(--red);
+  font-size: 14px;
+  font-weight: 500;
+}
 
 .freight_excel label {
   font-weight: 600;
@@ -4521,7 +4539,6 @@ span.cursor-pointer {
   display: block;
   font-weight: normal;
 }
-
 input {
   font-size: 14px;
 }
@@ -4565,20 +4582,16 @@ select {
   text-align: center;
   font-weight: 600;
 }
-
 .checkInsForm label {
   margin-left: 5px;
   font-size: 13px;
 }
-
 .checkInsForm input {
   margin-bottom: 10px;
 }
-
 .bookingInsForm .ware_label {
   font-size: 13px;
 }
-
 .checkInsForm div:nth-child(1) {
   margin-right: 15px;
 }
@@ -4629,35 +4642,33 @@ input[type="radio"] + label {
 button.bg_page {
   padding: 0px 2px !important;
 }
-.freightAuto .ware_label+div{
+.freightAuto .ware_label + div {
   width: 100%;
 }
 input.form-control {
-    font-size: 14px;
+  font-size: 14px;
 }
-
 .popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999; /* make sure it's above everything */
 }
-
 .popup {
   background: #fff;
   padding: 20px;
   border-radius: 10px;
   width: 400px;
   text-align: center;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
-.blueBtn{
+.blueBtn {
   background-color: #1b2245 !important;
   color: #fff;
   border: unset;
@@ -4666,4 +4677,63 @@ input.form-control {
   font-size: 16px;
   font-weight: 600;
   line-height: normal !important;
+}
+.cost-table thead {
+  background: #fff;
+  color: #000;
+}
+.cost-table {
+  border: 1px solid #000;
+  width: 100%;
+}
+.cost-table th,
+.cost-table td {
+  border: 1px solid #000;
+  padding: 3px 5px !important;
+}
+@media print {
+  table,
+  th,
+  td {
+    border-collapse: collapse !important;
+    border: 1px solid black !important;
+  }
+}
+@media print {
+  table {
+    border-spacing: 0 !important;
+  }
+  th,
+  td {
+    border: 1px solid #000 !important;
+  }
+}
+table,
+tr,
+td {
+  page-break-inside: avoid !important;
+}
+.select_supplier {
+  font-weight: 500 !important;
+  font-size: 13px !important;
+}
+.Bordered-table table {
+  border-collapse: separate;
+  border-spacing: 0px;
+}
+ .cost-table select {
+    border: unset;
+}
+ .cost-table input {
+    border: unset;
+   padding: 0px 2px;
+}
+ .cost-table select {
+    border: unset;
+    width: 70px;
+}
+ .cost-table input {
+    border: unset;
+    width: 70px;
+    padding: 0px 2px;
 }

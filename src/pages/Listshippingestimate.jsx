@@ -16,7 +16,7 @@ export default function Listshippingestimate() {
       })
       .then((response) => {
         setDatata(response.data.data);
-        navigate("/Admin/download_url", { state: response.data.data });
+        navigate("/supplier/download_url", { state: response.data.data });
       })
       .catch((error) => {
         toast.error(error.response.data.message);

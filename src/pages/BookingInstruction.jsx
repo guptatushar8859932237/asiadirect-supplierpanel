@@ -10,7 +10,7 @@ const BookingInstruction = () => {
   const navigate = useNavigate();
   const [data,setData]=useState({})
   const openInsForm = () => {
-    navigate("/Admin/booking_instruction_form",{state:{data:info}});
+    navigate("/supplier/booking_instruction_form",{state:{data:info}});
   };
   const loaction = useLocation();
   console.log(loaction?.state?.data);

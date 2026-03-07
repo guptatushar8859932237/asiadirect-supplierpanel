@@ -64,7 +64,7 @@ export default function Notificatonandstorage() {
                         <td>{item.freight_number}</td>
                         <td>{item.client_name}</td>
                         <td>
-                          <Link to={`/Admin/viewdocument/${item.id}`}>
+                          <Link to={`/supplier/viewdocument/${item.id}`}>
                             View
                           </Link>
                         </td>

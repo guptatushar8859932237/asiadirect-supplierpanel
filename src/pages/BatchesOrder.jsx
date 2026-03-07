@@ -79,7 +79,7 @@ export default function BatchesOrder() {
     }
   }, [dataapi.dropval]);
   const handleclcick = (item) => {
-    navigate("/Admin/warehousedetails", { state: { data: item } });
+    navigate("/supplier/warehousedetails", { state: { data: item } });
   };
   const handleclcickrevert = (item) => {
     console.log(item);
@@ -99,7 +99,7 @@ export default function BatchesOrder() {
       });
   };
   const handleclicknav = () => {
-    navigate("/Admin/Batches");
+    navigate("/supplier/Batches");
   };
   useEffect(() => {
     updatecountry();

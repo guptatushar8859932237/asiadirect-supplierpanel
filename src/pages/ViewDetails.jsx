@@ -29,8 +29,8 @@ export default function ViewDetails() {
 
   const handleclicknav = () => {
     getdatallestimate.added_by === "2"
-      ? navigate("/Admin/Custom-clearence-byuser")
-      : navigate("/Admin/Custom-clearence-byuser");
+      ? navigate("/supplier/Custom-clearence-byuser")
+      : navigate("/supplier/Custom-clearence-byuser");
   };
   const getdatainthispage = () => {
     axios

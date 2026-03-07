@@ -122,7 +122,7 @@ export default function UpdateDelivery() {
       .then((response) => {
         toast.success(response.data.message);
         if (response.data.success) {
-          navigate("/Admin/order");
+          navigate("/supplier/order");
         }
       })
       .catch((error) => {
@@ -136,7 +136,7 @@ export default function UpdateDelivery() {
     }
   };
   const handleclicknav = () => {
-    navigate("/Admin/order");
+    navigate("/supplier/order");
   };
 
   return (

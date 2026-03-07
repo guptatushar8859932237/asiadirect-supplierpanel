@@ -26,7 +26,7 @@ export default function Cashbook() {
         `${process.env.REACT_APP_BASE_URL}CheckPermission`,
         {
           staff_id: userid,
-          route_url: "/Admin/sageinvoice",
+          route_url: "/supplier/sageinvoice",
           user_type: usertype,
         }
       );
@@ -144,7 +144,7 @@ export default function Cashbook() {
         `${process.env.REACT_APP_BASE_URL}CheckPermission`,
         {
           staff_id: userid,
-          route_url: "/Admin/sageinvoice",
+          route_url: "/supplier/sageinvoice",
           user_type: usertype,
         }
       );

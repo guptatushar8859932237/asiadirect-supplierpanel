@@ -1161,11 +1161,11 @@ export default function MAnageshipments() {
         {
           staff_id: userid,
           user_type: usertype,
-          route_url: "/Admin/addshipment",
+          route_url: "/supplier/addshipment",
         }
       );
       if (permission.data?.success === true) {
-        navigate("/Admin/addshipment");
+        navigate("/supplier/addshipment");
       } else {
         toast.error("You don't have permission to add shipment");
       }
@@ -1478,13 +1478,13 @@ export default function MAnageshipments() {
       return item.id === id;
     });
     console.log(datanavigate);
-    navigate("/Admin/shipmentdetail", { state: { data: datanavigate } });
+    navigate("/supplier/shipmentdetail", { state: { data: datanavigate } });
   };
   const handleclickcopy = (id) => {
     const dataget = data.filter((item) => {
       return item.id === id;
     });
-    navigate("/Admin/addshipment", { state: { id: dataget[0] } });
+    navigate("/supplier/addshipment", { state: { id: dataget[0] } });
   };
   const handleFileChange12 = (e) => {
     const { name, value } = e.target;

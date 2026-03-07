@@ -306,7 +306,7 @@ export default function ShippingCalcclient() {
       .then((response) => {
         toast.success(response.data.message);
         if (response.data.success === true) {
-          navigate("/Admin/freight");
+          navigate("/supplier/freight");
         }
       })
       .catch((error) => {
@@ -360,7 +360,7 @@ export default function ShippingCalcclient() {
       });
   };
   const handleclicknav = () => {
-    navigate("/Admin/freight");
+    navigate("/supplier/freight");
   };
   return (
     <>

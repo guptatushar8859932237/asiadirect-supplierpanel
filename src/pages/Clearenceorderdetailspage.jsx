@@ -15,7 +15,7 @@ export default function Clearenceorderdetailspage() {
   const info = infolocation?.state?.data[0];
   console.log(infolocation?.state?.data[0]);
   const handleclicknav = () => {
-    navigate("/Admin/custom-clearance-order");
+    navigate("/supplier/custom-clearance-order");
   };
     const GetFreightImages = () => {
       const data = { clearance_id : info.id,uploaded_by:"1" };

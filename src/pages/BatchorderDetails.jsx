@@ -67,7 +67,7 @@ export default function MAnageFreightDetails() {
   }, []);
 
   const handleclicknavi = () => {
-    navigate("/Admin/BatchesOrder", { state: { data: info } });
+    navigate("/supplier/BatchesOrder", { state: { data: info } });
   };
   return (
     <div className="wpWrapper sidebar123">

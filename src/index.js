@@ -17,5 +17,4 @@ ReactDOM.render(
   </GoogleOAuthProvider>,
   document.getElementById("root")
 );
-
 reportWebVitals();

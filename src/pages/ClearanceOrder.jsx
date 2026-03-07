@@ -280,7 +280,7 @@ export default function ClearanceOrder() {
   };
   const handleCloseModal1 = () => setIsModalOpen1(false);
   const handlecciew = async (item) => {
-    navigate("/Admin/Clearancedetails", {
+    navigate("/supplier/Clearancedetails", {
       state: { clearance_id: item },
     });
   };
@@ -288,7 +288,7 @@ export default function ClearanceOrder() {
     console.log(item);
     const datauser = item;
     console.log(datauser);
-    navigate("/Admin/Custom-details", {
+    navigate("/supplier/Custom-details", {
       state: { data: [datauser], data1: "update" },
     });
   };
@@ -297,7 +297,7 @@ export default function ClearanceOrder() {
     const datauser = item;
     console.log(datauser);
     const data1 = "update";
-    navigate("/Admin/Editclearence", {
+    navigate("/supplier/Editclearence", {
       state: { data: [datauser], data1 },
     });
   };

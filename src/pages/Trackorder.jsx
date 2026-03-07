@@ -51,7 +51,7 @@ export default function Trackorder() {
   }, []);
 
   const handleclicknav = () => {
-    navigate("/Admin/order");
+    navigate("/supplier/order");
   };
 
   return (

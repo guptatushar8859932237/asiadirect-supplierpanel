@@ -12,7 +12,7 @@ const navigate = useNavigate()
 
 const handleback =() =>{
   console.log("a")
-  navigate('/Admin/WarehouseOrder')
+  navigate('/supplier/WarehouseOrder')
 }
   return (
     <>

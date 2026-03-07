@@ -72,6 +72,11 @@ import Editclearenceuser from "./pages/Editclearenceuser";
 import BookingInsForm from "./pages/BookingInsForm";
 import Clearenceorderdetailspage from "./pages/Clearenceorderdetailspage";
 import Contactus from "./components/Warehouse/Contactus";
+import Admin from "./Admin";
+import Taskmanager from "./components/managetask/Taskmanager";
+import WarehouseAdd from "./components/Warehouse/WarehouseAdd";
+import Profilemain from "./components/Profilesection/Profilemain";
+import Attendancemanagement from "./components/Profilesection/Attendancemanagement";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Users = lazy(() => import("./pages/Users"));
 const Messages = lazy(() => import("./pages/Messages"));
@@ -88,8 +93,7 @@ const CustomClearaceOrder = lazy(() => import("./pages/CustomClearaceOrder"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermConditions = lazy(() => import("./pages/TermConditions"));
 const Login = lazy(() => import("./components/Login/Login"));
-const Admin = lazy(() => import("./Admin"));
-const Addfreight = lazy(() => import("./components/Addfreight/Addfright"));
+const supplier = lazy(() => import("./Admin"));
 const Profile = lazy(() => import("./components/profile/Profile"));
 const Managefreight = lazy(() => import("./Managefreight"));
 const Changepassword = lazy(() => import("./pages/Changepassword"));
@@ -101,7 +105,7 @@ export default function App() {
   return (
     <MyContext1.Provider value={{ text, setText }}>
       <MyContext2.Provider value={{ permission, setPermission }}>
-        <Router basename="Admin">
+        <Router basename="supplier">
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route path="/" element={<Login />} />
@@ -110,362 +114,378 @@ export default function App() {
                 element={<Forgottenpassword />}
               />
               <Route path="/conform-passs" element={<Conformpass />} />
-              <Route path="Admin" element={<Admin />}>
-                <Route index path="/Admin/dashboard" element={<Dashboard />} />
-                <Route index path="/Admin/users" element={<Users />} />
-                <Route index path="/Admin/messages" element={<Messages />} />
+              <Route path="supplier" element={<Admin />}>
+                <Route index path="/supplier/dashboard" element={<Dashboard />} />
+                <Route index path="/supplier/supplier/users" element={<Users />} />
+                <Route index path="/supplier/supplier/messages" element={<Messages />} />
                 <Route
                   index
-                  path="/Admin/file-manager"
+                  path="/supplier/supplier/file-manager"
                   element={<FileManager />}
                 />
-                <Route index path="/Admin/analytics" element={<Analytics />} />
+                <Route index path="/supplier/supplier/analytics" element={<Analytics />} />
                 <Route
                   index
-                  path="/Admin/OrderDetails"
+                  path="/supplier/supplier/OrderDetails"
                   element={<OrderDetailspage />}
                 />
-                <Route index path="/Admin/waybill" element={<Waybill />} />
-                <Route index path="/Admin/billing" element={<Billing />} />
+                <Route index path="/supplier/supplier/waybill" element={<Waybill />} />
+                <Route index path="/supplier/supplier/billing" element={<Billing />} />
                 <Route
                   index
-                  path="/Admin/sageinvoice"
+                  path="/supplier/supplier/sageinvoice"
                   element={<Sageinvoices />}
                 />
-                <Route index path="/Admin/cashbook" element={<Cashbook />} />
+                <Route index path="/supplier/supplier/cashbook" element={<Cashbook />} />
                 <Route
                   index
-                  path="/Admin/billofladding"
+                  path="/supplier/supplier/billofladding"
                   element={<Billofladding />}
                 />
-                <Route index path="/Admin/messages" element={<Messages />} />
-                <Route index path="/Admin/analytics" element={<Analytics />} />
-                <Route
+                <Route index path="/supplier/supplier/messages" element={<Messages />} />
+                <Route index path="/supplier/supplier/analytics" element={<Analytics />} />
+                <Route 
                   index
-                  path="/Admin/file-manager"
+                  path="/supplier/supplier/file-manager"
                   element={<FileManager />}
                 />
-                <Route index path="/Admin/oploadfile" element={<Excel />} />
-                <Route index path="/Admin/order" element={<Order />} />
+                <Route index path="/supplier/supplier/oploadfile" element={<Excel />} />
+                <Route index path="/supplier/supplier/order" element={<Order />} />
                 <Route
                   index
-                  path="/Admin/downlaodpdf"
+                  path="/supplier/supplier/downlaodpdf"
                   element={<Downloadprdf />}
                 />
-                <Route index path="/Admin/saved" element={<Saved />} />
-                <Route index path="/Admin/Warehouse" element={<Warehosue />} />
+                <Route index path="/supplier/supplier/saved" element={<Saved />} />
+                <Route index path="/supplier/Warehouse" element={<Warehosue />} />
                 <Route
                   index
-                  path="/Admin/customesClearings"
+                  path="/supplier/supplier/customesClearings"
                   element={<Customeclearingbill />}
                 />
                 <Route
                   index
-                  path="/Admin/WarehouseOrder"
+                  path="/supplier/WarehouseOrder"
                   element={<WarehouseOrder />}
                 />
                 <Route
                   index
-                  path="/Admin/AdminclearenceDetails"
+                  path="/supplier/AddWarehouse"
+                  element={<WarehouseAdd />}
+                />
+                <Route
+                  index
+                  path="/supplier/supplier/supplierclearenceDetails"
                   element={<Clearenceorderdetailspage />}
                 />
                 <Route
                   index
-                  path="/Admin/google_drive"
+                  path="/supplier/supplier/google_drive"
                   element={<Googledrive />}
                 />
-                <Route index path="/Admin/settings" element={<Setting />} />
+                <Route index path="/supplier/supplier/settings" element={<Setting />} />
                 <Route
                   index
-                  path="/Admin/Notificaionstorage"
+                  path="/supplier/supplier/Notificaionstorage"
                   element={<Notificatonandstorage />}
                 />
                 <Route
                   index
-                  path="/Admin/manage-customer"
+                  path="/supplier/supplier/manage-customer"
                   element={<ManageCustomer />}
                 />
                 <Route
                   index
-                  path="/Admin/manage-staff"
+                  path="/supplier/supplier/manage-staff"
                   element={<ManageStaff />}
                 />
                 <Route
                   index
-                  path="/Admin/staff-details"
+                  path="/supplier/supplier/staff-details"
                   element={<StaffDetails />}
                 />
                 <Route
                   index
-                  path="/Admin/manage-roles"
+                  path="/supplier/supplier/manage-roles"
                   element={<ManageRoles />}
                 />
                 <Route
                   index
-                  path="/Admin/viewdocument/:id"
+                  path="/supplier/supplier/viewdocument/:id"
                   element={<Viewdocument />}
                 />
-                <Route index path="/Admin/query" element={<Query />} />
+                <Route index path="/supplier/supplier/query" element={<Query />} />
                 <Route
                   index
-                  path="/Admin/manage-supplier"
+                  path="/supplier/manage-supplier"
                   element={<ManageSupplier />}
                 />
                 <Route
                   index
-                  path="/Admin/releasedDashboard"
+                  path="/supplier/supplier/releasedDashboard"
                   element={<ReleasedDashboadrs />}
                 />
                 <Route
                   index
-                  path="/Admin/notifications"
+                  path="/supplier/notifications"
                   element={<Notification />}
                 />
                 <Route
                   index
-                  path="/Admin/custom-clearance-order"
+                  path="/supplier/supplier/custom-clearance-order"
                   element={<CustomClearaceOrder />}
                 />
                 <Route
                   index
-                  path="/Admin/term-conditions"
+                  path="/supplier/supplier/term-conditions"
                   element={<TermConditions />}
                 />
                 <Route
                   index
-                  path="/Admin/privacy-policy"
+                  path="/supplier/supplier/privacy-policy"
                   element={<PrivacyPolicy />}
                 />
                 <Route
                   index
-                  path="/Admin/contactus"
+                  path="/supplier/supplier/contactus"
                   element={<Contactus />}
                 />
+               
                 <Route
                   index
-                  path="/Admin/Addfreight"
-                  element={<Addfreight />}
-                />
-                <Route
-                  index
-                  path="/Admin/warehousedetails"
+                  path="/supplier/supplier/warehousedetails"
                   element={<WarehouseDetails />}
                 />
-                <Route index path="/Admin/freight" element={<UserFreight />} />
+                <Route index path="/supplier/supplier/freight" element={<UserFreight />} />
                 <Route
                   index
-                  path="/Admin/Uploadimgae"
+                  path="/supplier/supplier/Uploadimgae"
                   element={<Uploadimgae />}
                 />
                 <Route
                   index
-                  path="/Admin/manage-roles-permission"
+                  path="/supplier/supplier/manage-roles-permission"
                   element={<Userpermission />}
                 />
                 <Route
                   index
-                  path="/Admin/BatchesOrder"
+                  path="/supplier/supplier/BatchesOrder"
                   element={<BatchesOrder />}
                 />
-                <Route index path="/Admin/profile" element={<Profile />} />
+                <Route index path="/supplier/profile" element={<Profile />} />
                 <Route
                   index
-                  path="/Admin/Clearancedetails"
+                  path="/supplier/supplier/Clearancedetails"
                   element={<Clearancedetails />}
                 />
                 <Route
                   index
-                  path="/Admin/managefreight"
+                  path="/supplier/managefreight"
                   element={<Managefreight />}
                 />
                 <Route
                   index
-                  path="/Admin/manage-shipment"
-                  element={<MAnageshipments />}
+                  path="/supplier/manageTasks"
+                  element={<Taskmanager />}
                 />
-                <Route index path="/Admin/billpdf" element={<Billpdf />} />
                 <Route
                   index
-                  path="/Admin/shipmentdetail"
+                  path="/supplier/supplier/manage-shipment"
+                  element={<MAnageshipments />}
+                />
+                <Route index path="/supplier/supplier/billpdf" element={<Billpdf />} />
+                <Route
+                  index
+                  path="/supplier/supplier/shipmentdetail"
                   element={<Shipmentdeailspage />}
                 />
                 <Route
                   index
-                  path="/Admin/changepassword"
+                  path="/supplier/changepassword"
                   element={<Changepassword />}
                 />
                 <Route
                   index
-                  path="/Admin/countryoforigin"
+                  path="/supplier/supplier/countryoforigin"
                   element={<Countryoforigin />}
                 />
                 <Route
                   index
-                  path="/Admin/testingwork"
+                  path="/supplier/supplier/testingwork"
                   element={<Testingwork />}
                 />
                 <Route
                   index
-                  path="/Admin/Trackbatch"
+                  path="/supplier/supplier/Trackbatch"
                   element={<TrackBatch />}
                 />
-                <Route index path="/Admin/Batches" element={<Batches />} />
+                <Route index path="/supplier/supplier/Batches" element={<Batches />} />
                 <Route
                   index
-                  path="/Admin/shipping-estimate"
+                  path="/supplier/shipping-estimate"
                   element={<ShippingaddfreightEstimate />}
                 />
                 <Route
                   index
-                  path="/Admin/bookinginstruction"
+                  path="/supplier/ProfileSection"
+                  element={<Profilemain />}
+                />
+                <Route
+                  index
+                  path="/supplier/Attendancemanagement"
+                  element={<Attendancemanagement />}
+                />
+                <Route
+                  index
+                  path="/supplier/supplier/bookinginstruction"
                   element={<BookingInstruction />}
                 />
                 <Route
                   index
-                  path="/Admin/booking_instruction_form"
+                  path="/supplier/supplier/booking_instruction_form"
                   element={<BookingInsForm />}
                 />
                 <Route
                   index
-                  path="/Admin/addshipment"
+                  path="/supplier/supplier/addshipment"
                   element={<Addshipment />}
                 />
                 <Route
                   index
-                  path="/Admin/shipping-estimate-client"
+                  path="/supplier/supplier/shipping-estimate-client"
                   element={<ShippingCalcclient />}
                 />
                 <Route
                   index
-                  path="/Admin/shipping-estimate-clearence"
+                  path="/supplier/supplier/shipping-estimate-clearence"
                   element={<Shippingestimmateclearnece />}
                 />
                 <Route
                   index
-                  path="/Admin/shipping-estimate-list"
+                  path="/supplier/supplier/shipping-estimate-list"
                   element={<Listshippingestimate />}
                 />
                 <Route
                   index
-                  path="/Admin/MAnageFreightDetails"
+                  path="/supplier/MAnageFreightDetails"
                   element={<MAnageFreightDetails />}
                 />
                 <Route
                   index
-                  path="/Admin/orderDetails123"
+                  path="/supplier/supplier/orderDetails123"
                   element={<OrderDetails />}
                 />
                 <Route
                   index
-                  path="/Admin/addressupdate"
+                  path="/supplier/supplier/addressupdate"
                   element={<AddressUpdate />}
                 />
                 <Route
                   index
-                  path="/Admin/Batchdetails123"
+                  path="/supplier/supplier/Batchdetails123"
                   element={<Batchdetails />}
                 />
                 <Route
                   index
-                  path="/Admin/updateaddress"
+                  path="/supplier/supplier/updateaddress"
                   element={<Updateaddress />}
                 />
                 <Route
                   index
-                  path="/Admin/updatedelivery"
+                  path="/supplier/supplier/updatedelivery"
                   element={<UpdateDelivery />}
                 />
                 <Route
                   index
-                  path="/Admin/Updatedetails"
+                  path="/supplier/supplier/Updatedetails"
                   element={<Freightbyuserdetail />}
                 />
                 <Route
                   index
-                  path="/Admin/trackorder"
+                  path="/supplier/supplier/trackorder"
                   element={<Trackorder />}
                 />
                 <Route
                   index
-                  path="/Admin/Custom-clearence-byuser"
+                  path="/supplier/supplier/Custom-clearence-byuser"
                   element={<CustomebyUserap />}
                 />
                 <Route
                   index
-                  path="/Admin/custom-calcualate"
+                  path="/supplier/supplier/custom-calcualate"
                   element={<CustomCalculate />}
                 />
                 <Route
                   index
-                  path="/Admin/clearence-Dteails"
+                  path="/supplier/supplier/clearence-Dteails"
                   element={<ClearenceDtails />}
                 />
                 <Route
                   index
-                  path="/Admin/customer-details"
+                  path="/supplier/supplier/customer-details"
                   element={<MAnagecustomerDetails />}
                 />
                 <Route
                   index
-                  path="/Admin/Custom-details"
+                  path="/supplier/supplier/Custom-details"
                   element={<Clearencedetails />}
                 />
                 <Route
                   index
-                  path="/Admin/Editpdfclearence"
+                  path="/supplier/supplier/Editpdfclearence"
                   element={<Editpdfclearance />}
                 />
-                <Route index path="/Admin/Chat" element={<Chat />} />
-                <Route index path="/Admin/AddBatch" element={<AddBatch />} />
-                <Route index path="/Admin/link" element={<CMS />} />
+                <Route index path="/supplier/supplier/Chat" element={<Chat />} />
+                <Route index path="/supplier/supplier/AddBatch" element={<AddBatch />} />
+                <Route index path="/supplier/supplier/link" element={<CMS />} />
                 <Route
                   index
-                  path="/Admin/download_url"
+                  path="/supplier/supplier/download_url"
                   element={<Downloadurl />}
                 />
                 <Route
                   index
-                  path="/Admin/calculation-clearence"
+                  path="/supplier/supplier/calculation-clearence"
                   element={<CalculationPages />}
                 />
                 <Route
                   index
-                  path="/Admin/clearencePage"
+                  path="/supplier/supplier/clearencePage"
                   element={<CustomCalculationpage />}
                 />
                 <Route
                   index
-                  path="/Admin/clearencePDF"
+                  path="/supplier/supplier/clearencePDF"
                   element={<Claeanepdf />}
                 />
                 <Route
                   index
-                  path="/Admin/calculation-order"
+                  path="/supplier/supplier/calculation-order"
                   element={<ClearanceOrder />}
                 />
                 <Route
                   index
-                  path="/Admin/letterofauhtority"
+                  path="/supplier/supplier/letterofauhtority"
                   element={<Letterofauthority />}
                 />
                 <Route
                   index
-                  path="/Admin/clearenceeditview"
+                  path="/supplier/supplier/clearenceeditview"
                   element={<ViewDetails />}
                 />
                 <Route
                   index
-                  path="/Admin/Editclearence"
+                  path="/supplier/supplier/Editclearence"
                   element={<Editclearenceuser />}
                 />
                 <Route
                   index
-                  path="/Admin/BatchDetails"
+                  path="/supplier/supplier/BatchDetails"
                   element={<BatchorderDetails />}
                 />
                 <Route
                   index
-                  path="/Admin/OrderDetail"
+                  path="/supplier/supplier/OrderDetail"
                   element={<OrderDetailspagemain />}
                 />
                 <Route path="*" element={<Uniovwersalpage />} />

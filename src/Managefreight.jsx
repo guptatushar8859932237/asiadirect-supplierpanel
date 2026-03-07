@@ -10,10 +10,16 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
 import { MdDriveFileMoveOutline } from "react-icons/md";
-import { Modal, Box, Button,  InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Button,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
-// import {  Form } from "react-bootstrap";
 import Swal from "sweetalert2";
 import SupportAgentSharpIcon from "@mui/icons-material/SupportAgentSharp";
 import CloseIcon from "@mui/icons-material/Close";
@@ -31,6 +37,8 @@ export default function Managefreight() {
   const [ready, setReady] = useState({
     ready: "",
   });
+  const [english, setEnglish] = useState("");
+  const [Urder, setUrder] = useState("");
   const [loader, setLoader] = useState(true);
   const [options, setOptions] = useState();
   const [data, setData] = useState([]);
@@ -98,17 +106,17 @@ export default function Managefreight() {
   const [show1, setShow1] = useState(false);
   const [selectedDocs, setSelectedDocs] = useState([]);
 
- const docOptions = [
-  { id: "Customs Documents", label: "Customs docs" },
-  { id: "Supporting Documents", label: "Supporting docs" },
-  { id: "Invoice, Packing List", label: "Invoice / Packing " },
-  { id: "Product Literature", label: "Product Literature" },
-  { id: "Letters of authority", label: "Letters of authority" },
-  { id: "Waybills", label: "Freight Docs" },
-  { id: "Waybills", label: "Shipping instruction" },
-  { id: "AD_Quotations", label: "Attach Quote" },
-  { id: "Supplier Invoices", label: "Supplier Invoices" }
-];
+  const docOptions = [
+    { id: "Customs Documents", label: "Customs docs" },
+    { id: "Supporting Documents", label: "Supporting docs" },
+    { id: "Invoice, Packing List", label: "Invoice / Packing " },
+    { id: "Product Literature", label: "Product Literature" },
+    { id: "Letters of authority", label: "Letters of authority" },
+    { id: "Waybills", label: "Freight Docs" },
+    { id: "Waybills", label: "Shipping instruction" },
+    { id: "AD_Quotations", label: "Attach Quote" },
+    { id: "Supplier Invoices", label: "Supplier Invoices" },
+  ];
   const handleShow = () => setShow1(true);
   const handleClose = () => setShow1(false);
 
@@ -124,27 +132,24 @@ export default function Managefreight() {
   const handleFileChangefil = (e, docName) => {
     const files = Array.from(e.target.files);
     setSelectedDocs((prev) =>
-      prev.map((doc) =>
-        doc.name === docName ? { ...doc, files } : doc
-      )
+      prev.map((doc) => (doc.name === docName ? { ...doc, files } : doc)),
     );
   };
 
   // For saving data (you can send to API)
-const handleSave = () => {
-  console.log("Uploaded Documents:", selectedDocs);
+  const handleSave = () => {
+    console.log("Uploaded Documents:", selectedDocs);
 
-  // To see filenames instead of [object Object]
-  selectedDocs.forEach(doc => {
-    console.log("Doc Type:", doc);
-    doc.files.forEach(file => {
-      console.log("File:", file.name, "| Size:", file.size, "bytes");
+    // To see filenames instead of [object Object]
+    selectedDocs.forEach((doc) => {
+      console.log("Doc Type:", doc);
+      doc.files.forEach((file) => {
+        console.log("File:", file.name, "| Size:", file.size, "bytes");
+      });
     });
-  });
 
-  handleClose();
-};
-
+    handleClose();
+  };
 
   useEffect(() => {
     getStaff();
@@ -186,32 +191,15 @@ const handleSave = () => {
   const usertype = JSON.parse(localStorage.getItem("data123"))?.user_type;
   const frightData = async () => {
     try {
-      const postdata = {
-        staff_id: userid,
-        route_url: "/freight-list",
-        user_type: usertype,
-       
-      };
-      const permission = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-        postdata
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}supplier-freights`,
+        { supplier_id: userid },
       );
-      console.log(permission);
-      if (permission.data.success) {
-        try {
-          const response = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}freight-list`,{  user_id:userid, user_type: usertype }
-          );
-          setLoader(false);
-          setData(response.data.data);
-        } catch (error) {
-          setLoader(false);
-          toast.error(error.response?.data?.message || "Something went wrong");
-        }
-      }
+      setLoader(false);
+      setData(response.data.data);
     } catch (error) {
       setLoader(false);
-      toast.error("You don't have permission to access this page");
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
   useEffect(() => {
@@ -226,7 +214,7 @@ const handleSave = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}supplier-list`
+          `${process.env.REACT_APP_BASE_URL}supplier-list`,
         );
         setOptions(response.data.data);
       } catch (error) {
@@ -244,7 +232,7 @@ const handleSave = () => {
     };
     const permission = await axios.post(
       `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-      datapost
+      datapost,
     );
     if (permission.data.success === true) {
       Swal.fire({
@@ -278,73 +266,6 @@ const handleSave = () => {
     } else {
       toast.error("You don't have permission to access this page");
     }
-  };
-  const handleFileChange4 = (event) => {
-    const files = event.target.files;
-    setFormData({ ...formData, supplier_invoice: files });
-  };
-  const handleFileChange1 = (event) => {
-    const files = event.target.files;
-    setFormData1({ ...formData1, packing_list: files });
-  };
-  const handleFileChange2 = (event) => {
-    const files = event.target.files;
-    setFormData2({ ...formData2, licenses: files });
-  };
-  const handleFileChange3 = (event) => {
-    const files = event.target.files;
-    setFormData3({ ...formData3, other_documents: files });
-  };
-  /////////////////////////////////////////update freight///////////////////////////////////////////
-  const handleupdate = (freight_id) => {
-    const setUSer = data.filter((item) => item.freight_id === freight_id);
-    const getUSer = setUSer[0];
-    console.log(getUSer);
-    setInputdata({
-      freight_id: freight_id,
-      client_ref: getUSer.client_ref,
-      type: getUSer.type,
-      freight: getUSer.freight,
-      incoterm: getUSer.incoterm,
-      dimension: getUSer.dimension,
-      weight: getUSer.weight,
-      comment: getUSer.comment,
-      fcl_lcl: getUSer.fcl_lcl,
-      no_of_packages: getUSer.no_of_packages,
-      package_type: getUSer.package_type,
-      commodity: getUSer.commodity,
-      hazardous: getUSer.hazardous,
-      country_of_origin: getUSer.collection_from,
-      destination_country: getUSer.delivery_to,
-      supplier_address: getUSer.supplier_address,
-      port_of_loading: getUSer.port_of_loading,
-      post_of_discharge: getUSer.post_of_discharge,
-      place_of_delivery: getUSer.place_of_delivery,
-      transit_time: getUSer.transit_time,
-      add_attachments: getUSer.add_attachments,
-      nature_of_hazard: getUSer.nature_of_hazard,
-      volumetric_weight: getUSer.volumetric_weight,
-      shipment_ref: getUSer.shipment_ref,
-      assign_for_estimate: getUSer.assign_for_estimate,
-      assign_to_transporter: getUSer.assign_to_transporter,
-      assign_warehouse: getUSer.assign_warehouse,
-      assign_to_clearing: getUSer.assign_to_clearing,
-      send_to_warehouse: getUSer.send_to_warehouse,
-      shipment_origin: getUSer.shipment_origin,
-      shipment_des: getUSer.shipment_des,
-      priority: getUSer.priority,
-      is_active: getUSer.is_active,
-      ready_for_collection: getUSer.ready_for_collection,
-      quote_received: getUSer.quote_received,
-      client_quoted: getUSer.client_quoted,
-      insurance: getUSer.insurance,
-      product_desc: getUSer.product_desc,
-      client_ref_name: getUSer.client_ref_name,
-      document: getUSer.add_attachment_file,
-      shipper_name: getUSer.shipper_name,
-      supplier_address: getUSer.supplier_address,
-      sales_representative: getUSer.sales_id,
-    });
   };
   const handleupdateapi = (e) => {
     const { name, value } = e.target;
@@ -390,7 +311,7 @@ const handleSave = () => {
       "volumetric_weight",
       inputdata.dimension
         ? 167 * inputdata.dimension
-        : inputdata.volumetric_weight
+        : inputdata.volumetric_weight,
     );
     formdata.append("assign_for_estimate", inputdata.assign_for_estimate);
     formdata.append("add_attachments", inputdata.add_attachments);
@@ -408,22 +329,12 @@ const handleSave = () => {
     formdata.append("cargo_pickup", inputdata.cargo_pickup);
     formdata.append("sales_representative", inputdata.sales_representative);
     formdata.append("documentName", inputdata.documentName);
-    
-    selectedDocs.forEach(doc => {
-  console.log("Doc Type:", doc.name);
-
-  doc.files.forEach(file => {
-    formdata.append(doc.name, file); // 👈 each file append
-    console.log("File:", file.name, "| Size:", file.size, "bytes");
-  });
-});
-    // if (formData2) {
-    //   for (let i = 0; i < formData2.licenses.length; i++) {
-    //     formdata.append("document", formData2.licenses[i]);
-    //   }
-    // }
-  
-    console.log(formdata);
+    selectedDocs.forEach((doc) => {
+      doc.files.forEach((file) => {
+        formdata.append(doc.name, file); // 👈 each file append
+        console.log("File:", file.name, "| Size:", file.size, "bytes");
+      });
+    });
     axios
       .post(`${process.env.REACT_APP_BASE_URL}edit-freight`, formdata)
       .then((response) => {
@@ -437,7 +348,6 @@ const handleSave = () => {
         return 0;
       })
       .catch((error) => {
-        console.error(error.response);
         toast.error(error.response?.data || "An error occurred");
       });
   };
@@ -471,7 +381,7 @@ const handleSave = () => {
     const alldtaaa = data.filter((item) => {
       return item.freight_id === freight_id;
     });
-    navigate("/Admin/MAnageFreightDetails", { state: { data: alldtaaa } });
+    navigate("/supplier/MAnageFreightDetails", { state: { data: alldtaaa } });
   };
   const handlelcickseedata1212 = async (item) => {
     const datapost = {
@@ -481,9 +391,8 @@ const handleSave = () => {
     };
     const permission = await axios.post(
       `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-      datapost
+      datapost,
     );
-
     if (permission.data.success === true) {
       const payload = {
         freight_id: item.freight_id,
@@ -491,7 +400,7 @@ const handleSave = () => {
       axios
         .post(
           `${process.env.REACT_APP_BASE_URL}AssignFreightToClearing`,
-          payload
+          payload,
         )
         .then((response) => {
           console.log(response.data);
@@ -505,56 +414,16 @@ const handleSave = () => {
     }
   };
   const hanldeclicknavi = async (freight_id) => {
-    try {
-      // Filter the relevant data
-      const alldata = data.filter((item) => item.freight_id === freight_id);
-      console.log("Filtered Data:", alldata);
-      const datapost = {
-        staff_id: userid,
-        route_url: "/Admin/shipping-estimate",
-        user_type: usertype,
-      };
-
-      const permission = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-        datapost
-      );
-      console.log("Permission Response:", permission.data);
-      if (permission.data.success === true) {
-        navigate("/Admin/shipping-estimate", { state: { data: alldata } });
-      } else {
-        toast.error("You don't have permission to access this page");
-      }
-    } catch (error) {
-      console.error("Permission Error:", error.response?.data || error.message);
-      toast.error(error.response?.data?.message || "Permission denied");
-    }
+    console.log(freight_id);    
+    const alldata = data.filter((item) => item.id === freight_id);
+    console.log("Filtered Data:", alldata);
+    const datapost = {
+      staff_id: userid,
+      route_url: "/supplier/shipping-estimate",
+      user_type: usertype,
+    };
+    navigate("/supplier/shipping-estimate", { state: { data: alldata } });
   };
-
-  // const hanldeclicknavi = (freight_id) => {
-  // try {
-  //   const alldata = data.filter((item) => {
-  //     return item.freight_id === freight_id;
-  //   });
-  //   console.log(alldata);
-  //   const datapost = {
-  //     staff_id: userid,
-  //     route_url: "/Admin/shipping-estimate",
-  //     user_type: usertype,
-  //   };
-  //   const permission = axios.post(`${process.env.REACT_APP_BASE_URL}CheckPermission`,datapost)
-  //   console.log(permission.data.status)
-  //   if(permission.data.status === 200){
-  //   navigate("/Admin/shipping-estimate", { state: { data: alldata } });
-  //   }else{
-  //     toast.error("You don't have permission to access this page");
-  //   }
-  // } catch (error) {
-  //   toast.error("permission denied")
-  // }
-
-  // };
-  ///////////////////////pegenation//////////////////////////////////////////
   const filteredData = data.filter((item) => {
     return (
       item.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -594,7 +463,7 @@ const handleSave = () => {
     };
     const permission = await axios.post(
       `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-      datapost
+      datapost,
     );
     if (permission.data.success === true) {
       axios
@@ -736,7 +605,7 @@ const handleSave = () => {
       status: "2",
     };
     axios
-      .post(`${process.env.REACT_APP_BASE_URL}status-Freight`, data123)
+      .post(`${process.env.REACT_APP_BASE_URL}supplier-freights`, data123)
       .then((response) => {
         toast.success(response.data.message);
         frightData();
@@ -745,62 +614,7 @@ const handleSave = () => {
         console.log(error.response.data);
       });
   };
-  const handlelcickapiupdatepartial = () => {
-    setStatus1("Estimated");
-    const data1 = {
-      status: "4",
-    };
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}freight-list`, data1)
-      .then((response) => {
-        setData(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  };
-  const handlelcickapiupdatedeclined = () => {
-    setStatus1("Declined");
-    const data1 = {
-      status: "2",
-    };
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}freight-list`, data1)
-      .then((response) => {
-        setData(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  };
-  const handlelcickapiupdate = () => {
-    setStatus1("Accepted");
-    const data1 = {
-      status: "1",
-    };
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}freight-list`, data1)
-      .then((response) => {
-        setData(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  };
-  const handlelcickapiupdae = () => {
-    setStatus1("Pending");
-    const data1 = {
-      status: "0",
-    };
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}freight-list`, data1)
-      .then((response) => {
-        setData(response.data.data);
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
-  };
+
   const handleclickopenmodal = () => {
     setIsModalOpen(true);
   };
@@ -820,7 +634,7 @@ const handleSave = () => {
       };
       const permission = await axios.post(
         `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-        datapost
+        datapost,
       );
       console.log(permission);
       if (permission.data.success === true) {
@@ -841,7 +655,7 @@ const handleSave = () => {
       axios
         .post(
           `${process.env.REACT_APP_BASE_URL}AttachedShippingEstimate`,
-          formdata
+          formdata,
         )
         .then((response) => {
           if (response.data.success === true) {
@@ -859,7 +673,7 @@ const handleSave = () => {
   const getstaff = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}staff-list`
+        `${process.env.REACT_APP_BASE_URL}staff-list`,
       );
       console.log(response.data.data);
       setStaffdata(response.data.data);
@@ -867,6 +681,7 @@ const handleSave = () => {
       console.log(error.response.data.data);
     }
   };
+
   return (
     <>
       {loader ? (
@@ -881,7 +696,7 @@ const handleSave = () => {
               <div className="col-12">
                 <div className="d-flex justify-content-between">
                   <div className="">
-                    <h4 className="freight_hd">Freight By Admin</h4>
+                    <h4 className="freight_hd">Freight's</h4>
                   </div>
                   <div className="d-flex justify-content-end">
                     <div className="me-2 searchManageFre">
@@ -894,7 +709,7 @@ const handleSave = () => {
                       ></input>
                     </div>
 
-                    <div className="dropdown">
+                    {/* <div className="dropdown">
                       <button
                         className="dropdown-toggle me-2"
                         type="button"
@@ -937,23 +752,23 @@ const handleSave = () => {
                           </p>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
 
                     <div className="me-2">
                       <button type="button" onClick={handleclickopenmodal}>
                         Filter
                       </button>
                     </div>
-                    <div className="">
+                    {/* <div className="">
                       <button
                         type="button"
                         onClick={() => {
-                          navigate("/Admin/Addfreight");
+                          navigate("/supplier/Addfreight");
                         }}
                       >
                         Add
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -969,7 +784,7 @@ const handleSave = () => {
                           currentdata.map((item, index) => {
                             console.log(item);
                             const daaaa = new Date(
-                              item?.freight_created_at
+                              item?.created_at,
                             ).toLocaleDateString("en-GB");
                             return (
                               <>
@@ -1033,7 +848,7 @@ const handleSave = () => {
                                                 Action
                                               </a>
                                               <div className="dropdown-menu">
-                                                <a
+                                                {/* <a
                                                   style={{ cursor: "pointer" }}
                                                   className="dropdown-item li_icon"
                                                   onClick={() => {
@@ -1091,13 +906,13 @@ const handleSave = () => {
                                                     }}
                                                   />
                                                   Edit
-                                                </a>
+                                                </a> */}
                                                 <a
                                                   style={{ cursor: "pointer" }}
                                                   className="dropdown-item li_icon"
                                                   onClick={() => {
                                                     handledelete(
-                                                      item.freight_id
+                                                      item.freight_id,
                                                     );
                                                   }}
                                                 >
@@ -1110,7 +925,7 @@ const handleSave = () => {
                                                   />{" "}
                                                   Delete
                                                 </a>
-                                                <a
+                                                {/* <a
                                                   style={{ cursor: "pointer" }}
                                                   className="dropdown-item li_icon"
                                                   onClick={() => {
@@ -1127,12 +942,12 @@ const handleSave = () => {
                                                     }}
                                                   />{" "}
                                                   Declined
-                                                </a>
+                                                </a> */}
                                                 <a
                                                   className="dropdown-item li_icon"
                                                   onClick={() => {
                                                     hanldeclicknavi(
-                                                      item.freight_id
+                                                      item.id
                                                     );
                                                   }}
                                                 >
@@ -1155,7 +970,7 @@ const handleSave = () => {
                                                     </p>
                                                   </div>
                                                 </a>
-                                                <a
+                                                {/* <a
                                                   className="dropdown-item li_icon"
                                                   onClick={() => {
                                                     AttchQuote(item);
@@ -1190,7 +1005,7 @@ const handleSave = () => {
                                                     />
                                                     Inorder
                                                   </div>
-                                                </a>
+                                                </a> */}
                                               </div>
                                             </div>
                                           </div>
@@ -1243,10 +1058,9 @@ const handleSave = () => {
                                         </label>
                                       </div>
                                       <div>
-                                        
-                                        {item?.sales_name == "undefined" 
+                                        {item?.sales_name == "undefined"
                                           ? ""
-                                          : item?.sales_name}  
+                                          : item?.sales_name}
                                       </div>
                                     </div>
                                   </td>
@@ -1323,7 +1137,7 @@ const handleSave = () => {
                                                                 </option>
                                                               </>
                                                             );
-                                                          }
+                                                          },
                                                         )}
                                                     </select>
                                                   </div>
@@ -1499,7 +1313,7 @@ const handleSave = () => {
                                                             >
                                                               {item.name}
                                                             </option>
-                                                          )
+                                                          ),
                                                         )}
                                                     </select>
                                                   </div>
@@ -1535,7 +1349,7 @@ const handleSave = () => {
                                                                 </option>
                                                               </>
                                                             );
-                                                          }
+                                                          },
                                                         )}
                                                     </select>
                                                   </div>
@@ -1619,9 +1433,7 @@ const handleSave = () => {
                                                     </select>
                                                   </div>
                                                   <div className="col-lg-6 mb-3">
-                                                    <label>
-                                                     Shipper Name
-                                                    </label>
+                                                    <label>Shipper Name</label>
                                                     <input
                                                       type="text"
                                                       name="shipper_name"
@@ -1633,8 +1445,11 @@ const handleSave = () => {
                                                     />
                                                   </div>
                                                   <div className="col-lg-6">
-                                                    <label>  Supplier Address</label>
-                                                  <input
+                                                    <label>
+                                                      {" "}
+                                                      Supplier Address
+                                                    </label>
+                                                    <input
                                                       type="text"
                                                       name="supplier_address"
                                                       onChange={handleupdateapi}
@@ -1886,7 +1701,7 @@ const handleSave = () => {
                                                                 </option>
                                                               </>
                                                             );
-                                                          }
+                                                          },
                                                         )}
                                                     </select>
                                                   </div>
@@ -1933,89 +1748,158 @@ const handleSave = () => {
                                                       placeholder="Volumetric Weight"
                                                     />
                                                   </div>
-                                                 <div className="row mb-3 mt-4">
-                  <div className="col-9 mt-3">
-                    <h4 className="freight_hd">Document Section</h4>
-                    <span class="line"></span>
-                  </div>
-                  <div className="col-3">
-<Button className="btn  btn-primary" onClick={handleShow}>
-          Upload Documents
-        </Button>
-                       
-                       {
-                        show1 ? <Modal
-        open={show1}
-        onClose={handleClose}
-        slotProps={{
-          backdrop: {
-            sx: { backgroundColor: "rgba(0,0,0,0.2)" }, // lighter background
-          },
-        }}
-      >
-        <Box
-          sx={{
-            p: 3,
-            bgcolor: "background.paper",
-            borderRadius: 2,
-            width: 500,
-            mx: "auto",
-            mt: 10,
-          }}
-        >
-          <h2>Upload Documents</h2>
+                                                  <div className="row mb-3 mt-4">
+                                                    <div className="col-9 mt-3">
+                                                      <h4 className="freight_hd">
+                                                        Document Section
+                                                      </h4>
+                                                      <span class="line"></span>
+                                                    </div>
+                                                    <div className="col-3">
+                                                      <Button
+                                                        className="btn  btn-primary"
+                                                        onClick={handleShow}
+                                                      >
+                                                        Upload Documents
+                                                      </Button>
 
-          {/* Dropdown */}
-          <FormControl fullWidth sx={{ mt: 2 }}>
-            <InputLabel id="doc-select-label">Select Document Type</InputLabel>
-            <Select
-              labelId="doc-select-label"
-              // value={selected}
-              onChange={handleSelect}
-            >
-              {docOptions.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+                                                      {show1 ? (
+                                                        <Modal
+                                                          open={show1}
+                                                          onClose={handleClose}
+                                                          slotProps={{
+                                                            backdrop: {
+                                                              sx: {
+                                                                backgroundColor:
+                                                                  "rgba(0,0,0,0.2)",
+                                                              }, // lighter background
+                                                            },
+                                                          }}
+                                                        >
+                                                          <Box
+                                                            sx={{
+                                                              p: 3,
+                                                              bgcolor:
+                                                                "background.paper",
+                                                              borderRadius: 2,
+                                                              width: 500,
+                                                              mx: "auto",
+                                                              mt: 10,
+                                                            }}
+                                                          >
+                                                            <h2>
+                                                              Upload Documents
+                                                            </h2>
 
-          {/* Dynamic file inputs */}
-          <div className="mt-3">
-            {selectedDocs.map((doc, index) => (
-              <div key={index} className="mb-3">
-                <label className="fw-bold">{doc.name}</label>
-                <input
-                  type="file"
-                  className="form-control"
-                  multiple
-                  accept="image/*,application/pdf"
-                  onChange={(e) => handleFileChangefil(e, doc.name)}
-                />
-              </div>
-            ))}
-          </div>
+                                                            {/* Dropdown */}
+                                                            <FormControl
+                                                              fullWidth
+                                                              sx={{ mt: 2 }}
+                                                            >
+                                                              <InputLabel id="doc-select-label">
+                                                                Select Document
+                                                                Type
+                                                              </InputLabel>
+                                                              <Select
+                                                                labelId="doc-select-label"
+                                                                // value={selected}
+                                                                onChange={
+                                                                  handleSelect
+                                                                }
+                                                              >
+                                                                {docOptions.map(
+                                                                  (option) => (
+                                                                    <MenuItem
+                                                                      key={
+                                                                        option.id
+                                                                      }
+                                                                      value={
+                                                                        option.id
+                                                                      }
+                                                                    >
+                                                                      {
+                                                                        option.label
+                                                                      }
+                                                                    </MenuItem>
+                                                                  ),
+                                                                )}
+                                                              </Select>
+                                                            </FormControl>
 
-          {/* Footer buttons */}
-          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button variant="contained" color="success" onClick={handleSave}>
-              Save Documents
-            </Button>
-          </Box>
-        </Box>
-      </Modal> : ""
-                       }   
-                  </div>
-                </div>
-                 {/* <Modal show={show1} onHide={handleClose} size="lg" centered>
+                                                            {/* Dynamic file inputs */}
+                                                            <div className="mt-3">
+                                                              {selectedDocs.map(
+                                                                (
+                                                                  doc,
+                                                                  index,
+                                                                ) => (
+                                                                  <div
+                                                                    key={index}
+                                                                    className="mb-3"
+                                                                  >
+                                                                    <label className="fw-bold">
+                                                                      {doc.name}
+                                                                    </label>
+                                                                    <input
+                                                                      type="file"
+                                                                      className="form-control"
+                                                                      multiple
+                                                                      accept="image/*,application/pdf"
+                                                                      onChange={(
+                                                                        e,
+                                                                      ) =>
+                                                                        handleFileChangefil(
+                                                                          e,
+                                                                          doc.name,
+                                                                        )
+                                                                      }
+                                                                    />
+                                                                  </div>
+                                                                ),
+                                                              )}
+                                                            </div>
+
+                                                            {/* Footer buttons */}
+                                                            <Box
+                                                              sx={{
+                                                                display: "flex",
+                                                                justifyContent:
+                                                                  "flex-end",
+                                                                gap: 2,
+                                                                mt: 3,
+                                                              }}
+                                                            >
+                                                              <Button
+                                                                onClick={
+                                                                  handleClose
+                                                                }
+                                                              >
+                                                                Cancel
+                                                              </Button>
+                                                              <Button
+                                                                variant="contained"
+                                                                color="success"
+                                                                onClick={
+                                                                  handleSave
+                                                                }
+                                                              >
+                                                                Save Documents
+                                                              </Button>
+                                                            </Box>
+                                                          </Box>
+                                                        </Modal>
+                                                      ) : (
+                                                        ""
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                  {/* <Modal show={show1} onHide={handleClose} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>Upload Documents</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* Dropdown for selecting document type */}
-          {/* <FormControl fullWidth>
+                                                  {/* <FormControl fullWidth>
       <InputLabel id="doc-select-label">Select Document Type</InputLabel>
       <Select
         labelId="doc-select-label"
@@ -2030,63 +1914,33 @@ const handleSave = () => {
       </Select>
     </FormControl> */}
 
-          {/* Render file inputs dynamically */}
-          <div className="mt-3">
-            {selectedDocs.map((doc, index) => (
-              <div key={index} className="mb-3">
-                <label className="fw-bold">{doc.name}</label>
-                <input
-                  type="file"
-                  className="form-control"
-                  multiple
-                  accept="image/*,application/pdf"
-                  onChange={(e) => handleFileChangefil(e, doc.name)}
-                />
-              </div>
-            ))}
-          </div>
-        {/* </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="success" onClick={handleSave}>
-            Save Documents
-          </Button>
-        </Modal.Footer>
-      </Modal> */} 
-      
-                                                 
-                                                  {/* <div className="row">
-                                                    {/* <div className="col-6 mt-3">
-                                                      <h5>licenses</h5>
-                                                      <input
-                                                        type="file"
-                                                        name="licenses"
-                                                        className="mb-3 w-100 rounded"
-                                                        onChange={
-                                                          handleFileChange2
-                                                        }
-                                                        multiple
-                                                      />
-                                                    </div> */}
-                                                 {/* <div classNameCOL-6>
-                                                    <label>Select Document</label>
-                                                    <select name="documentName" onChange={handleupdateapi}>
-                            <option value="">Select...</option>
-                            <option value="Customs Documents">Customs docs</option>
-                            <option value="Supporting Documents">Supporting docs</option>
-                            <option value="Invoice, Packing List">Invoice / Packing L</option>
-                            <option value="Product Literature">Product Literature</option>
-                            <option value="Letters of authority">LOA</option>
-                            <option value="Waybills">Freight Docs</option>
-                            <option value="Waybills">Shipping instruction</option>
-                            <option value="Supplier Invoices">Freight Invoices </option>
-                            <option value="AD_Quotations">Attach Quote</option>
-                          </select>
-                                                 </div> */}
-                                                  {/* </div> / */}
-                                                 
+                                                  {/* Render file inputs dynamically */}
+                                                  <div className="mt-3">
+                                                    {selectedDocs.map(
+                                                      (doc, index) => (
+                                                        <div
+                                                          key={index}
+                                                          className="mb-3"
+                                                        >
+                                                          <label className="fw-bold">
+                                                            {doc.name}
+                                                          </label>
+                                                          <input
+                                                            type="file"
+                                                            className="form-control"
+                                                            multiple
+                                                            accept="image/*,application/pdf"
+                                                            onChange={(e) =>
+                                                              handleFileChangefil(
+                                                                e,
+                                                                doc.name,
+                                                              )
+                                                            }
+                                                          />
+                                                        </div>
+                                                      ),
+                                                    )}
+                                                  </div>
                                                   {inputdata.hazardous ===
                                                   "yes" ? (
                                                     <div className=" col-lg-6  mb-3">
@@ -2420,13 +2274,12 @@ const handleSave = () => {
                                             </div>
                                           </div>
                                         </div>
-                      
                                         <div className="modal-footer">
                                           <button
                                             type="button"
                                             onClick={() => {
                                               handleupdateapipost(
-                                                item.freight_id
+                                                item.freight_id,
                                               );
                                             }}
                                             className="btn"
@@ -2671,18 +2524,6 @@ const handleSave = () => {
                             <option value="Road">Road</option>
                           </select>
                         </div>
-                        {/* <div className="col-6">
-                      <label>freight Type </label>
-                      <select
-                        name="type"
-                        onChange={handlechange}
-                        className="form-control"
-                      >
-                        <option value="">Select...</option>
-                        <option value="express">Express</option>
-                        <option value="normal">Normal</option>
-                      </select>
-                    </div> */}
                       </div>
                       <Button variant="contained" onClick={postData}>
                         Apply

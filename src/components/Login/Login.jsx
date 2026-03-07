@@ -41,7 +41,7 @@ export default function Login() {
   const apiHit = async () => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}admin-login`,
+        `${process.env.REACT_APP_BASE_URL}login-supplier`,
         data
       );
       setText(response.data.data.profile);
@@ -50,7 +50,7 @@ export default function Login() {
         localStorage.setItem("data123", JSON.stringify(response.data.data));
         toast.success(response.data.message);
         setTimeout(() => {
-          navigate("/Admin/dashboard");
+          navigate("/supplier/managefreight");
         }, [500]);
       } else {
         toast.error("API not found");
@@ -70,6 +70,7 @@ export default function Login() {
       console.log(error);
     }
   };
+
   return (
     <>
       <section className="loginmain">

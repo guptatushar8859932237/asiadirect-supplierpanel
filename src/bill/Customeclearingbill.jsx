@@ -13,7 +13,7 @@ export default function Customeclearingbill() {
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
  const navigate = useNavigate();
   const handleclick = () => {
-    navigate("/Admin/order");
+    navigate("/supplier/order");
   };
 
 useEffect(() => { 

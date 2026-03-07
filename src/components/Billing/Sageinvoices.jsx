@@ -39,7 +39,7 @@ export default function Sageinvoices() {
       console.log("Checking permissions...");
       const datapost = {
         staff_id: userid,
-        route_url: "/Admin/sageinvoice",
+        route_url: "/supplier/sageinvoice",
         user_type: usertype,
       };
       const permission = await axios.post(
@@ -112,7 +112,7 @@ export default function Sageinvoices() {
       console.log("Checking permissions...");
       const datapost = {
         staff_id: userid,
-        route_url: "/Admin/sageinvoice",
+        route_url: "/supplier/sageinvoice",
         user_type: usertype,
       };
       const permission = await axios.post(

@@ -475,7 +475,7 @@ export default function MAnageFreightDetails() {
   console.log(infolocation?.state);
   const data1 = new Date(info?.date).toLocaleDateString("en-GB");
   const handleclick = () => {
-    navigate("/Admin/calculation-order");
+    navigate("/supplier/calculation-order");
   };
   // const GetFreightImages = () => {
   //   console.log(info)

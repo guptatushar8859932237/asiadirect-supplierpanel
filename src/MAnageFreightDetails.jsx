@@ -31,7 +31,7 @@ export default function MAnageFreightDetails() {
   console.log(infolocation?.state?.data[0]);
   const data1 = new Date(info?.date).toLocaleDateString("en-GB");
   const handleclick = () => {
-    navigate("/Admin/managefreight");
+    navigate("/supplier/managefreight");
   };
   const GetFreightImages = () => {
     const data = { freight_id: info.freight_id, uploaded_by: "1" };

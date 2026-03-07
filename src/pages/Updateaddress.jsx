@@ -71,7 +71,7 @@ export default function UpdateAddress() {
       .then((response) => {
         toast.success(response.data.message);
         if (response.data.success === true) {
-          navigate("/Admin/order");
+          navigate("/supplier/order");
         }
       })
       .catch((error) => {
@@ -105,7 +105,7 @@ export default function UpdateAddress() {
     }
   };
   const handleclicknav = () => {
-    navigate("/Admin/order");
+    navigate("/supplier/order");
   };
   const handlekey = (e) => {
     if (e.charCode < 46 || e.charCode > 57) {

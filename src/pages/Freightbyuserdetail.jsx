@@ -15,7 +15,7 @@ export default function Freightbyuserdetail() {
   const info = infolocation?.state?.data[0];
   console.log(infolocation?.state?.data[0]);
   const handleclicknav = () => {
-    navigate("/Admin/freight");
+    navigate("/supplier/freight");
   };
 
      const GetFreightImages = () => {

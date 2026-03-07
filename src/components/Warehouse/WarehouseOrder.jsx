@@ -1,1388 +1,12 @@
-// import axios from "axios";
-// import React, { useEffect, useState } from "react";
-// import { FaEdit } from "react-icons/fa";
-// import { toast, ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import { Modal, Grid, TextField, Box, Button } from "@mui/material";
-// import VisibilityIcon from "@mui/icons-material/Visibility";
-// import { useNavigate } from "react-router-dom";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-// import CloseIcon from "@mui/icons-material/Close";
-// const pageSize = 10;
-// const style1 = {
-//   position: "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: 500,
-//   bgcolor: "background.paper",
-//   boxShadow: 24,
-//   p: 4,
-//   borderRadius: "8px",
-// };
-// export default function WarehouseOrder() {
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [data, setData] = useState([]);
-//   const [batch, setBatch] = useState([]);
-//   const [file, setFile] = useState(null);
-//   const [erd, setErd] = useState("");
-//   const [searchQuery, setSearchQuery] = useState("");
-//   const [isModalOpen1, setIsModalOpen1] = useState(false);
-//   const [prodata, setProdata] = useState("");
-//   const [clickdata, setClickdata] = useState({});
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [batchidsdsd, setBatchidsdsd] = useState();
-//   const [loader, setLoader] = useState(false);
-//   const [isModalOpen2, setIsModalOpen2] = useState(false);
-//   const [updatedata, setUpdatedata] = useState(false);
-//   const [data1, setData1] = useState({
-//     origin: "",
-//     destination: "",
-//     startDate: "",
-//     endDate: "",
-//     freightType: "",
-//     freightSpeed: "",
-//   });
-//   const [selectedData, setSelectedData] = useState(null);
-//   const navigate = useNavigate();
-//   const handleOpenModal = () => setIsModalOpen(true);
-//   const handleCloseModal = () => setIsModalOpen(false);
-//   const handleOpenModal2 = () => setIsModalOpen2(true);
-//   const handleCloseModal2 = () => setIsModalOpen2(false);
-//   useEffect(() => {
-//     getData();
-//   }, []);
-
-//   const userid = JSON.parse(localStorage.getItem("data123"))?.id;
-//   const usertype = JSON.parse(localStorage.getItem("data123"))?.user_type;
-
-//   const getData = async () => {
-//     try {
-//       const datapost = {
-//         staff_id: userid,
-//         user_type: usertype,
-//         route_url: "/GetWarehouseOrders",
-//       };
-//       const permission = await axios.post(
-//         `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-//         datapost
-//       );
-//       if (permission.data.success === true) {
-//         setLoader(true);
-//         try {
-//           const response = await axios.post(
-//             `${process.env.REACT_APP_BASE_URL}GetWarehouseOrders`
-//           );
-
-//           setLoader(false);
-//           if (response.data && response.data.data) {
-//             setData(response.data.data);
-//           } else {
-//             toast.error("No warehouse orders found.");
-//           }
-//         } catch (error) {
-//           setLoader(false);
-//           console.error("Error fetching warehouse orders:", error);
-//           if (error.response && error.response.status === 400) {
-//             toast.error(
-//               error.response.data.message ||
-//                 "Data not found or permission denied."
-//             );
-//           } else {
-//             toast.error("Something went wrong while fetching orders.");
-//           }
-//         }
-//       } else {
-//         toast.error("Permission Denied: You don’t have access to this action");
-//       }
-//     } catch (error) {
-//       console.error("Error checking permission:", error);
-//       if (error.response && error.response.status === 400) {
-//         toast.error("Permission Denied: You don’t have access to this page");
-//       } else {
-//         toast.error("Something went wrong while checking permission.");
-//       }
-//     }
-//   };
-
-//   const getAllBatch = (item) => {
-//     console.log(item);
-//     const payload = {
-//       des_country_id: item.delivery_to,
-//       origin_country_id: item.collection_from,
-//       freight: item.Freight,
-//     };
-//     axios
-//       .post(`${process.env.REACT_APP_BASE_URL}AllBatchNumbers`, payload)
-//       .then((response) => {
-//         setClickdata(response.data.data[0]);
-
-//         setBatch(response.data.data);
-//         toast.error(response.data.data.message);
-//       })
-//       .catch((error) => {
-//         console.error(error.response.data);
-//         toast.error("Error fetching batch data");
-//       });
-//   };
-//   const handlePageChange = (page) => {
-//     setCurrentPage(page);
-//   };
-//   const handleEditClick = (freight_ID, warehouse_assign_order_id) => {
-//     console.log(freight_ID);
-//     setErd(warehouse_assign_order_id);
-//     const selectedData = data.find((item) => item.freight_ID === freight_ID);
-//     console.log(selectedData);
-//     setSelectedData(selectedData);
-//     handleOpenModal();
-//   };
-//   const handleEditClick12 = (
-//     warehouse_assign_order_id,
-//     order_id,
-//     freight_id
-//   ) => {
-//     const data = {
-//       id: warehouse_assign_order_id,
-//       order_id: order_id,
-//       freight_id: freight_id,
-//     };
-//     axios
-//       .post(`${process.env.REACT_APP_BASE_URL}DeleteWarehouseOrder`, data)
-//       .then((response) => {
-//         toast.success(response.data.message);
-//         getData();
-//       })
-//       .catch((error) => {
-//         console.log(error.response.data);
-//       });
-//   };
-//   const handleBatchChange = (e, item) => {
-//     const batchId = e.target.value;
-//     setBatchidsdsd(e.target.value);
-//     console.log(e);
-//     console.log(clickdata);
-//     console.log(item);
-//     console.log(item.batch_id);
-//     console.log(e.target.value, item);
-//     if (batchId) {
-//       console.log(batchId);
-//       moveFreightToBatch(batchId, item);
-//     }
-//   };
-//   const moveFreightToBatch = (batchId, item) => {
-//     console.log(item, batchId);
-//     const datapost = {
-//       freight_id: item.freight_id,
-//       batch_id: batchId,
-//       warehouse_id: item.warehouse_id,
-//       order_id: item.order_id,
-//     };
-//     console.log(datapost);
-//     axios
-//       .post(`${process.env.REACT_APP_BASE_URL}moveFreightToBatch`, datapost)
-//       .then((response) => {
-//         toast.success("Freight moved to batch successfully");
-//         getData();
-//       })
-//       .catch((error) => {
-//         toast.error(error.response.data.message);
-//       });
-//   };
-//   const filteredData = data.filter((item) => {
-//     return (
-//       item?.client_name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-//       item?.product_desc?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-//       item?.collection_from_name
-//         ?.toLowerCase()
-//         ?.includes(searchQuery?.toLowerCase()) ||
-//       item?.nature_of_hazard
-//         ?.toLowerCase()
-//         ?.includes(searchQuery?.toLowerCase()) ||
-//       item?.delivery_to_name
-//         ?.toLowerCase()
-//         ?.includes(searchQuery?.toLowerCase()) ||
-//       item?.freight?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-//       item?.Freight?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-//       item?.batch_number?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-//       item?.freight?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
-//       item?.freight_number?.toLowerCase()?.includes(searchQuery?.toLowerCase())
-//     );
-//   });
-//   const totalPage = Math.ceil(filteredData.length / pageSize);
-//   const startIndex = (currentPage - 1) * pageSize;
-//   const endIndex = startIndex + pageSize;
-//   const currentData = filteredData.slice(startIndex, endIndex);
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setSelectedData({ ...selectedData, [name]: value });
-//   };
-//   const handleSubmit = () => {
-//     const dataApi = {
-//       warehouse_assign_id: selectedData.warehouse_assign_order_id,
-//       order_id: selectedData.order_id,
-//       freight_id: selectedData.freight_id,
-//       ware_receipt_no: selectedData.ware_receipt_no,
-//       tracking_number: selectedData.tracking_number,
-//       warehouse_status: selectedData.warehouse_status,
-//       warehouse_collect: selectedData.warehouse_collect,
-//       date_received: selectedData.date_received,
-//       package_type: selectedData.package_type,
-//       packages: selectedData.packages,
-//       dimension: selectedData.dimension,
-//       weight: selectedData.weight,
-//     };
-//     console.log(dataApi);
-//     axios
-//       .post(`${process.env.REACT_APP_BASE_URL}editWarehouseDetails`, dataApi)
-//       .then((response) => {
-//         toast.success("Warehouse order updated successfully");
-//         getData();
-//         handleCloseModal();
-//       })
-//       .catch((error) => {
-//         console.error(error.response.data);
-//         toast.error("Error updating warehouse order");
-//       });
-//   };
-//   const closeModal1 = () => {
-//     setIsModalOpen1(false);
-//   };
-//   const handleFileChange = (event) => {
-//     const selectedFile = event.target.files[0];
-//     if (selectedFile) {
-//       setFile(selectedFile);
-//     }
-//   };
-//   const postData1 = () => {
-//     if (file) {
-//       const formdata = new FormData();
-//       formdata.append("file", file);
-//       axios
-//         .post(`${process.env.REACT_APP_BASE_URL}UploadExcelWarehouse`, formdata)
-//         .then((response) => {
-//           if (response.data.success === true) {
-//             toast.success(response.data.message);
-//             closeModal1();
-//           }
-//         })
-//         .catch((error) => {
-//           console.log(error.response.data);
-//         });
-//     } else {
-//       console.log("No file selected");
-//     }
-//   };
-//   const handleclicknavi = async (item) => {
-//     try {
-//       const datapost = {
-//         staff_id: userid,
-//         user_type: usertype,
-//         route_url: "/Admin/warehousedetails",
-//       };
-//       const permission = await axios.post(
-//         `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-//         datapost
-//       );
-//       if (permission.data.success === true) {
-//         console.log(item);
-//         navigate("/Admin/warehousedetails", { state: { data: item } });
-//       } else {
-//         toast.error("Permission Denied: You don’t have access to this page");
-//       }
-//     } catch (error) {
-//       console.error("Error checking permission:", error);
-//       if (error.response && error.response.status === 400) {
-//         toast.error("Permission Denied: You don’t have access to this page");
-//       } else {
-//         toast.error("Something went wrong while checking permission.");
-//       }
-//     }
-//   };
-//   const handleSearch = (e) => {
-//     setSearchQuery(e.target.value);
-//     setCurrentPage(1);
-//   };
-//   const handleclickrevert123 = (item) => {
-//     axios
-//       .post(`${process.env.REACT_APP_BASE_URL}get-estimate-details`, {
-//         estimate_id: item.estimated_id,
-//       })
-//       .then((response) => {
-//         navigate("/Admin/download_url", { state: response.data.data });
-//       })
-//       .catch((error) => {
-//         toast.error("Estimate not calculate");
-//       });
-//   };
-//   const handlechange = (e) => {
-//     const { name, value } = e.target;
-//     setData1({ ...data1, [name]: value });
-//   };
-//   const handlechangepro = (e) => {
-//     const { name, value } = e.target;
-//     setProdata({ ...prodata, [name]: value });
-//   };
-//   const handpechangepro = () => {
-//     console.log(erd);
-//     const item = {
-//       warehouse_assign_order_id: erd,
-//     };
-//     const dat11a = {
-//       warehouse_order_id: erd,
-//       user_id: JSON.parse(localStorage.getItem("data123")).id,
-//       added_by: JSON.parse(localStorage.getItem("data123")).user_type,
-//       product_description: prodata.product_description,
-//       Hazardous: prodata.Hazardous,
-//       date_received: prodata.date_received,
-//       package_type: prodata.package_type,
-//       packages: prodata.packages,
-//       dimension: prodata.dimension,
-//       weight: prodata.weight,
-//       warehouse_ref: prodata.warehouse_ref,
-//       freight: prodata.freight,
-//       groupage_batch_ref: prodata.groupage_batch_ref,
-//       supplier: prodata.supplier,
-//       warehouse_receipt_number: prodata.warehouse_receipt_number,
-//       tracking_number: prodata.tracking_number,
-//       date_dspatched: prodata.date_dspatched,
-//       supplier_address: prodata.supplier_address,
-//       warehouse_collect: prodata.warehouse_collect,
-//       costs_to_collect: prodata.costs_to_collect,
-//       port_of_loading: prodata.port_of_loading,
-//       warehouse_dispatch: prodata.warehouse_dispatch,
-//       warehouse_cost: prodata.warehouse_cost,
-//       cost_to_dispatch: prodata.cost_to_dispatch,
-//       waybill_ref: prodata.waybill_ref,
-//     };
-//     console.log(dat11a);
-//     axios
-//       .post(`${process.env.REACT_APP_BASE_URL}addWarehouseProduct`, dat11a)
-//       .then((response) => {
-//         toast.success(response.data.message);
-//         console.log(response.data);
-//       })
-//       .catch((error) => {
-//         console.log(error.response.data);
-//       });
-//   };
-//   console.log(selectedData);
-//   const handlekey = (e) => {
-//     if (e.charCode < 48 || e.charCode > 57) {
-//       e.preventDefault();
-//     }
-//   };
-//   useEffect(() => {
-//     updatecountry();
-//   }, []);
-//   const updatecountry = () => {
-//     axios
-//       .get(`${process.env.REACT_APP_BASE_URL}GetCountries`)
-//       .then((response) => {
-//         setUpdatedata(response.data.data);
-//       })
-//       .catch((error) => {
-//         console.group(error.response.data.message);
-//       });
-//   };
-//   const postData = () => {
-//     const data3 = {
-//       origin: data1.origin,
-//       destination: data1.destination,
-//       startDate: data1.startDate,
-//       endDate: data1.endDate,
-//       freightType: data1.freight,
-//       freightSpeed: data1.type,
-//     };
-//     axios
-//       .post(`${process.env.REACT_APP_BASE_URL}GetWarehouseOrders`, data3)
-//       .then((response) => {
-//         console.log(response.data.data);
-//         if (response.data.success === true) {
-//           handleCloseModal2();
-//           setData(response.data.data);
-//         }
-//       })
-//       .catch((error) => {
-//         toast.error(error.response.data.message);
-//       });
-//   };
-//   return (
-//     <>
-//       {loader ? (
-//         <div class="loader-container">
-//           <div class="loader"></div>
-//           <p class="loader-text">Updating... This may take some time</p>
-//         </div>
-//       ) : (
-//         <div className="wpWrapper">
-//           <div className="container-fluid">
-//             <div className="row manageFreight">
-//               <div className="col-md-12">
-//                 <div className="d-flex justify-content-between align-items-center">
-//                   <div>
-//                     <h4 className="freight_hd">Warehouse Order List</h4>
-//                   </div>
-//                   <div className="d-flex justify-content-end align-items-center">
-//                     <div className="">
-//                       <input
-//                         className="px-2 py-1 rounded "
-//                         placeholder="Search"
-//                         value={searchQuery}
-//                         onChange={handleSearch}
-//                       ></input>
-//                     </div>
-//                     <div className="ms-1">
-//                       <Button
-//                         variant="contained"
-//                         onClick={() => {
-//                           handleOpenModal2();
-//                         }}
-//                       >
-//                         Filter
-//                       </Button>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//             <div className="row">
-//               <div className="col-md-12">
-//                 <div className="  mt-3">
-//                   <div className="">
-//                     <div className="table-responsive">
-//                       <table className="table table-striped tableICon">
-//                         <tbody>
-//                           {currentData &&
-//                             currentData.length > 0 &&
-//                             currentData.map((item) => {
-//                               return (
-//                                 <>
-//                                   <tr key={item.id}>
-//                                     <td className="list_bd">
-//                                       <div className="container-fluid">
-//                                         <div className="d-flex justify-content-between align-items-center">
-//                                           <div className="d-flex align-items-center">
-//                                             <p
-//                                               className="client_nm"
-//                                               style={{ fontSize: "18px" }}
-//                                             >
-//                                               {item.client_name}
-//                                             </p>
-//                                             <p
-//                                               className="fright_no mx-2"
-//                                               style={{ fontSize: "14px" }}
-//                                             >
-//                                               {item.batch_number}
-//                                             </p>
-//                                           </div>
-//                                           <div className="">
-//                                             <p className="port_date">
-//                                               {new Date(
-//                                                 item.date
-//                                               ).toLocaleDateString("en-GB")}
-//                                             </p>
-//                                           </div>
-//                                         </div>
-//                                         <div className="row align-items-center">
-//                                           <div className="col-md-3">
-//                                             <div className="">
-//                                               <p
-//                                                 className="origin"
-//                                                 style={{ fontSize: "14px" }}
-//                                               >
-//                                                 {item.product_desc}
-//                                               </p>
-//                                             </div>
-//                                           </div>
-//                                           <div className="col-md-5">
-//                                             <div className="d-flex align-items-center justify-content-center">
-//                                               <p className="origin">
-//                                                 {item.collection_from_name}
-//                                               </p>
-//                                               <div className="arrow">
-//                                                 <i className="fi fi-rr-arrow-right mx-2 arr_icon"></i>
-//                                               </div>
-//                                               <p className="origin">
-//                                                 {item.delivery_to_name}
-//                                                 <span className="fright_type">
-//                                                   (
-//                                                   {item.Freight
-//                                                     ? item.Freight
-//                                                     : item.freight_type}
-//                                                   )
-//                                                 </span>
-//                                               </p>
-//                                             </div>
-//                                           </div>
-//                                           <div className="col-md-2">
-//                                             <div className="text-center">
-//                                               <p className="origin">
-//                                                 {item.nature_of_hazard}
-//                                               </p>
-//                                             </div>
-//                                           </div>
-//                                           <div className="col-md-2">
-//                                             <div className="text-end">
-//                                               <div className="dropdown">
-//                                                 <select
-//                                                   onClick={() => {
-//                                                     getAllBatch(item);
-//                                                   }}
-//                                                   onChange={(e) =>
-//                                                     handleBatchChange(e, item)
-//                                                   }
-//                                                   name="dropval"
-//                                                   value={item?.dropval}
-//                                                   className="py-1 ps-1 sel_batches"
-//                                                   style={{ cursor: "pointer" }}
-//                                                 >
-//                                                   <option
-//                                                     className="op_tion"
-//                                                     value=""
-//                                                   >
-//                                                     Select Batch
-//                                                   </option>
-//                                                   {batch &&
-//                                                     batch.length > 0 &&
-//                                                     batch.map(
-//                                                       (batchItem, index) => (
-//                                                         <option
-//                                                           className="op_tion"
-//                                                           key={index}
-//                                                           value={
-//                                                             batchItem.batch_id
-//                                                           }
-//                                                         >
-//                                                           {
-//                                                             batchItem.batch_number
-//                                                           }
-//                                                         </option>
-//                                                       )
-//                                                     )}
-//                                                 </select>
-//                                               </div>
-//                                             </div>
-//                                           </div>
-//                                         </div>
-//                                         <div className="row">
-//                                           <div className="col-md-6">
-//                                             <div className="d-flex align-items-center">
-//                                               <p
-//                                                 type="radio"
-//                                                 className="input_user mb-0"
-//                                               />
-//                                               {item.assign_to_batch === 0 ? (
-//                                                 <div className="d-flex align-items-center">
-//                                                   <span className="dot bg-danger me-2"></span>
-//                                                   <p
-//                                                     className="text-danger mb-0"
-//                                                     style={{ fontSize: "12px" }}
-//                                                   >
-//                                                     Batch Not Assigned
-//                                                   </p>
-//                                                 </div>
-//                                               ) : (
-//                                                 <div className="d-flex align-items-center">
-//                                                   <span className="dot bg-success me-2"></span>
-//                                                   <p
-//                                                     className="text-success mb-0"
-//                                                     style={{ fontSize: "12px" }}
-//                                                   >
-//                                                     Batch Assigned
-//                                                   </p>
-//                                                 </div>
-//                                               )}
-//                                             </div>
-//                                           </div>
-//                                           <div className="col-md-6 text-end">
-//                                             <FaEdit
-//                                               onClick={() =>
-//                                                 handleEditClick(
-//                                                   item.freight_ID,
-//                                                   item.warehouse_assign_order_id
-//                                                 )
-//                                               }
-//                                               style={{
-//                                                 color: "#1d2044",
-//                                                 cursor: "pointer",
-//                                               }}
-//                                             />
-//                                             <DeleteIcon
-//                                               onClick={() =>
-//                                                 handleEditClick12(
-//                                                   item.warehouse_assign_order_id,
-//                                                   item.order_id,
-//                                                   item.freight_id
-//                                                 )
-//                                               }
-//                                               style={{
-//                                                 color: "#1d2044",
-//                                                 cursor: "pointer",
-//                                               }}
-//                                             />
-//                                             <VisibilityIcon
-//                                               onClick={() =>
-//                                                 handleclicknavi(item)
-//                                               }
-//                                               style={{
-//                                                 color: "rgb(27 34 69)",
-//                                                 cursor: "pointer",
-//                                                 width: "20px",
-//                                               }}
-//                                             />
-//                                             <PictureAsPdfIcon
-//                                               style={{ cursor: "pointer" }}
-//                                               onClick={() => {
-//                                                 handleclickrevert123(item);
-//                                               }}
-//                                             />
-//                                           </div>{" "}
-//                                         </div>
-//                                       </div>
-//                                     </td>
-//                                   </tr>
-//                                 </>
-//                               );
-//                             })}
-//                         </tbody>
-//                       </table>
-//                       <div className="text-center d-flex justify-content-end align-items-center">
-//                         <button
-//                           disabled={currentPage === 1}
-//                           className="bg_page"
-//                           onClick={() => handlePageChange(currentPage - 1)}
-//                         >
-//                           <i class="fi fi-rr-angle-small-left page_icon"></i>
-//                         </button>
-//                         <span className="mx-2">{`Page ${currentPage} of ${totalPage}`}</span>
-//                         <button
-//                           disabled={currentPage === totalPage}
-//                           className="bg_page"
-//                           onClick={() => handlePageChange(currentPage + 1)}
-//                         >
-//                           <i class="fi fi-rr-angle-small-right page_icon"></i>
-//                         </button>
-//                       </div>
-//                       <ToastContainer />
-//                       <Modal
-//                         open={isModalOpen1}
-//                         onClose={closeModal1}
-//                         aria-labelledby="modal-modal-title"
-//                         aria-describedby="modal-modal-description"
-//                       >
-//                         <Box
-//                           sx={{
-//                             position: "absolute",
-//                             top: "50%",
-//                             left: "50%",
-//                             transform: "translate(-50%, -50%)",
-//                             height: 300,
-//                             width: 450,
-//                             bgcolor: "background.paper",
-//                             boxShadow: 24,
-//                             p: 4,
-//                           }}
-//                         >
-//                           <h4 id="modal-modal-title">Add Excel</h4>
-//                           <input
-//                             type="file"
-//                             accept=".xlsx,.xls"
-//                             onChange={handleFileChange}
-//                             className="mb-3 border ps-2 py-2 rounded w-100"
-//                             style={{ display: "block", marginTop: "16px" }}
-//                           />
-//                           <Button
-//                             variant="contained"
-//                             className="submit_btn"
-//                             onClick={postData1}
-//                           >
-//                             Submit
-//                           </Button>
-//                         </Box>
-//                       </Modal>
-//                       <Modal
-//                         open={isModalOpen2}
-//                         onClose={handleCloseModal2}
-//                         aria-labelledby="modal-modal-title"
-//                         aria-describedby="modal-modal-description"
-//                       >
-//                         <Box
-//                           sx={{
-//                             position: "absolute",
-//                             top: "50%",
-//                             left: "50%",
-//                             transform: "translate(-50%, -50%)",
-//                           }}
-//                         >
-//                           <div className="modal-header">
-//                             <h2 id="modal-modal-title">Filter</h2>
-//                             <button
-//                               className="btn btn-close"
-//                               onClick={handleCloseModal2}
-//                             >
-//                               <CloseIcon />
-//                             </button>
-//                           </div>
-//                           <div className="newModalGap noFormaControl">
-//                             <div className="row my-3  ">
-//                               <div className="col-6">
-//                                 <label>Delivery Type</label>
-//                                 <select name="type" onChange={handlechange}>
-//                                   <option value="">Select</option>
-//                                   <option value="express">Express</option>
-//                                   <option value="normal">Consolidation</option>
-//                                 </select>
-//                               </div>
-//                               <div className="col-6">
-//                                 <label>Priority </label>
-//                                 <div className="shipRefer1 d-flex">
-//                                   <div>
-//                                     <input
-//                                       type="radio"
-//                                       id="shipper"
-//                                       name="priority"
-//                                       style={{ cursor: "pointer" }}
-//                                       value="High"
-//                                       onChange={handlechange}
-//                                     />
-//                                     <label htmlFor="shipper">High</label>
-//                                   </div>
-//                                   <div>
-//                                     <input
-//                                       type="radio"
-//                                       id="shipper2"
-//                                       style={{ cursor: "pointer" }}
-//                                       name="priority"
-//                                       value="Medium"
-//                                       onChange={handlechange}
-//                                     />
-//                                     <label htmlFor="consignee">Medium</label>
-//                                   </div>
-//                                   <div>
-//                                     <input
-//                                       type="radio"
-//                                       id="shipper3"
-//                                       name="priority"
-//                                       style={{ cursor: "pointer" }}
-//                                       value="Low"
-//                                       onChange={handlechange}
-//                                     />
-//                                     <label htmlFor="mediumPr">Low</label>
-//                                   </div>
-//                                 </div>
-//                               </div>
-//                             </div>
-//                             <div className="row mb-3">
-//                               <div className="col-6">
-//                                 <label>Country of Origin</label>
-//                                 <select name="origin" onChange={handlechange}>
-//                                   <option value="">Select</option>
-//                                   {updatedata &&
-//                                     updatedata.length > 0 &&
-//                                     updatedata.map((item, index) => {
-//                                       return (
-//                                         <>
-//                                           <option value={item.id}>
-//                                             {item.name}
-//                                           </option>
-//                                         </>
-//                                       );
-//                                     })}
-//                                 </select>
-//                               </div>
-//                               <div className="col-6">
-//                                 <label>Delivery to Country </label>
-//                                 <select
-//                                   name="destination"
-//                                   onChange={handlechange}
-//                                 >
-//                                   <option value="">Select</option>
-//                                   {updatedata &&
-//                                     updatedata.length > 0 &&
-//                                     updatedata.map((item, index) => {
-//                                       return (
-//                                         <>
-//                                           <option value={item.id}>
-//                                             {item.name}
-//                                           </option>
-//                                         </>
-//                                       );
-//                                     })}
-//                                 </select>
-//                               </div>
-//                             </div>
-//                             <div className="row mb-3">
-//                               <div className="col-6">
-//                                 <label>Start Date</label>
-//                                 <input
-//                                   type="date"
-//                                   id="shipper3"
-//                                   name="startDate"
-//                                   style={{ cursor: "pointer" }}
-//                                   className="form-control"
-//                                   onChange={handlechange}
-//                                 />
-//                               </div>
-//                               <div className="col-6">
-//                                 <label>End Date </label>
-//                                 <input
-//                                   type="date"
-//                                   id="shipper3"
-//                                   name="endDate"
-//                                   style={{ cursor: "pointer" }}
-//                                   className="form-control"
-//                                   onChange={handlechange}
-//                                 />
-//                               </div>
-//                             </div>
-//                             <div className="row mb-3">
-//                               <div className="col-6">
-//                                 <label>Freight</label>
-//                                 <select name="freight" onChange={handlechange}>
-//                                   <option value="">Select...</option>
-//                                   <option value="Sea">Sea</option>
-//                                   <option value="Air">Air</option>
-//                                   <option value="Road">Road</option>
-//                                 </select>
-//                               </div>
-//                             </div>
-//                             <Button variant="contained" onClick={postData}>
-//                               Apply
-//                             </Button>
-//                           </div>
-//                         </Box>
-//                       </Modal>
-//                       <Modal
-//                         open={isModalOpen}
-//                         onClose={handleCloseModal}
-//                         aria-labelledby="modal-title"
-//                         aria-describedby="modal-description"
-//                         className="editWare"
-//                       >
-//                         <Box sx={style1}>
-//                           <div className="modal-header">
-//                             <h2 id="modal-modal-title">Edit Warehouse Order</h2>
-//                             <button
-//                               className="btn btn-close"
-//                               onClick={handleCloseModal}
-//                             >
-//                               <CloseIcon />
-//                             </button>
-//                           </div>
-//                           <div className="newModalGap">
-//                             <div className="text-center">
-//                               <div className="d-flex justify-content-between">
-//                                 <div
-//                                   className="fs-3 border rounded-circle px-2 bg-dark text-white"
-//                                   style={{
-//                                     cursor: "pointer",
-//                                     height: 40,
-//                                     width: 40,
-//                                   }}
-//                                   data-bs-toggle="modal"
-//                                   data-bs-target="#exampleModal"
-//                                   onClick={handleCloseModal}
-//                                 >
-//                                   +
-//                                 </div>
-//                               </div>
-//                             </div>
-//                             {selectedData && (
-//                               <form onSubmit={handleSubmit} className="pt-3">
-//                                 <Grid container spacing={2}>
-//                                   <Grid
-//                                     item
-//                                     xs={12}
-//                                     sm={6}
-//                                     className="warehouse_ord"
-//                                   >
-//                                     <TextField
-//                                       fullWidth
-//                                       label="Warehouse Receipt No"
-//                                       variant="outlined"
-//                                       name="ware_receipt_no"
-//                                       value={selectedData.ware_receipt_no || ""}
-//                                       onChange={handleInputChange}
-//                                     />
-//                                   </Grid>
-//                                   <Grid item xs={12} sm={6}>
-//                                     <TextField
-//                                       fullWidth
-//                                       label="Waybill"
-//                                       variant="outlined"
-//                                       name="tracking_number"
-//                                       value={selectedData.tracking_number || ""}
-//                                       onChange={handleInputChange}
-//                                     />
-//                                   </Grid>
-//                                   <Grid item xs={12} sm={6}>
-//                                     <TextField
-//                                       fullWidth
-//                                       label="Warehouse Status"
-//                                       variant="outlined"
-//                                       name="warehouse_status"
-//                                       value={
-//                                         selectedData.warehouse_status || ""
-//                                       }
-//                                       onChange={handleInputChange}
-//                                     />
-//                                   </Grid>
-//                                   <Grid item xs={12} sm={6}>
-//                                     <TextField
-//                                       fullWidth
-//                                       label="Warehouse Collect"
-//                                       variant="outlined"
-//                                       name="warehouse_collect"
-//                                       value={
-//                                         selectedData.warehouse_collect || ""
-//                                       }
-//                                       onChange={handleInputChange}
-//                                     />
-//                                   </Grid>
-//                                   <Grid item xs={12} sm={6}>
-//                                     <TextField
-//                                       fullWidth
-//                                       label="Date Received"
-//                                       type="date"
-//                                       variant="outlined"
-//                                       name="date_received"
-//                                       InputLabelProps={{
-//                                         shrink: true,
-//                                       }}
-//                                       value={selectedData.date_received || ""}
-//                                       onChange={handleInputChange}
-//                                     />
-//                                   </Grid>
-//                                   <Grid item xs={12} sm={6}>
-//                                     <TextField
-//                                       fullWidth
-//                                       label="Package Type"
-//                                       variant="outlined"
-//                                       name="package_type"
-//                                       value={selectedData.package_type || ""}
-//                                       onChange={handleInputChange}
-//                                     />
-//                                   </Grid>
-//                                   <Grid item xs={12} sm={6}>
-//                                     <TextField
-//                                       fullWidth
-//                                       label="Total Packages"
-//                                       variant="outlined"
-//                                       name="no_of_packages"
-//                                       value={selectedData.no_of_packages || ""}
-//                                       onChange={handleInputChange}
-//                                     />
-//                                   </Grid>
-//                                   <Grid item xs={12} sm={6}>
-//                                     <TextField
-//                                       fullWidth
-//                                       label="Dimension"
-//                                       variant="outlined"
-//                                       name="dimension"
-//                                       value={selectedData.dimension || ""}
-//                                       onChange={handleInputChange}
-//                                     />
-//                                   </Grid>
-//                                   <Grid item xs={12} sm={12}>
-//                                     <TextField
-//                                       fullWidth
-//                                       label="Weight"
-//                                       variant="outlined"
-//                                       name="weight"
-//                                       value={selectedData.weight || ""}
-//                                       onChange={handleInputChange}
-//                                     />
-//                                   </Grid>
-//                                 </Grid>
-//                                 <Box
-//                                   mt={3}
-//                                   display="flex"
-//                                   justifyContent="space-between"
-//                                 >
-//                                   <div className="unsetLt">
-//                                     <Button
-//                                       variant="contained"
-//                                       className="save_btn text-center"
-//                                       onClick={handleSubmit}
-//                                     >
-//                                       Submit
-//                                     </Button>
-//                                   </div>
-//                                 </Box>
-//                               </form>
-//                             )}
-//                           </div>
-//                         </Box>
-//                       </Modal>
-//                       <div
-//                         class="modal fade"
-//                         id="exampleModal"
-//                         tabindex="-1"
-//                         aria-labelledby="exampleModalLabel"
-//                         aria-hidden="true"
-//                       >
-//                         <div class="modal-dialog modal-lg modal-dialog-centered">
-//                           <div class="modal-content ware_cont">
-//                             <div class="modal-header">
-//                               <h1
-//                                 class="modal-title fs-5"
-//                                 id="exampleModalLabel"
-//                               >
-//                                 Warehouse Detail
-//                               </h1>
-//                               <button
-//                                 type="button"
-//                                 class="btn-close"
-//                                 data-bs-dismiss="modal"
-//                                 aria-label="Close"
-//                               >
-//                                 <CloseIcon />
-//                               </button>
-//                             </div>
-
-//                             <div class="modal-body">
-//                               <div className="newModalGap">
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       Product Description
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       className="form-control"
-//                                       placeholder="product description"
-//                                       onChange={handlechangepro}
-//                                       name="product_description"
-//                                     />
-//                                   </div>
-//                                   <div className="col-md-6 noFormaControl">
-//                                     <label className="form-label">
-//                                       Harzadous
-//                                     </label>
-//                                     <select
-//                                       onChange={handlechangepro}
-//                                       name="Hazardous"
-//                                     >
-//                                       <option>Select...</option>
-//                                       <option value="Yes">Yes</option>
-//                                       <option value="No">No</option>
-//                                     </select>
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       Warehouse Ref.
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       className="form-control"
-//                                       placeholder="warehouse reference"
-//                                       name="warehouse_ref"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       Data Received
-//                                     </label>
-//                                     <input
-//                                       type="date"
-//                                       className="form-control"
-//                                       placeholder=""
-//                                       name="date_received"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6 noFormaControl">
-//                                     <label className="form-label">
-//                                       Package Type
-//                                     </label>
-//                                     <select
-//                                       name="package_type"
-//                                       onChange={handlechangepro}
-//                                     >
-//                                       <option value="">Select...</option>
-//                                       <option value="box">Box</option>
-//                                       <option value="crate">Crate</option>
-//                                       <option value="pallet">Pallet</option>
-//                                       <option value="bags">Bags</option>
-//                                     </select>
-//                                   </div>
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       Total Packages
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onKeyPress={handlekey}
-//                                       name="packages"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       Dimension
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="dimension"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                       onKeyPress={handlekey}
-//                                     />
-//                                   </div>
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">Weight</label>
-//                                     <input
-//                                       type="text"
-//                                       name="weight"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onKeyPress={handlekey}
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       freight
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="freight"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       supplier_address
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="supplier_address"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       supplier
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="supplier"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       groupage_batch_ref
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="groupage_batch_ref"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       date_dspatched
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="date_dspatched"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       added_by
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="added_by"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       warehouse_order_id
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="warehouse_order_id"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                       onKeyPress={handlekey}
-//                                     />
-//                                   </div>
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       costs_to_collect
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="costs_to_collect"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onKeyPress={handlekey}
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       port_of_loading
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="port_of_loading"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       warehouse_dispatch
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="warehouse_dispatch"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       warehouse_cost
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="warehouse_cost"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                       onKeyPress={handlekey}
-//                                     />
-//                                   </div>
-//                                   <div className="col-md-6">
-//                                     <label className="form-label">
-//                                       cost_to_dispatch
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="cost_to_dispatch"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onKeyPress={handlekey}
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                                 <div className="row mb-3">
-//                                   <div className="col-md-12">
-//                                     <label className="form-label">
-//                                       waybill_ref
-//                                     </label>
-//                                     <input
-//                                       type="text"
-//                                       name="waybill_ref"
-//                                       className="form-control"
-//                                       placeholder="0.00"
-//                                       onChange={handlechangepro}
-//                                     />
-//                                   </div>
-//                                 </div>
-//                               </div>
-//                               <div class="modal-footer">
-//                                 <button
-//                                   type="button"
-//                                   class="btn btn-secondary closeSpacing"
-//                                   data-bs-dismiss="modal"
-//                                 >
-//                                   Close
-//                                 </button>
-//                                 <button
-//                                   type="button"
-//                                   class="btn btn-primary"
-//                                   onClick={handpechangepro}
-//                                 >
-//                                   Save changes
-//                                 </button>
-//                               </div>
-//                             </div>
-//                           </div>
-//                         </div>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </>
-//   );
-// }
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { Modal, Grid, TextField, Box, Button } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useNavigate } from "react-router-dom";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  Modal,
-  Box,
-  Typography,
-  Button,
-  IconButton,
-  Grid,
-  TextField,
-  InputLabel,
-  FormControl,
-  Select,
-  MenuItem,
-} from "@mui/material";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import { Modal, Box, Button, Select } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import CloseIcon from "@mui/icons-material/Close";
-
+import Swal from "sweetalert2";
 const pageSize = 10;
 const style1 = {
   position: "absolute",
@@ -1398,221 +22,75 @@ const style1 = {
 export default function WarehouseOrder() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
-  const [batch, setBatch] = useState([]);
-  const [file, setFile] = useState(null);
-   const [formFiles, setFormFiles] = useState({
-      supplier_invoice: [],
-      other_documents: [],
-      licenses: [],
-      packing_list: [],
-    });
-  const [erd, setErd] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [prodata, setProdata] = useState("");
-  const [orderID, setOrderID] = useState("");
-  const [clickdata, setClickdata] = useState({});
+  const [lcientlist, setLcientlist] = useState([]);
+  const [productData, setProductData] = useState("");
+  const [editDtaawarehouse, setEditDtaawarehouse] = useState("");
+  const [dataProduct, setDataProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [batchidsdsd, setBatchidsdsd] = useState();
+  const [showhazardous, setShowhazardous] = useState(false);
+  const [editmodalopen, setEditmodalopen] = useState(false);
+  const [modalproduct, setModalproduct] = useState(false);
+  const [refane, setRefane] = useState({});
+  const [reemail, setReemail] = useState({});
+  const [productModalOpen, setProductModalOpen] = useState(false);
+  const [productModalOpen1, setProductModalOpen1] = useState(false);
+  const [orderID122, setOrderId122] = useState(false);
+  const [warehouseID, setWarehouseID] = useState(null); //
   const [loader, setLoader] = useState(false);
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpenWarehouse, setIsModalOpenWarehouse] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [updatedata, setUpdatedata] = useState(false);
-  const [data1, setData1] = useState({
-    origin: "",
-    destination: "",
-    startDate: "",
-    endDate: "",
-    freightType: "",
-    freightSpeed: "",
-  });
-
-   const [show1, setShow1] = useState(false);
-        const [selectedDocs, setSelectedDocs] = useState([]);
-      
-       const docOptions = [
-        { id: "Warehouse Entry Docs", label: "Shipper Docs" },
-        { id: "Warehouse Entry Docs", label: "Warehouse Docs" },
-        { id: "Invoice, Packing List", label: "Invoice / Pkl" },
-        { id: "Product Literature", label: "Product literature" },
-        { id: "Letters of Authority", label: "LOA" },
-      ];
-        const handleShow = () => setShow1(true);
-        const handleClose = () => setShow1(false);
-        const handleSelect = (e) => {
-          const selected = e.target.value;
-          if (selected && !selectedDocs.find((doc) => doc.name === selected)) {
-            setSelectedDocs([...selectedDocs, { name: selected, files: [] }]);
-          }
-        };
-        const handleFileChangefil = (e, docName) => {
-          const files = Array.from(e.target.files);
-          setSelectedDocs((prev) =>
-            prev.map((doc) =>
-              doc.name === docName ? { ...doc, files } : doc
-            )
-          );
-        };
-      const handleSave = () => {
-        console.log("Uploaded Documents:", selectedDocs);
-        selectedDocs.forEach(doc => {
-          console.log("Doc Type:", doc);
-          doc.files.forEach(file => {
-            console.log("File:", file.name, "| Size:", file.size, "bytes");
-          });
-        });
-        handleClose();
-      };
+  const userId = JSON.parse(localStorage.getItem("data123"))?.id;
+  const [show1, setShow1] = useState(false);
+  const [selectedDocs, setSelectedDocs] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const handleClose = () => setShow1(false);
   const [selectedData, setSelectedData] = useState(null);
   const navigate = useNavigate();
   const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    handleOpenModal3();
+  const handleChange = (selectedOption) => {
+    setSelectedOption(selectedOption);
+    setReemail(selectedOption);
+    setRefane(selectedOption);
   };
-  const handleOpenModal2 = () => setIsModalOpen2(true);
   const handleOpenModal3 = () => setIsModalOpen3(true);
-  const handleCloseModal2 = () => setIsModalOpen2(false);
-  const handleCloseModal3 = () => setIsModalOpen3(false);
   useEffect(() => {
     getData();
   }, []);
-
-  const userid = JSON.parse(localStorage.getItem("data123"))?.id;
-  const usertype = JSON.parse(localStorage.getItem("data123"))?.user_type;
-
+  const handlechange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+    setShowhazardous(data.hazardous);
+  };
   const getData = async () => {
+    setLoader(true);
     try {
-      const datapost = {
-        staff_id: userid,
-        user_type: usertype,
-        route_url: "/GetWarehouseOrders",
-      };
-      const permission = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-        datapost
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}GetSupplierCreatedWarehouseOrders?supplier_id=${userId}`,
       );
-      if (permission.data.success === true) {
-        setLoader(true);
-        try {
-          const response = await axios.post(
-            `${process.env.REACT_APP_BASE_URL}GetWarehouseOrders`,{user_id:userid, user_type:usertype}
-          );
-
-          setLoader(false);
-          if (response.data && response.data.data) {
-            setData(response.data.data);
-          } else {
-            toast.error("No warehouse orders found.");
-          }
-        } catch (error) {
-          setLoader(false);
-          console.error("Error fetching warehouse orders:", error);
-          if (error.response && error.response.status === 400) {
-            toast.error(
-              error.response.data.message ||
-                "Data not found or permission denied."
-            );
-          } else {
-            toast.error("Something went wrong while fetching orders.");
-          }
-        }
+      setLoader(false);
+      if (response.data && response.data.data) {
+        console.log(response.data.data);
+        setData(response.data.data);
       } else {
-        toast.error("Permission Denied: You don’t have access to this action");
+        toast.error("No warehouse orders found.");
       }
     } catch (error) {
-      console.error("Error checking permission:", error);
+      setLoader(false);
+      console.error("Error fetching warehouse orders:", error);
       if (error.response && error.response.status === 400) {
-        toast.error("Permission Denied: You don’t have access to this page");
+        toast.error(
+          error.response.data.message || "Data not found or permission denied.",
+        );
       } else {
-        toast.error("Something went wrong while checking permission.");
+        toast.error("Something went wrong while fetching orders.");
       }
     }
-  };
-
-  const getAllBatch = (item) => {
-    console.log(item);
-    const payload = {
-      des_country_id: item.delivery_to,
-      origin_country_id: item.collection_from,
-      freight: item.Freight,
-    };
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}AllBatchNumbers`, payload)
-      .then((response) => {
-        setClickdata(response.data.data[0]);
-
-        setBatch(response.data.data);
-        toast.error(response.data.data.message);
-      })
-      .catch((error) => {
-        console.error(error.response.data);
-        toast.error("Error fetching batch data");
-      });
   };
   const handlePageChange = (page) => {
     setCurrentPage(page);
-  };
-  const handleEditClick = (freight_ID, warehouse_assign_order_id, order_id) => {
-    console.log(freight_ID, warehouse_assign_order_id, order_id);
-    setOrderID(order_id);
-    setErd(warehouse_assign_order_id);
-    const selectedData = data.find((item) => item.freight_ID === freight_ID);
-    console.log(selectedData);
-    setSelectedData(selectedData);
-    handleOpenModal();
-  };
-  const handleEditClick12 = (
-    warehouse_assign_order_id,
-    order_id,
-    freight_id
-  ) => {
-    const data = {
-      id: warehouse_assign_order_id,
-      order_id: order_id,
-      freight_id: freight_id,
-    };
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}DeleteWarehouseOrder`, data)
-      .then((response) => {
-        toast.success(response.data.message);
-        getData();
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  };
-  const handleBatchChange = (e, item) => {
-    const batchId = e.target.value;
-    setBatchidsdsd(e.target.value);
-    console.log(e);
-    console.log(clickdata);
-    console.log(item);
-    console.log(item.batch_id);
-    console.log(e.target.value, item);
-    if (batchId) {
-      console.log(batchId);
-      moveFreightToBatch(batchId, item);
-    }
-  };
-  const moveFreightToBatch = (batchId, item) => {
-    console.log(item, batchId);
-    const datapost = {
-      freight_id: item.freight_id,
-      batch_id: batchId,
-      warehouse_id: item.warehouse_id,
-      order_id: item.order_id,
-    };
-    console.log(datapost);
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}moveFreightToBatch`, datapost)
-      .then((response) => {
-        toast.success("Freight moved to batch successfully");
-        getData();
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
   };
   const filteredData = data.filter((item) => {
     return (
@@ -1642,309 +120,10 @@ export default function WarehouseOrder() {
     const { name, value } = e.target;
     setSelectedData({ ...selectedData, [name]: value });
   };
-//   const handleSubmit = () => {
-//     const formdata1 = new FormData()
-//     // const dataApi = {
-//       warehouse_assign_id: selectedData.warehouse_assign_order_id,
-//       order_id: selectedData.order_id,
-//       freight_id: selectedData.freight_id,
-//       ware_receipt_no: selectedData.ware_receipt_no,
-//       tracking_number: selectedData.tracking_number,
-//       warehouse_status: selectedData.warehouse_status,
-//       warehouse_collect: selectedData.warehouse_collect,
-//       date_received: selectedData.date_received,
-//       package_type: selectedData.package_type,
-//       no_of_packages: selectedData.no_of_packages,
-//       packages: selectedData.packages,
-//       total_dimension: selectedData.total_dimension,
-//       weight: selectedData.weight,
-//       costs_to_collect: selectedData.costs_to_collect,
-//       warehouse_cost: selectedData.warehouse_cost,
-//       warehouse_dispatch: selectedData.warehouse_dispatch,
-//       cost_to_dispatch: selectedData.cost_to_dispatch,
 
-//          Object.values(formFiles).forEach((files) => {
-//   files.forEach((file) => {
-//     formdata.append("document", file); // static key
-//   });
-// });
-//     };
-//     console.log(dataApi);
-//     axios
-//       .post(`${process.env.REACT_APP_BASE_URL}editWarehouseDetails`, dataApi)
-//       .then((response) => {
-//         toast.success("Warehouse order updated successfully");
-//         getData();
-//         handleCloseModal();
-//       })
-//       .catch((error) => {
-//         console.error(error.response.data);
-//         toast.error("Error updating warehouse order");
-//       });
-//   };
-  
-const handleSubmit = () => {
-  const formdata1 = new FormData();
-
-  // Append all fields from selectedData
-  formdata1.append("warehouse_assign_id", selectedData.warehouse_assign_order_id);
-  formdata1.append("order_id", selectedData.order_id);
-  formdata1.append("freight_id", selectedData.freight_id);
-  formdata1.append("ware_receipt_no", selectedData.ware_receipt_no);
-  formdata1.append("tracking_number", selectedData.tracking_number);
-  formdata1.append("warehouse_status", selectedData.warehouse_status);
-  formdata1.append("warehouse_collect", selectedData.warehouse_collect);
-  formdata1.append("date_received", selectedData.date_received);
-  formdata1.append("package_type", selectedData.package_type);
-  formdata1.append("no_of_packages", selectedData.no_of_packages);
-  formdata1.append("total_dimension", selectedData.total_dimension);
-  formdata1.append("weight", selectedData.weight);
-  formdata1.append("costs_to_collect", selectedData.costs_to_collect);
-  formdata1.append("warehouse_cost", selectedData.warehouse_cost);
-  formdata1.append("warehouse_dispatch", selectedData.warehouse_dispatch);
-  formdata1.append("cost_to_dispatch", selectedData.cost_to_dispatch);
-  formdata1.append("documentName", selectedData.documentName);
-
-  // If packages is an object or array, stringify it
-  formdata1.append("packages", JSON.stringify(selectedData.packages));
-
-  // Append files (with static key "document")
-    selectedDocs.forEach(doc => {
-  console.log("Doc Type:", doc.name);
-
-  doc.files.forEach(file => {
-    formdata1.append(doc.name, file); // 👈 each file append
-    console.log("File:", file.name, "| Size:", file.size, "bytes");
-  });
-});
-
-
-  // Optional: Debug log of FormData contents
-  for (let [key, value] of formdata1.entries()) {
-    console.log(`${key}:`, value);
-  }
-
-  // Submit the data via axios
-  axios
-    .post(`${process.env.REACT_APP_BASE_URL}editWarehouseDetails`, formdata1)
-    .then((response) => {
-      setSelectedDocs([])
-      toast.success("Warehouse order updated successfully");
-      getData();
-      handleCloseModal();
-    })
-    .catch((error) => {
-      console.error(error.response?.data || error.message);
-      toast.error("Error updating warehouse order");
-    });
-};
-
-
-
-const closeModal1 = () => {
-    setIsModalOpen1(false);
-  };
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    }
-  };
-  const postData1 = () => {
-    if (file) {
-      const formdata = new FormData();
-      formdata.append("file", file);
-      axios
-        .post(`${process.env.REACT_APP_BASE_URL}UploadExcelWarehouse`, formdata)
-        .then((response) => {
-          if (response.data.success === true) {
-            toast.success(response.data.message);
-            closeModal1();
-          }
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-        });
-    } else {
-      console.log("No file selected");
-    }
-  };
-
-    const handleFileChange123 = (e, fieldName) => {
-    const files = Array.from(e.target.files);
-    setFormFiles((prev) => ({
-      ...prev,
-      [fieldName]: files,
-    }));
-  };
-  const handleclicknavi = async (item) => {
-    try {
-      const datapost = {
-        staff_id: userid,
-        user_type: usertype,
-        route_url: "/Admin/warehousedetails",
-      };
-      const permission = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}CheckPermission`,
-        datapost
-      );
-      if (permission.data.success === true) {
-        console.log(item);
-        navigate("/Admin/warehousedetails", { state: { data: item } });
-      } else {
-        toast.error("Permission Denied: You don’t have access to this page");
-      }
-    } catch (error) {
-      console.error("Error checking permission:", error);
-      if (error.response && error.response.status === 400) {
-        toast.error("Permission Denied: You don’t have access to this page");
-      } else {
-        toast.error("Something went wrong while checking permission.");
-      }
-    }
-  };
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
-  };
-  const handleclickrevert123 = (item) => {
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}get-estimate-details`, {
-        estimate_id: item.estimated_id,
-      })
-      .then((response) => {
-        navigate("/Admin/download_url", { state: response.data.data });
-      })
-      .catch((error) => {
-        toast.error("Estimate not calculate");
-      });
-  };
-  const handlechange = (e) => {
-    const { name, value } = e.target;
-    setData1({ ...data1, [name]: value });
-  };
-  const handlechangepro = (e) => {
-    const { name, value } = e.target;
-    setProdata({ ...prodata, [name]: value });
-  };
-
-const handpechangepro = () => {
-  console.log(erd);
-  const formdata = new FormData();
-  formdata.append("warehouse_order_id", erd);
-  formdata.append("order_id", orderID);
-  formdata.append("user_id", JSON.parse(localStorage.getItem("data123")).id);
-  formdata.append("added_by", JSON.parse(localStorage.getItem("data123")).user_type);
-  formdata.append("product_description", prodata.product_description);
-  formdata.append("Hazardous", prodata.Hazardous);
-  formdata.append("date_received", prodata.date_received);
-  formdata.append("package_type", prodata.package_type);
-  formdata.append("packages", prodata.packages);
-  formdata.append("dimension", prodata.dimension);
-  formdata.append("weight", prodata.weight);
-  formdata.append("warehouse_ref", prodata.warehouse_ref);
-  formdata.append("freight", prodata.freight);
-  formdata.append("groupage_batch_ref", prodata.groupage_batch_ref);
-  formdata.append("supplier", prodata.supplier);
-  formdata.append("warehouse_receipt_number", prodata.warehouse_receipt_number);
-  formdata.append("tracking_number", prodata.tracking_number);
-  formdata.append("date_dspatched", prodata.date_dspatched);
-  formdata.append("supplier_address", prodata.supplier_address);
-  formdata.append("warehouse_collect", prodata.warehouse_collect);
-  formdata.append("costs_to_collect", prodata.costs_to_collect);
-  formdata.append("port_of_loading", prodata.port_of_loading);
-  formdata.append("warehouse_dispatch", prodata.warehouse_dispatch);
-  formdata.append("warehouse_cost", prodata.warehouse_cost);
-  formdata.append("cost_to_dispatch", prodata.cost_to_dispatch);
-  formdata.append("waybill_ref", prodata.waybill_ref);
-  formdata.append("documentName", prodata.documentName);
-
-  // Append files with static key "document"
-    selectedDocs.forEach(doc => {
-  console.log("Doc Type:", doc.name);
-
-  doc.files.forEach(file => {
-    formdata.append(doc.name, file); // 👈 each file append
-    console.log("File:", file.name, "| Size:", file.size, "bytes");
-  });
-});
-  // Optional: log the formdata
-  for (let [key, value] of formdata.entries()) {
-    console.log(`${key}:`, value);
-  }
-
-  axios
-    .post(`${process.env.REACT_APP_BASE_URL}addWarehouseProduct`, formdata)
-    .then((response) => {
-      handleCloseModal3();
-      toast.success(response.data.message);
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.log(error.response?.data || error.message);
-      toast.error("Error adding warehouse product");
-    });
-};
-
-
-
-//   const handpechangepro = () => {
-//     console.log(erd);
-//     const item = {
-//       warehouse_assign_order_id: erd,
-//     };
-//     const dat11a = {
-//       warehouse_order_id: erd,
-//       order_id: orderID,
-//       user_id: JSON.parse(localStorage.getItem("data123")).id,
-//       added_by: JSON.parse(localStorage.getItem("data123")).user_type,
-//       product_description: prodata.product_description,
-//       Hazardous: prodata.Hazardous,
-//       date_received: prodata.date_received,
-//       package_type: prodata.package_type,
-//       packages: prodata.packages,
-//       dimension: prodata.dimension,
-//       weight: prodata.weight,
-//       warehouse_ref: prodata.warehouse_ref,
-//       freight: prodata.freight,
-//       groupage_batch_ref: prodata.groupage_batch_ref,
-//       supplier: prodata.supplier,
-//       warehouse_receipt_number: prodata.warehouse_receipt_number,
-//       tracking_number: prodata.tracking_number,
-//       date_dspatched: prodata.date_dspatched,
-//       supplier_address: prodata.supplier_address,
-//       warehouse_collect: prodata.warehouse_collect,
-//       costs_to_collect: prodata.costs_to_collect,
-//       port_of_loading: prodata.port_of_loading,
-//       warehouse_dispatch: prodata.warehouse_dispatch,
-//       warehouse_cost: prodata.warehouse_cost,
-//       cost_to_dispatch: prodata.cost_to_dispatch,
-//       waybill_ref: prodata.waybill_ref,
-//       documentName: prodata.documentName,
-//     };
-
-//      Object.values(formFiles).forEach((files) => {
-//   files.forEach((file) => {
-//     formdata.append("document", file); // static key
-//   });
-// });
-//     console.log(dat11a);
-//     axios
-//       .post(`${process.env.REACT_APP_BASE_URL}addWarehouseProduct`, dat11a)
-//       .then((response) => {
-//         handleCloseModal3();
-//         toast.success(response.data.message);
-//         console.log(response.data);
-//       })
-//       .catch((error) => {
-//         console.log(error.response.data);
-//       });
-//   };
-  console.log(selectedData);
-  const handlekey = (e) => {
-    if (e.charCode < 48 || e.charCode > 57) {
-      e.preventDefault();
-    }
   };
   useEffect(() => {
     updatecountry();
@@ -1959,29 +138,369 @@ const handpechangepro = () => {
         console.group(error.response.data.message);
       });
   };
-  const postData = () => {
-    const data3 = {
-      origin: data1.origin,
-      destination: data1.destination,
-      startDate: data1.startDate,
-      endDate: data1.endDate,
-      freightType: data1.freight,
-      freightSpeed: data1.type,
-      user_id:userid,
-        user_type:usertype,
+  const handleOpenModalWarehouse = () => {
+    setOrderId122(false);
+    setProdata({
+      goods_description: "",
+      ware_receipt_no: "",
+      total_dimension: "",
+      total_weight: "",
+      cartons: "",
+      express_no: "",
+      supplier_contact_no: "",
+      CBM: "",
+      warehousing_date: "",
+      freight: "",
+      collection_from: "",
+      delivery_to: "",
+      client_name: "",
+      supplier_id: "",
+    });
+    setIsModalOpenWarehouse(true);
+  };
+  const handleCloseModalWarehouse = () => {
+    setIsModalOpenWarehouse(false);
+  };
+  const handlekey = (e) => {
+    if (e.charCode < 44 || e.charCode > 57) {
+      e.preventDefault();
+    }
+  };
+  const handlechangewarehouse = (e) => {
+    const { name, value } = e.target;
+    setProdata({ ...prodata, [name]: value });
+  };
+  const datauserId = JSON.parse(localStorage.getItem("data123"));
+  const postDataWarehouse = async () => {
+    const payload = {
+      goods_description: prodata.goods_description,
+      ware_receipt_no: prodata.ware_receipt_no,
+      total_dimension: prodata.total_dimension,
+      total_weight: prodata.total_weight,
+      cartons: prodata.cartons,
+      freight: prodata.freight,
+      express_no: prodata.express_no,
+      supplier_contact_no: prodata.supplier_contact_no,
+      CBM: prodata.CBM,
+      warehousing_date: prodata.warehousing_date,
+      collection_from: prodata.collection_from,
+      delivery_to: prodata.delivery_to,
+      client_name: prodata.client_name,
+      supplier_id: datauserId.id,
     };
+    const payload1 = {
+      goods_description: prodata.goods_description,
+      ware_receipt_no: prodata.ware_receipt_no,
+      total_dimension: prodata.total_dimension,
+      total_weight: prodata.total_weight,
+      cartons: prodata.cartons,
+      express_no: prodata.carexpress_notons,
+      freight: prodata.freight,
+      supplier_contact_no: prodata.supplier_contact_no,
+      CBM: prodata.CBM,
+      warehousing_date: prodata.warehousing_date,
+      collection_from: prodata.collection_from,
+      delivery_to: prodata.delivery_to,
+      client_name: prodata.client_name,
+      supplier_id: prodata.supplier_id,
+    };
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}createOrderAndWarehouse`,
+      warehouseID ? payload1 : payload,
+    );
+    if (response.data.success === true) {
+      toast.success(response.data.message);
+      handleCloseModalWarehouse();
+      getData();
+    } else {
+      toast.error(response.data.message);
+    }
+  };
+  const sdsdsd = (id) => {
+    setOrderId122(true);
+    setWarehouseID(id.id);
+    setProdata(id);
+    setIsModalOpenWarehouse(true);
+  };
+  const deletewarehouse = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        proceedToDelete(id);
+      }
+    });
+  };
+  const proceedToDelete = async (id) => {
+    const payload = {
+      warehouse_id: id,
+    };
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}deleteWarehouse`,
+      payload,
+    );
+    if (response.data.success === true) {
+      toast.success(response.data.message);
+      getData();
+    } else {
+      toast.error(response.data.message);
+    }
+  };
+  const updateWarehouse = async () => {
+    const payload = {
+      warehouse_id: warehouseID,
+      warehouse_name: prodata.warehouse_name,
+      warehouse_address: prodata.warehouse_address,
+      country: prodata.country,
+      town: prodata.town,
+      warehouse_number: prodata.warehouse_number,
+      mobile_number: prodata.mobile_number,
+      email: prodata.email,
+      contact_person: prodata.contact_person,
+      user_id: userId,
+      user_type: 2,
+    };
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}getAssignedOrdersBySupplier`,
+      payload,
+    );
+    if (response.data.success) {
+      toast.success("Warehouse Updated Successfully");
+      handleCloseModalWarehouse();
+      getData();
+    } else {
+      toast.error(response.data.message);
+    }
+  };
+
+  const handleProduct = (item) => {
+    console.log(item);
+    setDataProduct(item);
+    setProductModalOpen(true);
+  };
+  const handleProductview = (item) => {
+    setSelectedDocs(item.products);
+    setModalproduct(true);
+    // navigate(`/warehouse-product-view/${item.warehouse_id}`);
+  };
+  const setModalproduct33 = () => {
+    setModalproduct(false);
+  };
+  const closesetProductModalOpen = () => {
+    setProductModalOpen(false);
+  };
+  const handlechangegetdatainput = (e) => {
+    const { name, value } = e.target;
+    setProductData({ ...productData, [name]: value });
+  };
+  const handleClickAssdsdsdsignId = async () => {
+    const tracking_id = `OR000${dataProduct.order_id}`;
+    const payload = {
+      user_id: datauserId.id,
+      order_id: dataProduct.order_id,
+      added_by: "4",
+      warehouse_order_id: dataProduct.warehouse_id,
+      product_description: productData.product_description,
+      Hazardous: productData.Hazardous,
+      date_received: productData.date_received,
+      package_type: productData.package_type,
+      packages: productData.packages,
+      dimension: productData.dimension,
+      weight: productData.weight,
+      warehouse_ref: productData.warehouse_ref,
+      freight: productData.freight,
+      groupage_batch_ref: productData.groupage_batch_ref,
+      supplier: productData.supplier,
+      warehouse_receipt_number: productData.warehouse_receipt_number,
+      tracking_number: tracking_id,
+      date_dspatched: productData.date_dspatched,
+      supplier_address: productData.supplier_address,
+      warehouse_collect: productData.warehouse_collect,
+      costs_to_collect: productData.costs_to_collect,
+      port_of_loading: productData.port_of_loading,
+      warehouse_dispatch: productData.warehouse_dispatch,
+      warehouse_cost: productData.warehouse_cost,
+      cost_to_dispatch: productData.cost_to_dispatch,
+      waybill_ref: productData.waybill_ref,
+      supplier_Email: productData.supplier_Email,
+      Supplier_Contact: productData.Supplier_Contact,
+    };
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}addWarehouseProduct`,
+      payload,
+    );
+    if (response.data.success === true) {
+      toast.success(response.data.message);
+      closesetProductModalOpen();
+      getData();
+    } else {
+      toast.error(response.data.message);
+    }
+  };
+
+  const editmodalopen1 = (item) => {
+    console.log(item);
+    setEditmodalopen(true);
+    setEditDtaawarehouse(item);
+    // setEditDtaawarehouse
+  };
+
+  const editmodalclose1 = () => {
+    setEditmodalopen(false);
+  };
+
+  const editwarehouse = async () => {
+    console.log(editDtaawarehouse);
+    try {
+      const payload = {
+        order_id: editDtaawarehouse.order_id,
+        goods_description: editDtaawarehouse.goods_description,
+        ware_receipt_no: editDtaawarehouse.ware_receipt_no,
+        total_dimension: editDtaawarehouse.total_dimension,
+        total_weight: editDtaawarehouse.total_weight,
+        cartons: editDtaawarehouse.cartons,
+        express_no: editDtaawarehouse.express_no,
+        supplier_contact_no: editDtaawarehouse.supplier_contact_no,
+        CBM: editDtaawarehouse.CBM,
+        warehousing_date: editDtaawarehouse.warehousing_date,
+        collection_from: editDtaawarehouse.collection_from,
+        delivery_to: editDtaawarehouse.delivery_to,
+        client_name: editDtaawarehouse.client_name,
+        supplier_id: editDtaawarehouse.supplier_id,
+        freight: editDtaawarehouse.freight_type,
+        supplier_id: userId,
+        user_type: 2,
+      };
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,
+        payload,
+      );
+      if (response.data.success) {
+        toast.success("Warehouse Updated Successfully");
+        editmodalclose1();
+        getData();
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Error updating warehouse");
+    }
+  };
+
+  const handlechnageeditwarehouse = (e) => {
+    const { name, value } = e.target;
+    setEditDtaawarehouse({ ...editDtaawarehouse, [name]: value });
+  };
+
+  const editmodalopen1product = (item) => {
+    setProductData(item);
+    setProductModalOpen1(true);
+  };
+
+  const closeeditprocutmodal = () => {
+    setProductModalOpen1(false);
+  };
+  const editproduct123 = async () => {
+    console.log(productData);
+    try {
+      const payload = {
+        warehouse_products_id: productData.id,
+        product_description: productData.product_description,
+        Hazardous: productData.Hazardous,
+        date_received: productData.date_received,
+        package_type: productData.package_type,
+        packages: productData.packages,
+        dimension: productData.dimension,
+        weight: productData.weight,
+        warehouse_ref: productData.warehouse_ref,
+        freight: productData.freight,
+        groupage_batch_ref: productData.groupage_batch_ref,
+        supplier: productData.supplier,
+        warehouse_receipt_number: productData.warehouse_receipt_number,
+        tracking_number: productData.tracking_number,
+        date_dspatched: productData.date_dspatched,
+        supplier_address: productData.supplier_address,
+        warehouse_collect: productData.warehouse_collect,
+        costs_to_collect: productData.costs_to_collect,
+        port_of_loading: productData.port_of_loading,
+        warehouse_dispatch: productData.warehouse_dispatch,
+        warehouse_cost: productData.warehouse_cost,
+        cost_to_dispatch: productData.cost_to_dispatch,
+        waybill_ref: productData.waybill_ref,
+        supplier_Email: productData.supplier_Email,
+        Supplier_Contact: productData.Supplier_Contact,
+      };
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}updateWareHouseProductBySupplier`,
+        payload,
+      );
+      if (response.data.success === true) {
+        toast.success(response.data.message);
+        getData();
+        closeeditprocutmodal();
+        setModalproduct33();
+        editmodalclose1();
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Error updating product");
+    }
+  };
+
+  useEffect(() => {
+    getClient();
+  }, []);
+  const getClient = () => {
     axios
-      .post(`${process.env.REACT_APP_BASE_URL}GetWarehouseOrders`, data3)
+      .get(`${process.env.REACT_APP_BASE_URL}client-list`)
       .then((response) => {
         console.log(response.data.data);
-        if (response.data.success === true) {
-          handleCloseModal2();
-          setData(response.data.data);
-        }
+        setLcientlist(response.data.data);
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        console.log(error.response.data);
       });
+  };
+  const options = lcientlist.map((item) => ({
+    value: item.id,
+    clientemail: item.email,
+    label: item.full_name,
+    clientrefval: item.client_ref,
+  }));
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      textAlign: "center",
+      height: "40px",
+      padding: "",
+      minHeight: "40px",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      textAlign: "center",
+      overflow: "visible",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      textAlign: "center",
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: "0px",
+    }),
+    input: (provided) => ({
+      ...provided,
+      margin: "0",
+      padding: "0",
+    }),
   };
   return (
     <>
@@ -2008,7 +527,7 @@ const handpechangepro = () => {
                         onChange={handleSearch}
                       ></input>
                     </div>
-                    <div className="ms-1">
+                    {/* <div className="ms-1">
                       <Button
                         variant="contained"
                         onClick={() => {
@@ -2016,6 +535,16 @@ const handpechangepro = () => {
                         }}
                       >
                         Filter
+                      </Button>
+                    </div> */}
+                    <div className="ms-1">
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          handleOpenModalWarehouse();
+                        }}
+                      >
+                        Add Warehouse
                       </Button>
                     </div>
                   </div>
@@ -2029,9 +558,9 @@ const handpechangepro = () => {
                     <div className="table-responsive">
                       <table className="table table-striped tableICon">
                         <tbody>
-                          {currentData &&
-                            currentData.length > 0 &&
-                            currentData.map((item) => {
+                          {data &&
+                            data.length > 0 &&
+                            data.map((item) => {
                               return (
                                 <>
                                   <tr key={item.id}>
@@ -2043,7 +572,8 @@ const handpechangepro = () => {
                                               className="client_nm"
                                               style={{ fontSize: "18px" }}
                                             >
-                                              {item.client_name}
+                                              {item.client_name} / OR000
+                                              {item.order_id}
                                             </p>
                                             <p
                                               className="fright_no mx-2"
@@ -2055,7 +585,7 @@ const handpechangepro = () => {
                                           <div className="">
                                             <p className="port_date">
                                               {new Date(
-                                                item.date
+                                                item.warehousing_date,
                                               ).toLocaleDateString("en-GB")}
                                             </p>
                                           </div>
@@ -2067,7 +597,7 @@ const handpechangepro = () => {
                                                 className="origin"
                                                 style={{ fontSize: "14px" }}
                                               >
-                                                {item.product_desc}
+                                                {item.goods_description}
                                               </p>
                                             </div>
                                           </div>
@@ -2094,50 +624,39 @@ const handpechangepro = () => {
                                           <div className="col-md-2">
                                             <div className="text-center">
                                               <p className="origin">
-                                                {item.nature_of_hazard}
+                                                <Button
+                                                  variant="contained"
+                                                  onClick={() => {
+                                                    handleProduct(item);
+                                                  }}
+                                                >
+                                                  Add Product
+                                                </Button>
                                               </p>
                                             </div>
                                           </div>
-                                          <div className="col-md-2">
-                                            <div className="text-end">
-                                              <div className="dropdown">
-                                                <select
+                                          <div className="col-md-2 d-flex">
+                                            <div className="text-center">
+                                              <p className="origin">
+                                                <VisibilityIcon
                                                   onClick={() => {
-                                                    getAllBatch(item);
+                                                    handleProductview(item);
                                                   }}
-                                                  onChange={(e) =>
-                                                    handleBatchChange(e, item)
-                                                  }
-                                                  name="dropval"
-                                                  value={item?.dropval}
-                                                  className="py-1 ps-1 sel_batches"
                                                   style={{ cursor: "pointer" }}
-                                                >
-                                                  <option
-                                                    className="op_tion"
-                                                    value=""
-                                                  >
-                                                    Select Batch
-                                                  </option>
-                                                  {batch &&
-                                                    batch.length > 0 &&
-                                                    batch.map(
-                                                      (batchItem, index) => (
-                                                        <option
-                                                          className="op_tion"
-                                                          key={index}
-                                                          value={
-                                                            batchItem.batch_id
-                                                          }
-                                                        >
-                                                          {
-                                                            batchItem.batch_number
-                                                          }
-                                                        </option>
-                                                      )
-                                                    )}
-                                                </select>
-                                              </div>
+                                                />
+                                              </p>
+                                            </div>
+                                            <div className="text-center">
+                                              <p className="origin">
+                                                <div>
+                                                  <i
+                                                    className="fi fi-rr-edit edit_icon mx-2"
+                                                    onClick={() =>
+                                                      editmodalopen1(item)
+                                                    }
+                                                  ></i>
+                                                </div>
+                                              </p>
                                             </div>
                                           </div>
                                         </div>
@@ -2171,50 +690,6 @@ const handpechangepro = () => {
                                               )}
                                             </div>
                                           </div>
-                                          <div className="col-md-6 text-end">
-                                            <FaEdit
-                                              onClick={() =>
-                                                handleEditClick(
-                                                  item.freight_ID,
-                                                  item.warehouse_assign_order_id,
-                                                  item.order_id
-                                                )
-                                              }
-                                              style={{
-                                                color: "#1d2044",
-                                                cursor: "pointer",
-                                              }}
-                                            />
-                                            <DeleteIcon
-                                              onClick={() =>
-                                                handleEditClick12(
-                                                  item.warehouse_assign_order_id,
-                                                  item.order_id,
-                                                  item.freight_id
-                                                )
-                                              }
-                                              style={{
-                                                color: "#1d2044",
-                                                cursor: "pointer",
-                                              }}
-                                            />
-                                            <VisibilityIcon
-                                              onClick={() =>
-                                                handleclicknavi(item)
-                                              }
-                                              style={{
-                                                color: "rgb(27 34 69)",
-                                                cursor: "pointer",
-                                                width: "20px",
-                                              }}
-                                            />
-                                            <PictureAsPdfIcon
-                                              style={{ cursor: "pointer" }}
-                                              onClick={() => {
-                                                handleclickrevert123(item);
-                                              }}
-                                            />
-                                          </div>{" "}
                                         </div>
                                       </div>
                                     </td>
@@ -2243,44 +718,8 @@ const handpechangepro = () => {
                       </div>
                       <ToastContainer />
                       <Modal
-                        open={isModalOpen1}
-                        onClose={closeModal1}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                      >
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            height: 300,
-                            width: 450,
-                            bgcolor: "background.paper",
-                            boxShadow: 24,
-                            p: 4,
-                          }}
-                        >
-                          <h4 id="modal-modal-title">Add Excel</h4>
-                          <input
-                            type="file"
-                            accept=".xlsx,.xls"
-                            onChange={handleFileChange}
-                            className="mb-3 border ps-2 py-2 rounded w-100"
-                            style={{ display: "block", marginTop: "16px" }}
-                          />
-                          <Button
-                            variant="contained"
-                            className="submit_btn"
-                            onClick={postData1}
-                          >
-                            Submit
-                          </Button>
-                        </Box>
-                      </Modal>
-                      <Modal
-                        open={isModalOpen2}
-                        onClose={handleCloseModal2}
+                        open={modalproduct}
+                        onClose={setModalproduct33}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                       >
@@ -2293,10 +732,97 @@ const handpechangepro = () => {
                           }}
                         >
                           <div className="modal-header">
-                            <h2 id="modal-modal-title">Filter</h2>
+                            <h2 id="modal-modal-title">
+                              Warehouse Products View
+                            </h2>
                             <button
                               className="btn btn-close"
-                              onClick={handleCloseModal2}
+                              onClick={setModalproduct33}
+                            >
+                              <CloseIcon />
+                            </button>
+                          </div>
+                          <div className="newModalGap noFormaControl">
+                            <table className="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th>Product Description</th>
+                                  <th>Hazardous</th>
+                                  <th>Date</th>
+                                  <th>Dimension</th>
+                                  <th>Freight</th>
+                                  <th>Groupage Batch</th>
+                                  <th>Package Type</th>
+                                  <th>Packages</th>
+                                  <th>Tracking Nn</th>
+                                  <th>Warehouse Rec No</th>
+                                  <th>Warehouse Ref</th>
+                                  <th>Weight</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {selectedDocs && selectedDocs.length > 0 ? (
+                                  selectedDocs.map((doc, index) => (
+                                    <tr key={index}>
+                                      <td>{doc?.product_description}</td>
+                                      <td>{doc?.Hazardous}</td>
+                                      <td>
+                                        {new Date(
+                                          doc?.date_received,
+                                        ).toLocaleDateString("en-GB")}
+                                      </td>
+                                      <td>{doc?.dimension}</td>
+                                      <td>{doc?.freight}</td>
+                                      <td>{doc?.groupage_batch_ref}</td>
+                                      <td>{doc?.package_type}</td>
+                                      <td>{doc?.packages}</td>
+                                      <td>{doc?.tracking_number}</td>
+                                      <td>{doc?.warehouse_receipt_number}</td>
+                                      <td>{doc?.warehouse_ref}</td>
+                                      <td>{doc?.weight}</td>
+                                      <td>
+                                        <button
+                                          className="btn btn-sm btn-primary"
+                                          onClick={() => {
+                                            // setEditDtaawProduct(doc);
+                                            editmodalopen1product(doc);
+                                          }}
+                                        >
+                                          Edit
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  ))
+                                ) : (
+                                  <tr>
+                                    <td colSpan="2">No documents available.</td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        </Box>
+                      </Modal>
+                      <Modal
+                        open={editmodalopen}
+                        onClose={editmodalclose1}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                      >
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        >
+                          <div className="modal-header">
+                            <h2 id="modal-modal-title">Edit Warehouse</h2>
+                            <button
+                              className="btn btn-close"
+                              onClick={editmodalclose1}
                             >
                               <CloseIcon />
                             </button>
@@ -2304,796 +830,890 @@ const handpechangepro = () => {
                           <div className="newModalGap noFormaControl">
                             <div className="row my-3  ">
                               <div className="col-6">
-                                <label>Delivery Type</label>
-                                <select name="type" onChange={handlechange}>
-                                  <option value="">Select</option>
-                                  <option value="express">Express</option>
-                                  <option value="normal">Consolidation</option>
-                                </select>
-                              </div>
-                              <div className="col-6">
-                                <label>Priority </label>
-                                <div className="shipRefer1 d-flex">
-                                  <div>
-                                    <input
-                                      type="radio"
-                                      id="shipper"
-                                      name="priority"
-                                      style={{ cursor: "pointer" }}
-                                      value="High"
-                                      onChange={handlechange}
-                                    />
-                                    <label htmlFor="shipper">High</label>
-                                  </div>
-                                  <div>
-                                    <input
-                                      type="radio"
-                                      id="shipper2"
-                                      style={{ cursor: "pointer" }}
-                                      name="priority"
-                                      value="Medium"
-                                      onChange={handlechange}
-                                    />
-                                    <label htmlFor="consignee">Medium</label>
-                                  </div>
-                                  <div>
-                                    <input
-                                      type="radio"
-                                      id="shipper3"
-                                      name="priority"
-                                      style={{ cursor: "pointer" }}
-                                      value="Low"
-                                      onChange={handlechange}
-                                    />
-                                    <label htmlFor="mediumPr">Low</label>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <div className="col-6">
-                                <label>Country of Origin</label>
-                                <select name="origin" onChange={handlechange}>
-                                  <option value="">Select</option>
-                                  {updatedata &&
-                                    updatedata.length > 0 &&
-                                    updatedata.map((item, index) => {
-                                      return (
-                                        <>
-                                          <option value={item.id}>
-                                            {item.name}
-                                          </option>
-                                        </>
-                                      );
-                                    })}
-                                </select>
-                              </div>
-                              <div className="col-6">
-                                <label>Delivery to Country </label>
-                                <select
-                                  name="destination"
-                                  onChange={handlechange}
-                                >
-                                  <option value="">Select</option>
-                                  {updatedata &&
-                                    updatedata.length > 0 &&
-                                    updatedata.map((item, index) => {
-                                      return (
-                                        <>
-                                          <option value={item.id}>
-                                            {item.name}
-                                          </option>
-                                        </>
-                                      );
-                                    })}
-                                </select>
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <div className="col-6">
-                                <label>Start Date</label>
+                                <label>Goods Description</label>
                                 <input
-                                  type="date"
-                                  id="shipper3"
-                                  name="startDate"
-                                  style={{ cursor: "pointer" }}
                                   className="form-control"
-                                  onChange={handlechange}
-                                />
+                                  value={editDtaawarehouse.goods_description}
+                                  name="goods_description"
+                                  onChange={handlechnageeditwarehouse}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
                               <div className="col-6">
-                                <label>End Date </label>
+                                <label>Warehouse Receipt Number</label>
                                 <input
-                                  type="date"
-                                  id="shipper3"
-                                  name="endDate"
-                                  style={{ cursor: "pointer" }}
                                   className="form-control"
-                                  onChange={handlechange}
-                                />
+                                  name="ware_receipt_no"
+                                  value={editDtaawarehouse.ware_receipt_no}
+                                  onChange={handlechnageeditwarehouse}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
-                            </div>
-                            <div className="row mb-3">
                               <div className="col-6">
                                 <label>Freight</label>
-                                <select name="freight" onChange={handlechange}>
-                                  <option value="">Select...</option>
+                                <select
+                                  className="form-control"
+                                  name="freight_type"
+                                  value={editDtaawarehouse.freight_type}
+                                  onChange={handlechnageeditwarehouse}
+                                >
+                                  <option>select</option>
                                   <option value="Sea">Sea</option>
                                   <option value="Air">Air</option>
                                   <option value="Road">Road</option>
                                 </select>
                               </div>
                             </div>
-                            <Button variant="contained" onClick={postData}>
-                              Apply
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Country of Origin</label>
+                                <select
+                                  name="collection_from"
+                                  value={editDtaawarehouse.collection_from}
+                                  onChange={handlechnageeditwarehouse}
+                                >
+                                  <option value="">Select</option>
+                                  {updatedata &&
+                                    updatedata.length > 0 &&
+                                    updatedata.map((item, index) => {
+                                      return (
+                                        <>
+                                          <option value={item.id}>
+                                            {item.name}
+                                          </option>
+                                        </>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>Delivery To</label>
+                                <select
+                                  name="delivery_to"
+                                  value={editDtaawarehouse.delivery_to}
+                                  onChange={handlechnageeditwarehouse}
+                                >
+                                  <option value="">Select</option>
+                                  {updatedata &&
+                                    updatedata.length > 0 &&
+                                    updatedata.map((item, index) => {
+                                      return (
+                                        <>
+                                          <option value={item.id}>
+                                            {item.name}
+                                          </option>
+                                        </>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Total Dimension</label>
+                                <input
+                                  className="form-control"
+                                  name="total_dimension"
+                                  value={editDtaawarehouse.total_dimension}
+                                  onChange={handlechnageeditwarehouse}
+                                  onKeyPress={handlekey}
+                                  placeholder="00*00*00"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Total Weight</label>
+                                <input
+                                  className="form-control"
+                                  name="total_weight"
+                                  value={editDtaawarehouse.total_weight}
+                                  onChange={handlechnageeditwarehouse}
+                                  placeholder="Total Weight"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Cartons</label>
+                                <input
+                                  className="form-control"
+                                  name="cartons"
+                                  value={editDtaawarehouse.cartons}
+                                  onChange={handlechnageeditwarehouse}
+                                  placeholder="000"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Express Number</label>
+                                <input
+                                  className="form-control"
+                                  value={editDtaawarehouse.express_no}
+                                  name="express_no"
+                                  onChange={handlechnageeditwarehouse}
+                                  placeholder="express_no"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Supplier Contact Number</label>
+                                <input
+                                  className="form-control"
+                                  name="supplier_contact_no"
+                                  value={editDtaawarehouse.supplier_contact_no}
+                                  onChange={handlechnageeditwarehouse}
+                                  placeholder="000"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>CBM</label>
+                                <input
+                                  className="form-control"
+                                  value={editDtaawarehouse.CBM}
+                                  name="CBM"
+                                  onChange={handlechnageeditwarehouse}
+                                  placeholder="CBM"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Warehousing Date</label>
+                                <input
+                                  type="date"
+                                  className="form-control"
+                                  name="warehousing_date"
+                                  value={
+                                    editDtaawarehouse?.warehousing_date
+                                      ? editDtaawarehouse.warehousing_date.split(
+                                          "T",
+                                        )[0]
+                                      : ""
+                                  }
+                                  onChange={handlechnageeditwarehouse}
+                                />
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Client Name</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="client_name"
+                                  value={editDtaawarehouse.client_name}
+                                  onChange={handlechnageeditwarehouse}
+                                  placeholder="000"
+                                ></input>
+                              </div>
+                            </div>
+                            <Button
+                              variant="contained"
+                              onClick={() => editwarehouse(editDtaawarehouse)}
+                            >
+                              Update
                             </Button>
                           </div>
                         </Box>
                       </Modal>
                       <Modal
-                        open={isModalOpen}
-                        onClose={handleCloseModal}
-                        aria-labelledby="modal-title"
-                        aria-describedby="modal-description"
-                        className="editWare"
+                        open={isModalOpenWarehouse}
+                        onClose={handleCloseModalWarehouse}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
                       >
-                        <Box sx={style1}>
-                          <div className="modal-header">
-                            <h2 id="modal-modal-title">Edit Warehouse Order</h2>
-                            <button
-                              className="btn btn-close"
-                              onClick={handleCloseModal}
-                            >
-                              <CloseIcon />
-                            </button>
-                          </div>
-                          <div className="newModalGap">
-                            <div className="text-center">
-                              <div className="d-flex justify-content-between">
-                                <div
-                                  className="fs-3 border rounded-circle px-2 bg-dark text-white"
-                                  style={{
-                                    cursor: "pointer",
-                                    height: 40,
-                                    width: 40,
-                                  }}
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
-                                  onClick={handleCloseModal}
-                                >
-                                  +
-                                </div>
-                              </div>
-                            </div>
-                            {selectedData && (
-                              <form onSubmit={handleSubmit} className="pt-3">
-                                <Grid container spacing={2}>
-                                  <Grid
-                                    item
-                                    xs={12}
-                                    sm={6}
-                                    className="warehouse_ord"
-                                  >
-                                    <TextField
-                                      fullWidth
-                                      label="Warehouse Receipt No"
-                                      variant="outlined"
-                                      name="ware_receipt_no"
-                                      value={selectedData.ware_receipt_no || ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Waybill"
-                                      variant="outlined"
-                                      name="tracking_number"
-                                      value={selectedData.tracking_number || ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Warehouse Status"
-                                      variant="outlined"
-                                      name="warehouse_status"
-                                      value={
-                                        selectedData.warehouse_status || ""
-                                      }
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Warehouse Collect"
-                                      variant="outlined"
-                                      name="warehouse_collect"
-                                      value={
-                                        selectedData.warehouse_collect || ""
-                                      }
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Date Received"
-                                      type="date"
-                                      variant="outlined"
-                                      name="date_received"
-                                      InputLabelProps={{
-                                        shrink: true,
-                                      }}
-                                      value={selectedData.date_received || ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Package Type"
-                                      variant="outlined"
-                                      name="package_type"
-                                      value={selectedData.package_type || ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Total Packages"
-                                      variant="outlined"
-                                      name="no_of_packages"
-                                      value={selectedData.no_of_packages || ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Dimension"
-                                      variant="outlined"
-                                      name="total_dimension"
-                                      value={selectedData.total_dimension || ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Costs to collect"
-                                      variant="outlined"
-                                      name="costs_to_collect"
-                                      value={
-                                        selectedData.costs_to_collect || ""
-                                      }
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Warehouse Cost"
-                                      variant="outlined"
-                                      name="warehouse_cost"
-                                      value={selectedData.warehouse_cost || ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Warehouse Dispatch"
-                                      variant="outlined"
-                                      name="warehouse_dispatch"
-                                      value={
-                                        selectedData.warehouse_dispatch || ""
-                                      }
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Cost to Dispatch"
-                                      variant="outlined"
-                                      name="cost_to_dispatch"
-                                      value={
-                                        selectedData.cost_to_dispatch || ""
-                                      }
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} sm={6}>
-                                    <TextField
-                                      fullWidth
-                                      label="Weight"
-                                      variant="outlined"
-                                      name="weight"
-                                      value={selectedData.weight || ""}
-                                      onChange={handleInputChange}
-                                    />
-                                  </Grid>
-                                  {/* <Grid item xs={12} sm={6}>
-                          {/* <label>Select Document </label> */}
-                          {/* <select name="documentName" className="w-100 py-3"  onChange={handleInputChange}>
-                            <option value="">Select Document</option>
-                            <option value="Warehouse Entry Docs">  Shipper Docs</option>
-                            <option value="Warehouse Entry Docs">Warehouse Docs</option>
-                            <option value="Invoice, Packing List">Invoice / Packing </option>
-                            <option value="Product Literature">Product Literature</option>
-                            <option value="Letters of Authority">LOA</option>
-                          </select> */}
-                            <div className="row mb-3 mt-4">
-                                                          <div className="col-9 mt-3">
-                                                            <h4 className="freight_hd">Document Section</h4>
-                                                            <span class="line"></span>
-                                                          </div>
-                                                          <div className="col-3">
-                                        <Button className="btn  btn-primary" onClick={handleShow}>
-                                                  Upload Documents
-                                                </Button>
-                                                               
-                                                               {
-                                                                show1 ? <Modal
-                                                open={show1}
-                                                onClose={handleClose}
-                                                slotProps={{
-                                                  backdrop: {
-                                                    sx: { backgroundColor: "rgba(0,0,0,0.2)" }, // lighter background
-                                                  },
-                                                }}
-                                              >
-                                                <Box
-                                                  sx={{
-                                                    p: 3,
-                                                    bgcolor: "background.paper",
-                                                    borderRadius: 2,
-                                                    width: 500,
-                                                    mx: "auto",
-                                                    mt: 10,
-                                                  }}
-                                                >
-                                                  <h2>Upload Documents</h2>
-                                        
-                                                  {/* Dropdown */}
-                                                  <FormControl fullWidth sx={{ mt: 2 }}>
-                                                    <InputLabel id="doc-select-label">Select Document Type</InputLabel>
-                                                    <Select
-                                                      labelId="doc-select-label"
-                                                      // value={selected}
-                                                      onChange={handleSelect}
-                                                    >
-                                                      {docOptions.map((option) => (
-                                                        <MenuItem key={option.id} value={option.id}>
-                                                          {option.label}
-                                                        </MenuItem>
-                                                      ))}
-                                                    </Select>
-                                                  </FormControl>
-                                        
-                                                  {/* Dynamic file inputs */}
-                                                  <div className="mt-3">
-                                                    {selectedDocs.map((doc, index) => (
-                                                      <div key={index} className="mb-3">
-                                                        <label className="fw-bold">{doc.name}</label>
-                                                        <input
-                                                          type="file"
-                                                          className="form-control"
-                                                          multiple
-                                                          accept="image/*,application/pdf"
-                                                          onChange={(e) => handleFileChangefil(e, doc.name)}
-                                                        />
-                                                      </div>
-                                                    ))}
-                                                  </div>
-                                        
-                                                  {/* Footer buttons */}
-                                                  <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}>
-                                                    <Button onClick={handleClose}>Cancel</Button>
-                                                    <Button variant="contained" color="success" onClick={handleSave}>
-                                                      Save Documents
-                                                    </Button>
-                                                  </Box>
-                                                </Box>
-                                              </Modal> : ""
-                                                               }   
-                                                          </div>
-                                                        </div>
-                                  {/* </Grid> */}
-                                  {/* <Grid item xs={12} sm={12}>
-                                    
-                          <label>Upload Document</label>
-                          <input
-                            type="file"
-                            multiple
-                            className="w-100 mb-3 rounded"
-                            onChange={(e) =>
-                              handleFileChange123(e, "other_documents")
-                            }
-                          />
-                        </Grid> */} 
-                                </Grid>
-                                <Box
-                                  mt={3}
-                                  display="flex"
-                                  justifyContent="space-between"
-                                >
-                                  <div className="unsetLt">
-                                    <Button
-                                      variant="contained"
-                                      className="save_btn text-center"
-                                      onClick={handleSubmit}
-                                    >
-                                      Submit
-                                    </Button>
-                                  </div>
-                                </Box>
-                              </form>
-                            )}
-                          </div>
-                        </Box>
-                      </Modal>
-                      <Modal open={isModalOpen3} onClose={handleCloseModal3}>
                         <Box
                           sx={{
                             position: "absolute",
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
-                            width: "80%",
-                            bgcolor: "background.paper",
-                            boxShadow: 24,
-                            p: 4,
-                            borderRadius: 2,
-                            maxHeight: "90vh",
-                            overflowY: "auto",
                           }}
                         >
-                          <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            mb={2}
-                          >
-                            <Typography variant="h6">
-                              Warehouse Detail
-                            </Typography>
-                            <IconButton onClick={handleCloseModal3}>
+                          <div className="modal-header">
+                            <h2 id="modal-modal-title">
+                              {orderID122 ? "Edit Warehouse" : "Add Warehouse"}
+                            </h2>
+                            <button
+                              className="btn btn-close"
+                              onClick={handleCloseModalWarehouse}
+                            >
                               <CloseIcon />
-                            </IconButton>
-                          </Box>
-
-                          {/* Your form fields go here (input/select) */}
-                          <div className="newModalGap  noFormaControl">
-                            <div className="row mb-3">
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Product Description
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="product description"
-                                  onChange={handlechangepro}
-                                  name="product_description"
+                            </button>
+                          </div>
+                          <div className="newModalGap noFormaControl">
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Client</label> <br />
+                                <Select
+                                  className="w-100"
+                                  value={selectedOption}
+                                  onChange={handlechangewarehouse}
+                                  options={options}
+                                  placeholder="Select..."
+                                  styles={customStyles}
+                                  isSearchable
                                 />
                               </div>
-                              <div className="col-md-6 noFormaControl">
-                                <label className="form-label">Harzadous</label>
+                              <div className="col-6">
+                                <label>Customer ref</label>
+                                <input
+                                  className="form-control"
+                                  value={prodata.customer_ref}
+                                  name="customer_ref"
+                                  onChange={handlechangewarehouse}
+                                  placeholder="customer ref"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Create new Freight Order</label>
                                 <select
-                                  onChange={handlechangepro}
-                                  name="Hazardous"
+                                  className="form-control"
+                                  name="create_freight_order"
+                                  value={prodata.create_freight_order}
+                                  onChange={handlechangewarehouse}
                                 >
-                                  <option>Select...</option>
+                                  <option value="">Select</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>Date</label>
+                                <input
+                                  type="date"
+                                  className="form-control"
+                                  value={prodata.date}
+                                  name="date"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                            </div>
+                            <h5>Package Information</h5>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Customer Name</label>
+                                <input
+                                  className="form-control"
+                                  value={prodata.customer_Name}
+                                  name="customer_Name"
+                                  onChange={handlechangewarehouse}
+                                  placeholder="customer name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Customer ref</label>
+                                <input
+                                  className="form-control"
+                                  value={prodata.customer_ref}
+                                  name="customer_ref"
+                                  onChange={handlechangewarehouse}
+                                  placeholder="customer name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Box Marking</label>
+                                <input
+                                  className="form-control"
+                                  name="box_marking"
+                                  value={prodata.box_marking}
+                                  onChange={handlechangewarehouse}
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Good Description</label>
+                                <input
+                                  type="Good Description"
+                                  className="form-control"
+                                  value={prodata.good_description}
+                                  name="good_description"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Good Description</label>
+                                <select
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.good_description}
+                                  name="good_description"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                >
+                                  <option value="">Select</option>
+                                  <option value="carte">carte</option>
+                                  <option value="pallet">pallet</option>
+                                  <option value="Box">Box</option>
+                                  <option value="Bag">Bag</option>
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>Hazardous</label>
+                                <select
+                                  type="type"
+                                  className="form-control"
+                                  value={prodata.hazardous}
+                                  name="hazardous"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                >
+                                  <option value="">Select</option>
                                   <option value="Yes">Yes</option>
                                   <option value="No">No</option>
                                 </select>
                               </div>
                             </div>
-                            <div className="row mb-3">
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Warehouse Ref.
-                                </label>
+                            <Button
+                              variant="contained"
+                              onClick={
+                                orderID122 ? updateWarehouse : postDataWarehouse
+                              }
+                            >
+                              {orderID122 ? "Update" : "Save"}
+                            </Button>
+                          </div>
+                        </Box>
+                      </Modal>
+                      <Modal
+                        open={productModalOpen1}
+                        onClose={closeeditprocutmodal}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                      >
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        >
+                          <div className="modal-header">
+                            <h2 id="modal-modal-title">
+                              Edit Warehouse Product
+                            </h2>
+                            <button
+                              className="btn btn-close"
+                              onClick={closeeditprocutmodal}
+                            >
+                              <CloseIcon />
+                            </button>
+                          </div>
+                          <div className="newModalGap noFormaControl">
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Goods Description</label>
                                 <input
-                                  type="text"
                                   className="form-control"
-                                  placeholder="warehouse reference"
-                                  name="warehouse_ref"
-                                  onChange={handlechangepro}
-                                />
+                                  name="product_description"
+                                  onChange={handlechangegetdatainput}
+                                  value={productData.product_description}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Data Received
-                                </label>
+                              <div className="col-6">
+                                <label>Hazardous</label>
+                                <input
+                                  className="form-control"
+                                  name="Hazardous"
+                                  onChange={handlechangegetdatainput}
+                                  value={productData.Hazardous}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Date Received</label>
                                 <input
                                   type="date"
                                   className="form-control"
-                                  placeholder=""
                                   name="date_received"
-                                  onChange={handlechangepro}
-                                />
+                                  value={productData.date_received}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
-                            </div>
-                            <div className="row mb-3">
-                              <div className="col-md-6 noFormaControl">
-                                <label className="form-label">
-                                  Package Type
-                                </label>
-                                <select
+                              <div className="col-6">
+                                <label>Package Type</label>
+                                <input
+                                  className="form-control"
                                   name="package_type"
-                                  onChange={handlechangepro}
-                                >
-                                  <option value="">Select...</option>
-                                  <option value="box">Box</option>
-                                  <option value="crate">Crate</option>
-                                  <option value="pallet">Pallet</option>
-                                  <option value="bags">Bags</option>
-                                </select>
+                                  value={productData.package_type}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Total Packages
-                                </label>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Packages</label>
                                 <input
-                                  type="text"
                                   className="form-control"
-                                  placeholder="0.00"
-                                  onKeyPress={handlekey}
                                   name="packages"
-                                  onChange={handlechangepro}
-                                />
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                  value={productData.packages}
+                                ></input>
                               </div>
-                            </div>
-                            <div className="row mb-3">
-                              <div className="col-md-6">
-                                <label className="form-label">Dimension</label>
+                              <div className="col-6">
+                                <label>Dimension</label>
                                 <input
-                                  type="text"
+                                  className="form-control"
                                   name="dimension"
-                                  className="form-control"
-                                  placeholder="0.00"
-                                  onChange={handlechangepro}
-                                  onKeyPress={handlekey}
-                                />
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                  value={productData.dimension}
+                                ></input>
                               </div>
-                              <div className="col-md-6">
-                                <label className="form-label">Weight</label>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Weight</label>
                                 <input
-                                  type="text"
+                                  className="form-control"
                                   name="weight"
-                                  className="form-control"
+                                  value={productData.weight}
+                                  onChange={handlechangegetdatainput}
                                   placeholder="0.00"
-                                  onKeyPress={handlekey}
-                                  onChange={handlechangepro}
-                                />
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Warehouse Ref</label>
+                                <input
+                                  className="form-control"
+                                  name="warehouse_ref"
+                                  value={productData.warehouse_ref}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
                             </div>
-                            <div className="row mb-3">
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Supplier Address
-                                </label>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Freight</label>
                                 <input
-                                  type="text"
+                                  className="form-control"
+                                  name="freight"
+                                  value={productData.freight}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Groupage Batch Ref</label>
+                                <input
+                                  className="form-control"
+                                  name="groupage_batch_ref"
+                                  onChange={handlechangegetdatainput}
+                                  value={productData.groupage_batch_ref}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Warehouse Receipt Number</label>
+                                <input
+                                  className="form-control"
+                                  name="warehouse_receipt_number"
+                                  value={productData.warehouse_receipt_number}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Date Dispatched</label>
+                                <input
+                                  className="form-control"
+                                  type="date"
+                                  name="date_dspatched"
+                                  value={productData.date_dspatched}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Supplier Address</label>
+                                <input
+                                  className="form-control"
                                   name="supplier_address"
-                                  className="form-control"
-                                  placeholder="0.00"
-                                  onChange={handlechangepro}
-                                />
+                                  value={productData.supplier_address}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Supplier</label>
+                              <div className="col-6">
+                                <label>Warehouse Collect</label>
                                 <input
-                                  type="text"
-                                  name="supplier"
                                   className="form-control"
-                                  placeholder="0.00"
-                                  onChange={handlechangepro}
-                                />
+                                  name="warehouse_collect"
+                                  value={productData.warehouse_collect}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
                             </div>
-
-                            <div className="row mb-3">
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Warehouse  Order
-                                </label>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Costs To Collect</label>
                                 <input
-                                  type="text"
-                                  name="warehouse_order_id"
                                   className="form-control"
-                                  placeholder="0.00"
-                                  onChange={handlechangepro}
-                                  onKeyPress={handlekey}
-                                />
-                              </div>
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Costs to Collect
-                                </label>
-                                <input
-                                  type="text"
                                   name="costs_to_collect"
+                                  value={productData.costs_to_collect}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Port Of Loading</label>
+                                <input
                                   className="form-control"
-                                  placeholder="0.00"
-                                  onKeyPress={handlekey}
-                                  onChange={handlechangepro}
-                                />
+                                  name="port_of_loading"
+                                  value={productData.port_of_loading}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
                             </div>
-                            <div className="row mb-3">
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Warehouse dispatch
-                                </label>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Warehouse Dispatch</label>
                                 <input
-                                  type="text"
+                                  className="form-control"
                                   name="warehouse_dispatch"
-                                  className="form-control"
-                                  placeholder="0.00"
-                                  onChange={handlechangepro}
-                                />
+                                  value={productData.warehouse_dispatch}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Waybill Ref
-                                </label>
+                              <div className="col-6">
+                                <label>Warehouse Cost</label>
                                 <input
-                                  type="text"
-                                  name="waybill_ref"
                                   className="form-control"
-                                  placeholder="0.00"
-                                  onChange={handlechangepro}
-                                />
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Warehouse Cost
-                                </label>
-                                <input
-                                  type="text"
                                   name="warehouse_cost"
-                                  className="form-control"
-                                  placeholder="0.00"
-                                  onChange={handlechangepro}
-                                  onKeyPress={handlekey}
-                                />
-                              </div>
-                              <div className="col-md-6">
-                                <label className="form-label">
-                                  Cost to Dispatch
-                                </label>
-                                <input
-                                  type="text"
-                                  name="cost_to_dispatch"
-                                  className="form-control"
-                                  placeholder="0.00"
-                                  onKeyPress={handlekey}
-                                  onChange={handlechangepro}
-                                />
+                                  value={productData.warehouse_cost}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
                               </div>
                             </div>
-                              <div className="row mb-3 mt-4">
-                                                            <div className="col-9 mt-3">
-                                                              <h4 className="freight_hd">Document Section</h4>
-                                                              <span class="line"></span>
-                                                            </div>
-                                                            <div className="col-3">
-                                          <Button className="btn  btn-primary" onClick={handleShow}>
-                                                    Upload Documents
-                                                  </Button>
-                                                                 
-                                                                 {
-                                                                  show1 ? <Modal
-                                                  open={show1}
-                                                  onClose={handleClose}
-                                                  slotProps={{
-                                                    backdrop: {
-                                                      sx: { backgroundColor: "rgba(0,0,0,0.2)" }, // lighter background
-                                                    },
-                                                  }}
-                                                >
-                                                  <Box
-                                                    sx={{
-                                                      p: 3,
-                                                      bgcolor: "background.paper",
-                                                      borderRadius: 2,
-                                                      width: 500,
-                                                      mx: "auto",
-                                                      mt: 10,
-                                                    }}
-                                                  >
-                                                    <h2>Upload Documents</h2>
-                                          
-                                                    {/* Dropdown */}
-                                                    <FormControl fullWidth sx={{ mt: 2 }}>
-                                                      <InputLabel id="doc-select-label">Select Document Type</InputLabel>
-                                                      <Select
-                                                        labelId="doc-select-label"
-                                                        // value={selected}
-                                                        onChange={handleSelect}
-                                                      >
-                                                        {docOptions.map((option) => (
-                                                          <MenuItem key={option.id} value={option.id}>
-                                                            {option.label}
-                                                          </MenuItem>
-                                                        ))}
-                                                      </Select>
-                                                    </FormControl>
-                                          
-                                                    {/* Dynamic file inputs */}
-                                                    <div className="mt-3">
-                                                      {selectedDocs.map((doc, index) => (
-                                                        <div key={index} className="mb-3">
-                                                          <label className="fw-bold">{doc.name}</label>
-                                                          <input
-                                                            type="file"
-                                                            className="form-control"
-                                                            multiple
-                                                            accept="image/*,application/pdf"
-                                                            onChange={(e) => handleFileChangefil(e, doc.name)}
-                                                          />
-                                                        </div>
-                                                      ))}
-                                                    </div>
-                                          
-                                                    {/* Footer buttons */}
-                                                    <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}>
-                                                      <Button onClick={handleClose}>Cancel</Button>
-                                                      <Button variant="contained" color="success" onClick={handleSave}>
-                                                        Save Documents
-                                                      </Button>
-                                                    </Box>
-                                                  </Box>
-                                                </Modal> : ""
-                                                                 }   
-                                                            </div>
-                                                          </div>
-                            {/* <div className="row mb-3">
-                              <div className="col-6 mt-3">
-                          <select name="documentName" className="w-100 py-3"  onChange={handlechangepro}>
-                            <option value="">Select Document</option>
-                            <option value="Warehouse Entry Docs">  Shipper Docs</option>
-                            <option value="Warehouse Entry Docs">Warehouse Docs</option>
-                            <option value="Invoice, Packing List">Invoice / Packing </option>
-                            <option value="Product Literature">Product Literature</option>
-                            <option value="Letters of Authority">LOA</option>
-                          </select>
-                        </div>
-                              <div className="col-6 mt-3">
-                          <label>Upload Document</label>
-                          <input
-                            type="file"
-                            multiple
-                            className="w-100 mb-3 rounded"
-                            onChange={(e) =>
-                              handleFileChange(e, "other_documents")
-                            }
-                          />
-                        </div>
-                            </div> */}
-                            <div className="row mb-3"></div>
-
-                            <div class="modal-footer"></div>
-                          </div>
-
-                          <Box mt={3} display="flex" justifyContent="flex-end">
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Cost To Dispatch</label>
+                                <input
+                                  className="form-control"
+                                  name="cost_to_dispatch"
+                                  value={productData.cost_to_dispatch}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Waybill Ref</label>
+                                <input
+                                  className="form-control"
+                                  name="waybill_ref"
+                                  value={productData.waybill_ref}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Supplier Email</label>
+                                <input
+                                  className="form-control"
+                                  name="supplier_Email"
+                                  value={productData.supplier_Email}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Supplier Contact</label>
+                                <input
+                                  className="form-control"
+                                  name="Supplier_Contact"
+                                  value={productData.Supplier_Contact}
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
                             <Button
                               variant="contained"
-                              onClick={handpechangepro}
+                              onClick={() => {
+                                editproduct123();
+                              }}
+                            >
+                              Edit Product
+                            </Button>
+                          </div>
+                        </Box>
+                      </Modal>
+                      <Modal
+                        open={productModalOpen}
+                        onClose={closesetProductModalOpen}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                      >
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        >
+                          <div className="modal-header">
+                            <h2 id="modal-modal-title">
+                              {orderID122
+                                ? "Edit Warehouse"
+                                : "Add Warehouse Product"}
+                            </h2>
+                            <button
+                              className="btn btn-close"
+                              onClick={closesetProductModalOpen}
+                            >
+                              <CloseIcon />
+                            </button>
+                          </div>
+                          <div className="newModalGap noFormaControl">
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Goods Description</label>
+                                <input
+                                  className="form-control"
+                                  name="product_description"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Hazardous</label>
+                                <input
+                                  className="form-control"
+                                  name="Hazardous"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Date Received</label>
+                                <input
+                                  type="date"
+                                  className="form-control"
+                                  name="date_received"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Package Type</label>
+                                <input
+                                  className="form-control"
+                                  name="package_type"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Packages</label>
+                                <input
+                                  className="form-control"
+                                  name="packages"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Dimension</label>
+                                <input
+                                  className="form-control"
+                                  name="dimension"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Weight</label>
+                                <input
+                                  className="form-control"
+                                  name="weight"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="0.00"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Warehouse Ref</label>
+                                <input
+                                  className="form-control"
+                                  name="warehouse_ref"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Freight</label>
+                                <input
+                                  className="form-control"
+                                  name="freight"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Groupage Batch Ref</label>
+                                <input
+                                  className="form-control"
+                                  name="groupage_batch_ref"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Warehouse Receipt Number</label>
+                                <input
+                                  className="form-control"
+                                  name="warehouse_receipt_number"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Date Dispatched</label>
+                                <input
+                                  className="form-control"
+                                  name="date_dspatched"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Supplier Address</label>
+                                <input
+                                  className="form-control"
+                                  name="supplier_address"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Warehouse Collect</label>
+                                <input
+                                  className="form-control"
+                                  name="warehouse_collect"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Costs To Collect</label>
+                                <input
+                                  className="form-control"
+                                  name="costs_to_collect"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Port Of Loading</label>
+                                <input
+                                  className="form-control"
+                                  name="port_of_loading"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Warehouse Dispatch</label>
+                                <input
+                                  className="form-control"
+                                  name="warehouse_dispatch"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Warehouse Cost</label>
+                                <input
+                                  className="form-control"
+                                  name="warehouse_cost"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Cost To Dispatch</label>
+                                <input
+                                  className="form-control"
+                                  name="cost_to_dispatch"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Waybill Ref</label>
+                                <input
+                                  className="form-control"
+                                  name="waybill_ref"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Supplier Email</label>
+                                <input
+                                  className="form-control"
+                                  name="supplier_Email"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Supplier Contact</label>
+                                <input
+                                  className="form-control"
+                                  name="Supplier_Contact"
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                ></input>
+                              </div>
+                            </div>
+                            <Button
+                              variant="contained"
+                              onClick={() => {
+                                handleClickAssdsdsdsignId();
+                              }}
                             >
                               Add Product
                             </Button>
-                          </Box>
+                          </div>
                         </Box>
                       </Modal>
                     </div>

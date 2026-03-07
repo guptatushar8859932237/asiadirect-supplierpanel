@@ -49,7 +49,7 @@ const SCOPES = "https://www.googleapis.com/auth/drive.file"; // Access Google Dr
     if (tokenClient) {
       console.log(tokenClient)
       tokenClient.requestAccessToken();
-      // navigate("/Admin/Uploadimgae", { state: { auth,user }});
+      // navigate("//Uploadimgae", { state: { auth,user }});
     } else {
       console.error("Google API not loaded yet");
     }
@@ -60,7 +60,7 @@ const SCOPES = "https://www.googleapis.com/auth/drive.file"; // Access Google Dr
   console.log(user,"token :" ,auth)
   const handleNavigate = () => {
     if (user) {
-      navigate("/Admin/Uploadimgae", { state: { auth,user,accessToken }});
+      navigate("/supplier/Uploadimgae", { state: { auth,user,accessToken }});
     } else {
       toast.error("User not authorized");
     }

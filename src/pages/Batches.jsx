@@ -162,7 +162,7 @@ export default function Batches() {
     getdata();
   }, []);
   const openModal = () => {
-    navigate("/Admin/AddBatch");
+    navigate("/supplier/AddBatch");
   };
   const closeModal = () => {
     setIsModalOpen(false);
@@ -378,7 +378,7 @@ export default function Batches() {
       return item.id === id;
     });
     console.log(datta[0]);
-    navigate("/Admin/BatchesOrder", { state: { data: datta[0] } });
+    navigate("/supplier/BatchesOrder", { state: { data: datta[0] } });
   };
   useEffect(() => {
     getcountry();
@@ -427,7 +427,7 @@ export default function Batches() {
     const dataget = datauser.filter((item) => {
       return item.id === id;
     });
-    navigate("/Admin/AddBatch", { state: { data: dataget[0] } });
+    navigate("/supplier/AddBatch", { state: { data: dataget[0] } });
     console.log(dataget[0]);
   };
 
@@ -436,7 +436,7 @@ export default function Batches() {
       const datapost = {
         staff_id: userid,
         user_type: usertype,
-        route_url: "/Admin/Trackbatch",
+        route_url: "/supplier/Trackbatch",
       };
       const permission = await axios.post(
         `${process.env.REACT_APP_BASE_URL}CheckPermission`,
@@ -444,7 +444,7 @@ export default function Batches() {
       );
       console.log(permission);
       if (permission.data.success === true) {
-        navigate("/Admin/Trackbatch", { state: { data: id } });
+        navigate("/supplier/Trackbatch", { state: { data: id } });
       } else {
         toast.error("Access Denied");
       }

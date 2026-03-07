@@ -3026,7 +3026,7 @@ export default function Billofladding() {
   console.log(datat);
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   const handleclicknav = () => {
-    navigate("/Admin/order");
+    navigate("/supplier/order");
   };
 
 useEffect(() => { 
