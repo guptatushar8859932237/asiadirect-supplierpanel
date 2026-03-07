@@ -336,6 +336,7 @@ export default function WarehouseAdd() {
        const payload = {
         //  user_id: datauserId.id,
         //  order_id: dataProduct.order_id,
+        freight_id: productData.freight_ID,
          added_by: "4",
          warehouse_order_id: modalid,
          product_description: productData.product_description,
