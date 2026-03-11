@@ -1497,9 +1497,9 @@ setOpenmodal(true)
           freight.Destination_AdminAgrncy_currency_unitType,
         Destination_doc_currency_unittypeQTY:
           freight.Destination_doc_currency_unittypeQTY,
-        ...(getdata.quote_estimate_id && {
-          quote_estimate_id: getdata.quote_estimate_id,
-        }),
+        // ...(getdata.quote_estimate_id && {
+        //   quote_estimate_id: getdata.quote_estimate_id,
+        // }),
       };
     try {
      

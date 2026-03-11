@@ -332,10 +332,7 @@ export default function WarehouseAdd() {
   };
 
   const handleClickAssdsdsdsignId =async()=>{
-    //  const tracking_id = `OR000${dataProduct.order_id}`;
        const payload = {
-        //  user_id: datauserId.id,
-        //  order_id: dataProduct.order_id,
         freight_id: productData.freight_ID,
          added_by: "4",
          warehouse_order_id: modalid,

@@ -77,6 +77,7 @@ import Taskmanager from "./components/managetask/Taskmanager";
 import WarehouseAdd from "./components/Warehouse/WarehouseAdd";
 import Profilemain from "./components/Profilesection/Profilemain";
 import Attendancemanagement from "./components/Profilesection/Attendancemanagement";
+import Chatting from "./components/Chatting/Chatting";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Users = lazy(() => import("./pages/Users"));
 const Messages = lazy(() => import("./pages/Messages"));
@@ -162,6 +163,16 @@ export default function App() {
                   index
                   path="/supplier/supplier/customesClearings"
                   element={<Customeclearingbill />}
+                />
+                <Route
+                  index
+                  path="/supplier/WarehouseOrder"
+                  element={<WarehouseOrder />}
+                />
+                <Route
+                  index
+                  path="/supplier/user"
+                  element={<Chatting />}
                 />
                 <Route
                   index

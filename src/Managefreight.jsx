@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiFillMessage } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEdit } from "react-icons/fa";
 import Radio from "@mui/material/Radio";
@@ -682,6 +682,11 @@ export default function Managefreight() {
     }
   };
 
+  const handledeleteNavigaate =(item)=>{
+  console.log(item)
+    navigate("/supplier/user", { state: { freight_id: item.sales_representative} });
+  }
+
   return (
     <>
       {loader ? (
@@ -708,67 +713,11 @@ export default function Managefreight() {
                         placeholder="Search"
                       ></input>
                     </div>
-
-                    {/* <div className="dropdown">
-                      <button
-                        className="dropdown-toggle me-2"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        {status1}
-                      </button>
-                      <ul className="dropdown-menu">
-                        <li className="filter_item">
-                          <p
-                            className="dropdown-item mb-0"
-                            onClick={handlelcickapiupdae}
-                          >
-                            Pending
-                          </p>
-                        </li>
-                        <li className="filter_item">
-                          <p
-                            className="dropdown-item mb-0"
-                            onClick={handlelcickapiupdate}
-                          >
-                            Accepted
-                          </p>
-                        </li>
-                        <li className="filter_item">
-                          <p
-                            className="dropdown-item mb-0"
-                            onClick={handlelcickapiupdatedeclined}
-                          >
-                            Declined
-                          </p>
-                        </li>
-                        <li className="filter_item">
-                          <p
-                            className="dropdown-item mb-0"
-                            onClick={handlelcickapiupdatepartial}
-                          >
-                            Estimated
-                          </p>
-                        </li>
-                      </ul>
-                    </div> */}
-
                     <div className="me-2">
                       <button type="button" onClick={handleclickopenmodal}>
                         Filter
                       </button>
                     </div>
-                    {/* <div className="">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          navigate("/supplier/Addfreight");
-                        }}
-                      >
-                        Add
-                      </button>
-                    </div> */}
                   </div>
                 </div>
               </div>
@@ -907,6 +856,24 @@ export default function Managefreight() {
                                                   />
                                                   Edit
                                                 </a> */}
+                                                <a
+                                                  style={{ cursor: "pointer" }}
+                                                  className="dropdown-item li_icon"
+                                                  onClick={() => {
+                                                    handledeleteNavigaate(
+                                                      item,
+                                                    );
+                                                  }}
+                                                >
+                                                  <AiFillMessage
+                                                    className="text-danger"
+                                                    style={{
+                                                      marginRight: "10px",
+                                                      width: "20px",
+                                                    }}
+                                                  />{" "}
+                                                  Chatting
+                                                </a>
                                                 <a
                                                   style={{ cursor: "pointer" }}
                                                   className="dropdown-item li_icon"
