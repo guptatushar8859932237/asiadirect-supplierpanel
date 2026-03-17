@@ -180,47 +180,72 @@ export default function WarehouseOrder() {
     }
   };
   const handlechangewarehouse = (e) => {
-    const { name, value } = e.target;
-    setProdata({ ...prodata, [name]: value });
-  };
+  const { name, value, files, type } = e.target;
+
+  setProdata((prev) => ({
+    ...prev,
+    [name]: type === "file" ? files[0] : value,
+  }));
+};
   const datauserId = JSON.parse(localStorage.getItem("data123"));
-  const postDataWarehouse = async () => {
-    const payload = {
-      goods_description: prodata.goods_description,
-      ware_receipt_no: prodata.ware_receipt_no,
-      total_dimension: prodata.total_dimension,
-      total_weight: prodata.total_weight,
-      cartons: prodata.cartons,
-      freight: prodata.freight,
-      express_no: prodata.express_no,
-      supplier_contact_no: prodata.supplier_contact_no,
-      CBM: prodata.CBM,
-      warehousing_date: prodata.warehousing_date,
-      collection_from: prodata.collection_from,
-      delivery_to: prodata.delivery_to,
-      client_name: prodata.client_name,
-      supplier_id: datauserId.id,
-    };
-    const payload1 = {
-      goods_description: prodata.goods_description,
-      ware_receipt_no: prodata.ware_receipt_no,
-      total_dimension: prodata.total_dimension,
-      total_weight: prodata.total_weight,
-      cartons: prodata.cartons,
-      express_no: prodata.carexpress_notons,
-      freight: prodata.freight,
-      supplier_contact_no: prodata.supplier_contact_no,
-      CBM: prodata.CBM,
-      warehousing_date: prodata.warehousing_date,
-      collection_from: prodata.collection_from,
-      delivery_to: prodata.delivery_to,
-      client_name: prodata.client_name,
-      supplier_id: prodata.supplier_id,
-    };
+  console.log("User ID from localStorage:", datauserId);
+const postDataWarehouse = async () => {
+  try {
+    const formData = new FormData();
+    // basic info
+    formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
+    formData.append("date_entry_created", prodata.date_entry_created || "");
+    formData.append("dispatched_date", prodata.dispatched_date || "");
+    formData.append("days_in_warehouse", prodata.days_in_warehouse || "");
+    formData.append("supplier_id", datauserId.id || "");
+    formData.append("collection_from", prodata.collection_from || "");
+    formData.append("delivery_to", prodata.delivery_to || "");
+    // package info
+    formData.append("package_comment", prodata.package_comment || "");
+    formData.append("customer_ref", prodata.customer_ref || "");
+    formData.append("customer_name", prodata.customer_name || "");
+    formData.append("box_marking", prodata.box_marking || "");
+    formData.append("added_by" , 1);
+    formData.append("package_type", prodata.package_type || "");
+    formData.append("hazardous", prodata.hazardous || "");
+    formData.append("total_packeges", prodata.total_packeges || "");
+    formData.append("hazard_description", prodata.hazard_description || "");
+    formData.append("goods_description", prodata.goods_description || "");
+    // damages
+    formData.append("damage_goods", prodata.damage_goods || "");
+    formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
+    formData.append("damage_comment", prodata.damage_comment || "");
+    // supplier
+    formData.append("supplier_company", prodata.supplier_company || "");
+    formData.append("supplier_person", prodata.supplier_person || "");
+    formData.append("supplier_address", prodata.supplier_address || "");
+    // cargo handling
+    formData.append("warehouse_collect", prodata.warehouse_collect || "");
+    formData.append("costs_to_collect", prodata.costs_to_collect || "");
+    formData.append("warehouse_storage", prodata.warehouse_storage || "");
+    formData.append("warehouse_cost", prodata.warehouse_cost || "");
+    formData.append("handling_required", prodata.handling_required || "");
+    formData.append("handling_cost", prodata.handling_cost || "");
+    formData.append("warehouse_dispatch", prodata.warehouse_dispatch || "");
+    formData.append("cost_to_dispatch", prodata.cost_to_dispatch || "");
+    formData.append("warehouse_comment", prodata.warehouse_comment || "");
+    // files
+    if (prodata.attach_other) {
+      formData.append("damage_images", prodata.attach_other);
+    }
+    if (prodata.Attach_product_image) {
+      formData.append("product_images", prodata.Attach_product_image);
+    }
+    if (prodata.attach_file) {
+      formData.append("documents", prodata.attach_file);
+    }
+    console.log("FormData Data:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
     const response = await axios.post(
       `${process.env.REACT_APP_BASE_URL}createOrderAndWarehouse`,
-      warehouseID ? payload1 : payload,
-    );
+      formData);
     if (response.data.success === true) {
       toast.success(response.data.message);
       handleCloseModalWarehouse();
@@ -228,7 +253,75 @@ export default function WarehouseOrder() {
     } else {
       toast.error(response.data.message);
     }
-  };
+  } catch (error) {
+    console.error("API Error:", error);
+    toast.error("Something went wrong");
+  }
+};
+const editpostData = async () => {
+  try {
+    const formData = new FormData();
+    formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
+    formData.append("date_entry_created", prodata.date_entry_created || "");
+    formData.append("dispatched_date", prodata.dispatched_date || "");
+    formData.append("days_in_warehouse", prodata.days_in_warehouse || "");
+    formData.append("supplier_id", datauserId.id || "");
+    formData.append("collection_from", prodata.collection_from || "");
+    formData.append("delivery_to", prodata.delivery_to || "");
+    formData.append("customer_name", prodata.customer_name || "");
+    formData.append("package_comment", prodata.package_comment || "");
+    formData.append("customer_ref", prodata.customer_ref || "");
+    formData.append("box_marking", prodata.box_marking || "");
+    formData.append("package_type", prodata.package_type || "");
+    formData.append("hazardous", prodata.hazardous || "");
+    formData.append("total_packeges", prodata.total_packeges || "");
+    formData.append("hazard_description", prodata.hazard_description || "");
+    formData.append("goods_description", prodata.goods_description || "");
+    formData.append("damage_goods", prodata.damage_goods || "");
+    formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
+    formData.append("damage_comment", prodata.damage_comment || "");
+    formData.append("supplier_company", prodata.supplier_company || "");
+    formData.append("supplier_person", prodata.supplier_person || "");
+    formData.append("supplier_address", prodata.supplier_address || "");
+    formData.append("warehouse_collect", prodata.warehouse_collect || "");
+    formData.append("costs_to_collect", prodata.costs_to_collect || "");
+    formData.append("warehouse_storage", prodata.warehouse_storage || "");
+    formData.append("warehouse_cost", prodata.warehouse_cost || "");
+    formData.append("handling_required", prodata.handling_required || "");
+    formData.append("handling_cost", prodata.handling_cost || "");
+    formData.append("warehouse_dispatch", prodata.warehouse_dispatch || "");
+    formData.append("cost_to_dispatch", prodata.cost_to_dispatch || "");
+    formData.append("warehouse_comment", prodata.warehouse_comment || "");
+    formData.append("order_id", prodata.order_id || "");
+    if (prodata.attach_other) {
+      formData.append("damage_images", prodata.attach_other);
+    }
+    if (prodata.Attach_product_image) {
+      formData.append("product_images", prodata.Attach_product_image);
+    }
+    if (prodata.attach_file) {
+      formData.append("documents", prodata.attach_file);
+    }
+    console.log("FormData Data:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,
+      formData);
+    if (response.data.success === true) {
+      setEditmodalopen(false);
+      editmodalclose1()
+      toast.success(response.data.message);
+      getData();
+    } else {
+      toast.error(response.data.message);
+    }
+  } catch (error) {
+    console.error("API Error:", error);
+    toast.error("Something went wrong");
+  }
+};
   const updateWarehouse = async () => {
     const payload = {
       warehouse_id: warehouseID,
@@ -321,6 +414,7 @@ export default function WarehouseOrder() {
     console.log(item);
     setEditmodalopen(true);
     setEditDtaawarehouse(item);
+    setProdata(item)
   };
   const editmodalclose1 = () => {
     setEditmodalopen(false);
@@ -494,7 +588,7 @@ export default function WarehouseOrder() {
                                               className="client_nm"
                                               style={{ fontSize: "18px" }}
                                             >
-                                              {item.client_name} / OR000
+                                              {item.warehouse_number} / OR000
                                               {item.order_id}
                                             </p>
                                             <p
@@ -533,13 +627,6 @@ export default function WarehouseOrder() {
                                               </div>
                                               <p className="origin">
                                                 {item.delivery_to_name}
-                                                <span className="fright_type">
-                                                  (
-                                                  {item.Freight
-                                                    ? item.Freight
-                                                    : item.freight_type}
-                                                  )
-                                                </span>
                                               </p>
                                             </div>
                                           </div>
@@ -752,286 +839,17 @@ export default function WarehouseOrder() {
                           <div className="newModalGap noFormaControl">
                             <div className="row my-3  ">
                               <div className="col-6">
-                                <label>Goods Description</label>
-                                <input
-                                  className="form-control"
-                                  value={editDtaawarehouse.goods_description}
-                                  name="goods_description"
-                                  onChange={handlechnageeditwarehouse}
-                                  placeholder="warehouse name"
-                                ></input>
-                              </div>
-                              <div className="col-6">
-                                <label>Warehouse Receipt Number</label>
-                                <input
-                                  className="form-control"
-                                  name="ware_receipt_no"
-                                  value={editDtaawarehouse.ware_receipt_no}
-                                  onChange={handlechnageeditwarehouse}
-                                  placeholder="warehouse name"
-                                ></input>
-                              </div>
-                              <div className="col-6">
-                                <label>Freight</label>
-                                <select
-                                  className="form-control"
-                                  name="freight_type"
-                                  value={editDtaawarehouse.freight_type}
-                                  onChange={handlechnageeditwarehouse}
-                                >
-                                  <option>select</option>
-                                  <option value="Sea">Sea</option>
-                                  <option value="Air">Air</option>
-                                  <option value="Road">Road</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
-                                <label>Country of Origin</label>
-                                <select
-                                  name="collection_from"
-                                  value={editDtaawarehouse.collection_from}
-                                  onChange={handlechnageeditwarehouse}
-                                >
-                                  <option value="">Select</option>
-                                  {updatedata &&
-                                    updatedata.length > 0 &&
-                                    updatedata.map((item, index) => {
-                                      return (
-                                        <>
-                                          <option value={item.id}>
-                                            {item.name}
-                                          </option>
-                                        </>
-                                      );
-                                    })}
-                                </select>
-                              </div>
-                              <div className="col-6">
-                                <label>Delivery To</label>
-                                <select
-                                  name="delivery_to"
-                                  value={editDtaawarehouse.delivery_to}
-                                  onChange={handlechnageeditwarehouse}
-                                >
-                                  <option value="">Select</option>
-                                  {updatedata &&
-                                    updatedata.length > 0 &&
-                                    updatedata.map((item, index) => {
-                                      return (
-                                        <>
-                                          <option value={item.id}>
-                                            {item.name}
-                                          </option>
-                                        </>
-                                      );
-                                    })}
-                                </select>
-                              </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
-                                <label>Total Dimension</label>
-                                <input
-                                  className="form-control"
-                                  name="total_dimension"
-                                  value={editDtaawarehouse.total_dimension}
-                                  onChange={handlechnageeditwarehouse}
-                                  onKeyPress={handlekey}
-                                  placeholder="00*00*00"
-                                ></input>
-                              </div>
-                              <div className="col-6">
-                                <label>Total Weight</label>
-                                <input
-                                  className="form-control"
-                                  name="total_weight"
-                                  value={editDtaawarehouse.total_weight}
-                                  onChange={handlechnageeditwarehouse}
-                                  placeholder="Total Weight"
-                                ></input>
-                              </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
-                                <label>Cartons</label>
-                                <input
-                                  className="form-control"
-                                  name="cartons"
-                                  value={editDtaawarehouse.cartons}
-                                  onChange={handlechnageeditwarehouse}
-                                  placeholder="000"
-                                ></input>
-                              </div>
-                              <div className="col-6">
-                                <label>Express Number</label>
-                                <input
-                                  className="form-control"
-                                  value={editDtaawarehouse.express_no}
-                                  name="express_no"
-                                  onChange={handlechnageeditwarehouse}
-                                  placeholder="express_no"
-                                ></input>
-                              </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
-                                <label>Supplier Contact Number</label>
-                                <input
-                                  className="form-control"
-                                  name="supplier_contact_no"
-                                  value={editDtaawarehouse.supplier_contact_no}
-                                  onChange={handlechnageeditwarehouse}
-                                  placeholder="000"
-                                ></input>
-                              </div>
-                              <div className="col-6">
-                                <label>CBM</label>
-                                <input
-                                  className="form-control"
-                                  value={editDtaawarehouse.CBM}
-                                  name="CBM"
-                                  onChange={handlechnageeditwarehouse}
-                                  placeholder="CBM"
-                                ></input>
-                              </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
-                                <label>Warehousing Date</label>
-                                <input
-                                  type="date"
-                                  className="form-control"
-                                  name="warehousing_date"
-                                  value={
-                                    editDtaawarehouse?.warehousing_date
-                                      ? editDtaawarehouse.warehousing_date.split(
-                                          "T",
-                                        )[0]
-                                      : ""
-                                  }
-                                  onChange={handlechnageeditwarehouse}
-                                />
-                              </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
-                                <label>Client Name</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  name="client_name"
-                                  value={editDtaawarehouse.client_name}
-                                  onChange={handlechnageeditwarehouse}
-                                  placeholder="000"
-                                ></input>
-                              </div>
-                            </div>
-                            <Button
-                              variant="contained"
-                              onClick={() => editwarehouse(editDtaawarehouse)}
-                            >
-                              Update
-                            </Button>
-                          </div>
-                        </Box>
-                      </Modal>
-                      <Modal
-                        open={isModalOpenWarehouse}
-                        onClose={handleCloseModalWarehouse}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                      >
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                          }}
-                        >
-                          <div className="modal-header">
-                            <h2 id="modal-modal-title">
-                              {orderID122 ? "Edit Warehouse" : "Add Warehouse"}
-                            </h2>
-                            <button
-                              className="btn btn-close"
-                              onClick={handleCloseModalWarehouse}
-                            >
-                              <CloseIcon />
-                            </button>
-                          </div>
-                          <div className="newModalGap noFormaControl">
-                            <div className="row my-3  ">
-                              <div className="col-6">
-                                <label>Client</label> <br />
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Search Client..."
-                                  value={selected || search}
-                                  onChange={(e) => {
-                                    setSearch(e.target.value);
-                                    setShowDropdown(true);
-                                    setSelected("");
-                                  }}
-                                  onFocus={() => setShowDropdown(true)}
-                                />
-                                {showDropdown && (
-                                  <div
-                                    style={{
-                                      border: "1px solid #ccc",
-                                      maxHeight: "200px",
-                                      overflowY: "auto",
-                                      background: "#fff",
-                                      position: "absolute",
-                                      zIndex: 10,
-                                    }}
-                                  >
-                                    {filteredClients.length > 0 ? (
-                                      filteredClients.map((item) => (
-                                        <div
-                                          key={item.id}
-                                          style={{
-                                            padding: "8px",
-                                            cursor: "pointer",
-                                          }}
-                                          onClick={() => handleSelect(item)}
-                                        >
-                                          {item.client_number} -{" "}
-                                          {item.full_name || item.email}
-                                        </div>
-                                      ))
-                                    ) : (
-                                      <div style={{ padding: "8px" }}>
-                                        No client found
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-                              <div className="col-6">
                                 <label>Date</label>
                                 <input
                                   type="date"
                                   className="form-control"
-                                  value={prodata.customer_ref}
-                                  name="customer_ref"
+                                  value={prodata.date_entry_created}
+                                  name="date_entry_created"
                                   onChange={handlechangewarehouse}
-                                  placeholder="customer ref"
+                                  placeholder="Date"
                                 ></input>
                               </div>
-                              <div className="col-6">
-                                <label>Warehouse Number</label>
-                                <input
-                                  className="form-control"
-                                  disabled
-                                  name="create_freight_order"
-                                  value={prodata.create_freight_order}
-                                  onChange={handlechangewarehouse}
-                                ></input>
-                              </div>
+                           
                               <div className="col-6">
                                 <label>Warehouse Order Id</label>
                                 <input
@@ -1059,17 +877,7 @@ export default function WarehouseOrder() {
                                 <input
                                   type="date"
                                   className="form-control"
-                                  name="courier_waybill_ref"
-                                  onChange={handlechangewarehouse}
-                                  placeholder=""
-                                ></input>
-                              </div>
-                              <div className="col-6">
-                                <label>Days in Warehouse</label>
-                                <input
-                                  type="date"
-                                  className="form-control"
-                                  name="days_in_warehouse"
+                                  name="dispatched_date"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1081,8 +889,8 @@ export default function WarehouseOrder() {
                                 <label>Customer Name</label>
                                 <input
                                   className="form-control"
-                                  value={prodata.customer_Name}
-                                  name="customer_Name"
+                                  value={prodata.customer_name}
+                                  name="customer_name"
                                   onChange={handlechangewarehouse}
                                   placeholder="customer name"
                                 ></input>
@@ -1102,8 +910,9 @@ export default function WarehouseOrder() {
                                   <div className="col-6">
                                     <label>Country of Origin</label>
                                     <select
-                                      name="country_of_origin"
-                                      onChange={handlechange}
+                                      name="collection_from"
+                                       value={prodata.collection_from}
+                                      onChange={handlechangewarehouse}
                                     >
                                       <option>Select</option>
                                       {countries &&
@@ -1125,8 +934,9 @@ export default function WarehouseOrder() {
                                   <div className="col-6">
                                     <label> Destination Country</label>
                                     <select
-                                      name="destination_country"
-                                      onChange={handlechange}
+                                      name="delivery_to"
+                                      value={prodata.delivery_to}
+                                      onChange={handlechangewarehouse}
                                     >
                                       <option>Select</option>
                                       {countries &&
@@ -1161,8 +971,8 @@ export default function WarehouseOrder() {
                                 <input
                                   type="Good Description"
                                   className="form-control"
-                                  value={prodata.good_description}
-                                  name="good_description"
+                                  value={prodata.goods_description}
+                                  name="goods_description"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1171,8 +981,488 @@ export default function WarehouseOrder() {
                                 <label>Packing Type</label>
                                 <select
                                   className="form-control"
-                                  value={prodata.packing_type}
-                                  name="packing_type"
+                                  value={prodata.package_type}
+                                  name="package_type"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                >
+                                  <option value="">Select</option>
+                                  <option value="carte">carte</option>
+                                  <option value="pallet">pallet</option>
+                                  <option value="Box">Box</option>
+                                  <option value="Bag">Bag</option>
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>Hazardous </label>
+                                <select
+                                  className="form-control"
+                                  value={prodata.hazardous}
+                                  name="hazardous"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                >
+                                  <option value="">Select</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>Description of Hazardous </label>
+                                <input
+                                  type="type"
+                                  className="form-control"
+                                  value={prodata.hazard_description}
+                                  name="hazard_description"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Total Package</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.total_packeges}
+                                  name="total_packeges"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+
+                              <div className="col-6">
+                                <label>Total Dimension </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.total_dimension}
+                                  name="total_dimension"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                            </div>
+                            <label>Comment on Packages</label>
+                            <textarea
+                              className="w-100"
+                              name="package_comment"
+                              value={prodata.package_comment}
+                              placeholder="Other Information"
+                            ></textarea>
+                            <h5>Damaged Goods</h5>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Damaged Goods</label>
+                                <select
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.damage_goods}
+                                  name="damage_goods"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                >
+                                  <option value="">Select</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>Damaged Packed</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.damaged_pkg_qty}
+                                  name="damaged_pkg_qty"
+                                  onChange={handlechangewarehouse}
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Attach File</label>
+                                <input
+                                  type="file"
+                                  className="form-control"
+                                  name="attach_file"
+                                  onChange={handlechangewarehouse}
+                                ></input>
+                              </div>
+
+                              <div className="col-12">
+                                <label>Comment on Damaged</label>
+                                <br />
+                                <textarea className="w-100" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
+                              </div>
+                            </div>
+                            <h5>Supplier Information</h5>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Supplier Name (Company)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.supplier_company}
+                                  name="supplier_company"
+                                  onChange={handlechangewarehouse}
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Supplier Name (Person)</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.supplier_person}
+                                  name="supplier_person"
+                                  onChange={handlechangewarehouse}
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Supplier Address</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.supplier_address}
+                                  name="supplier_address"
+                                  onChange={handlechangewarehouse}
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Supplier Contact</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.supplier_contact}
+                                  name="supplier_contact"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                            </div>
+                            <h5>Cargo Handeling</h5>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Warehouse Collect</label>
+                                <select
+                                  className="form-control"
+                                  value={prodata.warehouse_collect}
+                                  name="warehouse_collect"
+                                  onChange={handlechangewarehouse}
+                                  placeholder="customer name"
+                                >
+                                  <option value="">Select</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>Cost To Collect</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.costs_to_collect}
+                                  name="costs_to_collect"
+                                  onChange={handlechangewarehouse}
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Warehouse Storage</label>
+                                <select
+                                  className="form-control"
+                                  value={prodata.warehouse_storage}
+                                  name="warehouse_storage"
+                                  onChange={handlechangewarehouse}
+                                  placeholder="customer name"
+                                >
+                                  <option value="">Select</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>Warehouse Cost</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.warehouse_cost}
+                                  name="warehouse_cost"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Handeling Required</label>
+                                <select
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.handling_required}
+                                  name="handling_required"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                >
+                                  <option value="">Select</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>Handeling cost</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.handling_cost}
+                                  name="handling_cost"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Warehouse Dispatch</label>
+                                <select
+                                  className="form-control"
+                                  value={prodata.warehouse_dispatch}
+                                  name="warehouse_dispatch"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                >
+                                  <option value="">Select</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                              </div>
+                              <div className="col-6">
+                                <label>cost to dispatch</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.cost_to_dispatch}
+                                  name="cost_to_dispatch"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-12">
+                                <label>Attach Product Image</label>
+                                <input
+                                  type="file"
+                                  className="form-control"
+                                  name="Attach_Product_Image"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-12">
+                                <label>Attach Other</label>
+                                <input
+                                  type="file"
+                                  className="form-control"
+                                  name="attach_other"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-12">
+                                <label>Warehouse Comment</label>
+                                <textarea
+                                  className="form-control"
+                                  value={prodata.warehouse_comment}
+                                  name="warehouse_comment"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></textarea>
+                              </div>
+                            </div>
+                            <Button
+                              variant="contained"
+                              onClick={
+                               editpostData
+                              }
+                            >
+                            Edit
+                            </Button>
+                          </div>
+                        </Box>
+                      </Modal>
+                      <Modal
+                        open={isModalOpenWarehouse}
+                        onClose={handleCloseModalWarehouse}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                      >
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        >
+                          <div className="modal-header">
+                            <h2 id="modal-modal-title">
+                              Add Warehouse
+                            </h2>
+                            <button
+                              className="btn btn-close"
+                              onClick={handleCloseModalWarehouse}
+                            >
+                              <CloseIcon />
+                            </button>
+                          </div>
+                          <div className="newModalGap noFormaControl">
+                            <div className="row my-3  ">
+                            
+                              <div className="col-6">
+                                <label>Date</label>
+                                <input
+                                  type="date"
+                                  className="form-control"
+                                  value={prodata.date_entry_created}
+                                  name="date_entry_created"
+                                  onChange={handlechangewarehouse}
+                                  placeholder="Date"
+                                ></input>
+                              </div>
+                           
+                              <div className="col-6">
+                                <label>Warehouse Order Id</label>
+                                <input
+                                  type="type"
+                                  className="form-control"
+                                  value={prodata.warehouse_order_id}
+                                  name="warehouse_order_id"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Courier waybill_ref</label>
+                                <input
+                                  type="type"
+                                  className="form-control"
+                                  value={prodata.courier_waybill_ref}
+                                  name="courier_waybill_ref"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Dispatch Date</label>
+                                <input
+                                  type="date"
+                                  className="form-control"
+                                  name="dispatched_date"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Days in Warehouse</label>
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  name="days_in_warehouse"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                            </div>
+                            <h5>Package Information</h5>
+                            <div className="row my-3  ">
+                              <div className="col-6">
+                                <label>Customer Name</label>
+                                <input
+                                  className="form-control"
+                                  value={prodata.customer_name}
+                                  name="customer_name"
+                                  onChange={handlechangewarehouse}
+                                  placeholder="customer name"
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Customer ref</label>
+                                <input
+                                  className="form-control"
+                                  value={prodata.customer_ref}
+                                  name="customer_ref"
+                                  onChange={handlechangewarehouse}
+                                  placeholder="customer name"
+                                ></input>
+                              </div>
+                              <div className="col-12">
+                                <div className="row">
+                                  <div className="col-6">
+                                    <label>Country of Origin</label>
+                                    <select
+                                      name="collection_from"
+                                       value={prodata.collection_from}
+                                      onChange={handlechangewarehouse}
+                                    >
+                                      <option>Select</option>
+                                      {countries &&
+                                        countries.length > 0 &&
+                                        countries.map((item, index) => {
+                                          return (
+                                            <>
+                                              <option
+                                                key={index}
+                                                value={item.id}
+                                              >
+                                                {item.name}
+                                              </option>
+                                            </>
+                                          );
+                                        })}
+                                    </select>
+                                  </div>
+                                  <div className="col-6">
+                                    <label> Destination Country</label>
+                                    <select
+                                      name="delivery_to"
+                                      value={prodata.delivery_to}
+                                      onChange={handlechangewarehouse}
+                                    >
+                                      <option>Select</option>
+                                      {countries &&
+                                        countries.length > 0 &&
+                                        countries.map((item, index) => {
+                                          return (
+                                            <>
+                                              <option
+                                                key={index}
+                                                value={item.id}
+                                              >
+                                                {item.name}
+                                              </option>
+                                            </>
+                                          );
+                                        })}
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-6">
+                                <label>Box Marking</label>
+                                <input
+                                  className="form-control"
+                                  name="box_marking"
+                                  value={prodata.box_marking}
+                                  onChange={handlechangewarehouse}
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Good Description</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.goods_description}
+                                  name="goods_description"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Packing Type</label>
+                                <select
+                                  className="form-control"
+                                  value={prodata.package_type}
+                                  name="package_type"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 >
@@ -1203,8 +1493,8 @@ export default function WarehouseOrder() {
                                 <input
                                   type="type"
                                   className="form-control"
-                                  value={prodata.hazardous}
-                                  name="hazardous"
+                                  value={prodata.hazard_description}
+                                  name="hazard_description"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1212,10 +1502,10 @@ export default function WarehouseOrder() {
                               <div className="col-6">
                                 <label>Total Package</label>
                                 <input
-                                  type="type"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.hazardous}
-                                  name="hazardous"
+                                  value={prodata.total_packeges}
+                                  name="total_packeges"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1224,10 +1514,10 @@ export default function WarehouseOrder() {
                               <div className="col-6">
                                 <label>Total Dimension </label>
                                 <input
-                                  type="type"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.hazardous}
-                                  name="hazardous"
+                                  value={prodata.total_dimension}
+                                  name="total_dimension"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1236,17 +1526,19 @@ export default function WarehouseOrder() {
                             <label>Comment on Packages</label>
                             <textarea
                               className="w-100"
+                              name="package_comment"
+                              value={prodata.package_comment}
                               placeholder="Other Information"
                             ></textarea>
                             <h5>Damaged Goods</h5>
                             <div className="row my-3  ">
                               <div className="col-6">
-                                <label>Supplier Name (Company)</label>
+                                <label>Damaged Goods</label>
                                 <select
-                                  type="type"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.damaged_goods}
-                                  name="damaged_goods"
+                                  value={prodata.damage_goods}
+                                  name="damage_goods"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 >
@@ -1258,10 +1550,10 @@ export default function WarehouseOrder() {
                               <div className="col-6">
                                 <label>Damaged Packed</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.Cost_To_Collect}
-                                  name="Cost_To_Collect"
+                                  value={prodata.damaged_pkg_qty}
+                                  name="damaged_pkg_qty"
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
@@ -1270,15 +1562,15 @@ export default function WarehouseOrder() {
                                 <input
                                   type="file"
                                   className="form-control"
-                                  name="DamagedFiles"
+                                  name="attach_file"
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
 
                               <div className="col-12">
-                                <label>Comment on Camaged</label>
+                                <label>Comment on Damaged</label>
                                 <br />
-                                <textarea className="w-100"></textarea>
+                                <textarea className="w-100" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
                               </div>
                             </div>
                             <h5>Supplier Information</h5>
@@ -1286,40 +1578,40 @@ export default function WarehouseOrder() {
                               <div className="col-6">
                                 <label>Supplier Name (Company)</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.Cost_To_Collect}
-                                  name="Cost_To_Collect"
+                                  value={prodata.supplier_company}
+                                  name="supplier_company"
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
                               <div className="col-6">
                                 <label>Supplier Name (Person)</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.Cost_To_Collect}
-                                  name="Cost_To_Collect"
+                                  value={prodata.supplier_person}
+                                  name="supplier_person"
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
                               <div className="col-6">
                                 <label>Supplier Address</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.Cost_To_Collect}
-                                  name="Cost_To_Collect"
+                                  value={prodata.supplier_address}
+                                  name="supplier_address"
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
                               <div className="col-6">
                                 <label>Supplier Contact</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.warehouse_cost}
-                                  name="warehouse_cost"
+                                  value={prodata.supplier_contact}
+                                  name="supplier_contact"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1344,10 +1636,10 @@ export default function WarehouseOrder() {
                               <div className="col-6">
                                 <label>Cost To Collect</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.Cost_To_Collect}
-                                  name="Cost_To_Collect"
+                                  value={prodata.costs_to_collect}
+                                  name="costs_to_collect"
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
@@ -1368,7 +1660,7 @@ export default function WarehouseOrder() {
                               <div className="col-6">
                                 <label>Warehouse Cost</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   className="form-control"
                                   value={prodata.warehouse_cost}
                                   name="warehouse_cost"
@@ -1381,8 +1673,8 @@ export default function WarehouseOrder() {
                                 <select
                                   type="text"
                                   className="form-control"
-                                  value={prodata.handeling_required}
-                                  name="handeling_required"
+                                  value={prodata.handling_required}
+                                  name="handling_required"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 >
@@ -1394,10 +1686,10 @@ export default function WarehouseOrder() {
                               <div className="col-6">
                                 <label>Handeling cost</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   className="form-control"
-                                  value={prodata.handeling_cost}
-                                  name="handeling_cost"
+                                  value={prodata.handling_cost}
+                                  name="handling_cost"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1417,9 +1709,9 @@ export default function WarehouseOrder() {
                                 </select>
                               </div>
                               <div className="col-6">
-                                <label>Cost to dispatch</label>
+                                <label>cost to dispatch</label>
                                 <input
-                                  type="number"
+                                  type="text"
                                   className="form-control"
                                   value={prodata.cost_to_dispatch}
                                   name="cost_to_dispatch"
@@ -1432,8 +1724,7 @@ export default function WarehouseOrder() {
                                 <input
                                   type="file"
                                   className="form-control"
-                                  value={prodata.cost_to_dispatch}
-                                  name="cost_to_dispatch"
+                                  name="Attach_Product_Image"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1443,8 +1734,7 @@ export default function WarehouseOrder() {
                                 <input
                                   type="file"
                                   className="form-control"
-                                  value={prodata.cost_to_dispatch}
-                                  name="cost_to_dispatch"
+                                  name="attach_other"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1453,8 +1743,8 @@ export default function WarehouseOrder() {
                                 <label>Warehouse Comment</label>
                                 <textarea
                                   className="form-control"
-                                  value={prodata.Warehous_Comment}
-                                  name="Warehous_Comment"
+                                  value={prodata.warehouse_comment}
+                                  name="warehouse_comment"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></textarea>
@@ -1463,10 +1753,10 @@ export default function WarehouseOrder() {
                             <Button
                               variant="contained"
                               onClick={
-                                orderID122 ? updateWarehouse : postDataWarehouse
+                               postDataWarehouse
                               }
                             >
-                              {orderID122 ? "Update" : "Save"}
+                              Save
                             </Button>
                           </div>
                         </Box>
