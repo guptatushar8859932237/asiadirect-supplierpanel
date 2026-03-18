@@ -192,34 +192,28 @@ export default function WarehouseOrder() {
 const postDataWarehouse = async () => {
   try {
     const formData = new FormData();
-    // basic info
     formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
     formData.append("date_entry_created", prodata.date_entry_created || "");
     formData.append("dispatched_date", prodata.dispatched_date || "");
-    formData.append("days_in_warehouse", prodata.days_in_warehouse || "");
     formData.append("supplier_id", datauserId.id || "");
     formData.append("collection_from", prodata.collection_from || "");
     formData.append("delivery_to", prodata.delivery_to || "");
-    // package info
     formData.append("package_comment", prodata.package_comment || "");
     formData.append("customer_ref", prodata.customer_ref || "");
     formData.append("customer_name", prodata.customer_name || "");
     formData.append("box_marking", prodata.box_marking || "");
-    formData.append("added_by" , 1);
     formData.append("package_type", prodata.package_type || "");
     formData.append("hazardous", prodata.hazardous || "");
+    formData.append("added_by", 2);
     formData.append("total_packeges", prodata.total_packeges || "");
     formData.append("hazard_description", prodata.hazard_description || "");
     formData.append("goods_description", prodata.goods_description || "");
-    // damages
     formData.append("damage_goods", prodata.damage_goods || "");
     formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
     formData.append("damage_comment", prodata.damage_comment || "");
-    // supplier
     formData.append("supplier_company", prodata.supplier_company || "");
     formData.append("supplier_person", prodata.supplier_person || "");
     formData.append("supplier_address", prodata.supplier_address || "");
-    // cargo handling
     formData.append("warehouse_collect", prodata.warehouse_collect || "");
     formData.append("costs_to_collect", prodata.costs_to_collect || "");
     formData.append("warehouse_storage", prodata.warehouse_storage || "");
@@ -229,7 +223,6 @@ const postDataWarehouse = async () => {
     formData.append("warehouse_dispatch", prodata.warehouse_dispatch || "");
     formData.append("cost_to_dispatch", prodata.cost_to_dispatch || "");
     formData.append("warehouse_comment", prodata.warehouse_comment || "");
-    // files
     if (prodata.attach_other) {
       formData.append("damage_images", prodata.attach_other);
     }
@@ -269,6 +262,7 @@ const editpostData = async () => {
     formData.append("collection_from", prodata.collection_from || "");
     formData.append("delivery_to", prodata.delivery_to || "");
     formData.append("customer_name", prodata.customer_name || "");
+    formData.append("added_by", 2);
     formData.append("package_comment", prodata.package_comment || "");
     formData.append("customer_ref", prodata.customer_ref || "");
     formData.append("box_marking", prodata.box_marking || "");
@@ -353,6 +347,7 @@ const editpostData = async () => {
     setProductModalOpen(true);
   };
   const handleProductview = (item) => {
+    console.log(item)
     setSelectedDocs(item.products);
     setModalproduct(true);
   };
@@ -419,48 +414,13 @@ const editpostData = async () => {
   const editmodalclose1 = () => {
     setEditmodalopen(false);
   };
-  const editwarehouse = async () => {
-    console.log(editDtaawarehouse);
-    try {
-      const payload = {
-        order_id: editDtaawarehouse.order_id,
-        goods_description: editDtaawarehouse.goods_description,
-        ware_receipt_no: editDtaawarehouse.ware_receipt_no,
-        total_dimension: editDtaawarehouse.total_dimension,
-        total_weight: editDtaawarehouse.total_weight,
-        cartons: editDtaawarehouse.cartons,
-        express_no: editDtaawarehouse.express_no,
-        supplier_contact_no: editDtaawarehouse.supplier_contact_no,
-        CBM: editDtaawarehouse.CBM,
-        warehousing_date: editDtaawarehouse.warehousing_date,
-        collection_from: editDtaawarehouse.collection_from,
-        delivery_to: editDtaawarehouse.delivery_to,
-        client_name: editDtaawarehouse.client_name,
-        supplier_id: editDtaawarehouse.supplier_id,
-        freight: editDtaawarehouse.freight_type,
-        supplier_id: userId,
-        user_type: 2,
-      };
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,
-        payload,
-      );
-      if (response.data.success) {
-        toast.success("Warehouse Updated Successfully");
-        editmodalclose1();
-        getData();
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      toast.error("Error updating warehouse");
-    }
-  };
+  
   const handlechnageeditwarehouse = (e) => {
     const { name, value } = e.target;
     setEditDtaawarehouse({ ...editDtaawarehouse, [name]: value });
   };
   const editmodalopen1product = (item) => {
+    console.log(item);
     setProductData(item);
     setProductModalOpen1(true);
   };
@@ -1352,16 +1312,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
-                                <label>Days in Warehouse</label>
-                                <input
-                                  type="number"
-                                  className="form-control"
-                                  name="days_in_warehouse"
-                                  onChange={handlechangewarehouse}
-                                  placeholder=""
-                                ></input>
-                              </div>
+                              
                             </div>
                             <h5>Package Information</h5>
                             <div className="row my-3  ">
@@ -1802,9 +1753,9 @@ const editpostData = async () => {
                                 <label>Hazardous</label>
                                 <input
                                   className="form-control"
-                                  name="Hazardous"
+                                  name="hazardous"
                                   onChange={handlechangegetdatainput}
-                                  value={productData.Hazardous}
+                                  value={productData.hazardous}
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
