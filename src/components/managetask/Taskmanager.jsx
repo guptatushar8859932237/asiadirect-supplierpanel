@@ -7,17 +7,17 @@ export default function Taskmanager() {
   const [loader, setLoader] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
- const filterdata = data?.filter((item) => {
-  if (!searchQuery) return true;
-  return (
-    item?.freight_number?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item?.freight?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item?.priority?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item?.supplier_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item?.supplier_email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item?.phone_no?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-});
+  const filterdata = data?.filter((item) => {
+    if (!searchQuery) return true;
+    return (
+      item?.freight_number?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.freight?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.priority?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.supplier_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.supplier_email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.phone_no?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
   const totalPages = Math.ceil(filterdata.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -60,28 +60,28 @@ export default function Taskmanager() {
         <>
           <div className="wpWrapper">
             <div className="container-fluid">
-              <div>
-                <div>
-                  <div className="row manageFreight">
-                    <div className="col-12">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div className="">
-                          <h4 className="freight_hd">Assign Task's</h4>
-                        </div>
-                        <div className="d-flex justify-content-end align-items-center">
-                          <div className="">
-                            <input
-                              className="px-2 py-1 rounded "
-                              type="text"
-                              placeholder="Search"
-                              value={searchQuery}
-                              onChange={handleSearch}
-                            ></input>
-                          </div>
-                        </div>
-                      </div>
+              <div className="row manageFreight">
+                <div className="col-md-12">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h4 className="freight_hd">Assign Task's</h4>
                     </div>
+
+                    <div>
+                      <input
+                        className="px-2 py-1 rounded "
+                        type="text"
+                        placeholder="Search"
+                        value={searchQuery}
+                        onChange={handleSearch}
+                      ></input>
+                    </div>
+
                   </div>
+                </div>
+              </div>
+              <div className="row assignTaskTable">
+                <div className="col-md-12">
                   <div className="table-responsive mt-3">
                     <table className="table table-striped tableICon">
                       <thead>
@@ -113,7 +113,7 @@ export default function Taskmanager() {
                           })}
                       </tbody>
                     </table>
-                    <div className="text-center d-flex justify-content-end align-items-center">
+                    <div className="text-center d-flex justify-content-end align-items-center mb-3">
                       <button
                         disabled={currentPage === 1}
                         className="bg_page"
@@ -134,6 +134,7 @@ export default function Taskmanager() {
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
           <ToastContainer />

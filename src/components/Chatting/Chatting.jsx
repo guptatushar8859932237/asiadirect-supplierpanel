@@ -134,41 +134,47 @@ export default function Chatting() {
     }
   };
   return (
-    <div className="container-fluid border">
-      <div className="row">
-        <div className="col-3 border-end" style={{ height: "90vh", overflowY: "auto" }}>
-          <ul className="nav nav-tabs">
-            <li className="nav-item">
-              <button
-                className={`nav-link ${activeTab === "users" ? "active" : ""}`}
-                onClick={() => setActiveTab("users")}
-              >
-                Users
-              </button>
-            </li>
-          </ul>
-          {activeTab === "users" && (
-            <>
-              <h5 className="p-2">Users</h5>
-              {users.map((chat) => (
-                <div
-                  key={chat.conversation_id}
-                  className="p-2 border-bottom"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => getMessages1(chat)}
+    <div className="container">
+      <div className="row mt-3">
+        <div className="col-lg-3  col-md-4 px-md-0" style={{ height: "90vh", overflowY: "auto" }}>
+          <div className="leftChatSide">
+            <ul className="nav nav-tabs chatLeftTab">
+              <li className="nav-item">
+                <button
+                  className={`nav-link ${activeTab === "users" ? "active" : ""}`}
+                  onClick={() => setActiveTab("users")}
                 >
-                  <strong>{chat?.sender_name}</strong>
-                  <p>{chat?.last_message}</p>
+                  Users
+                </button>
+              </li>
+            </ul>
+            {activeTab === "users" && (
+              <>
+                <h5 className="p-2 mb-0">Users</h5>
+                <div className="leftChatBorder">
+                  {users.map((chat) => (
+                    <div
+                      key={chat.conversation_id}
+                      className="p-2 border-bottom"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => getMessages1(chat)}
+                    >
+                      <strong>{chat?.sender_name}</strong>
+                      <p>{chat?.last_message}</p>
+                    </div>
+                  ))}
+
                 </div>
-              ))}
-            </>
-          )}
+              </>
+            )}
+
+          </div>
         </div>
-        <div className="col-9 d-flex flex-column" style={{ height: "90vh" }}>
-          <div className="border-bottom p-2">
+        <div className="col-lg-9  col-md-8 ps-md-0 d-flex flex-column" style={{ height: "90vh" }}>
+          <div className="border-bottom p-2 topChatHeader">
             {selectedChat ? selectedChat?.sender_name : "Select User"}
           </div>
-          <div className="flex-grow-1 p-3" style={{ overflowY: "auto" }}>
+          <div className="flex-grow-1 p-3 chatArea" style={{ overflowY: "auto" }}>
             {messages.map((msg) => {
               const isAdmin = msg.sender_id === userId;
               return (
@@ -181,7 +187,7 @@ export default function Chatting() {
                       maxWidth: "60%",
                       padding: "8px 12px",
                       borderRadius: "10px",
-                      background: isAdmin ? "#0d6efd" : "#e9ecef",
+                      background: isAdmin ? "#1b2245" : "rgb(215 215 215)",
                       color: isAdmin ? "#fff" : "#000"
                     }}
                   >
@@ -192,7 +198,7 @@ export default function Chatting() {
               );
             })}
           </div>
-          <div className="border-top p-2 d-flex gap-2">
+          <div className="d-flex gap-2 py-2">
             <input
               type="text"
               className="form-control"
@@ -204,7 +210,7 @@ export default function Chatting() {
               placeholder="Type message..."
             />
             <button
-              className="btn btn-primary"
+              className="btn btn-primary blueBtn"
               onClick={sendMessage1}
             >
               Send

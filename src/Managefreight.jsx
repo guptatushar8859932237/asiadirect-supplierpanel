@@ -699,14 +699,14 @@ export default function Managefreight() {
           <div className="container-fluid">
             <div className="row manageFreight">
               <div className="col-12">
-                <div className="d-flex justify-content-between flex-wrap">
+                <div className="d-flex justify-content-between flex-wrap gap-2">
                   <div className="">
                     <h4 className="freight_hd">Freight's</h4>
                   </div>
-                  <div className="d-flex justify-content-end">
-                    <div className="me-2 searchManageFre">
+                  <div className="d-flex justify-content-end gap-2">
+                    <div className="searchManageFre">
                       <input
-                        className="py-1 rounded ps-1"
+                        className="py-1 rounded ps-1 h-100"
                         type="text"
                         value={searchQuery}
                         onChange={handleSearch}
@@ -725,7 +725,7 @@ export default function Managefreight() {
             <div className="row">
               <div className="mt-4">
                 <div>
-                  <div className="table-responsive">
+                  <div>
                     <table className="table table-striped tableICon">
                       <tbody>
                         {currentdata &&
@@ -2383,7 +2383,7 @@ export default function Managefreight() {
                     {/*header end */}
 
                     <div className="newModalGap noFormaControl">
-                      <div className="row my-3 g-3 ">
+                      <div className="row my-3 g-2">
                         <div className="col-md-6 col-12">
                           <label>Delivery Type</label>
                           <select name="type" onChange={handlechange}>
@@ -2431,7 +2431,7 @@ export default function Managefreight() {
                           </div>
                         </div>
                       </div>
-                      <div className="row mb-3 g-3">
+                      <div className="row mb-3 g-2">
                         <div className="col-md-6 col-12">
                           <label>Country of Origin</label>
                           <select name="origin" onChange={handlechange}>
@@ -2463,7 +2463,7 @@ export default function Managefreight() {
                           </select>
                         </div>
                       </div>
-                      <div className="row mb-3 g-3">
+                      <div className="row mb-3 g-2">
                         <div className="col-md-6 col-12">
                           <label>Start Date</label>
                           <input

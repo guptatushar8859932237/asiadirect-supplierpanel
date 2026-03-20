@@ -13,6 +13,7 @@
   --gray: #8c92ac;
   --maroon: #be191d;
   --black: #1c1c1cc2;
+  --borderLight: #d1cfcf;
 }
 
 .main-container {
@@ -1049,7 +1050,7 @@ p.text-primary {
 .modal-header {
   background: var(--maroon) !important;
   color: white;
-  padding: 10px;
+  padding: 15px;
 }
 
 .modal-title {
@@ -3178,8 +3179,8 @@ p.fright_no.mx-2.fs-6 {
 }
 
 .dot {
-  height: 10px;
-  width: 10px;
+  height: 8px;
+  width: 8px;
   border-radius: 50%;
   display: inline-block;
   background-color: green;
@@ -3205,6 +3206,7 @@ p.fright_no.mx-2.fs-6 {
   font-size: 15px;
   width: 20px;
   display: inline-block;
+  cursor: pointer;
 }
 
 .tableICon .dropdown-item {
@@ -4151,7 +4153,10 @@ button.btn-close i {
 }
 
 .table-responsive {
-  overflow: visible;
+  /* overflow: visible; */
+  overflow-x: auto;
+  overflow-y: hidden;
+
 }
 
 .main_det i {
@@ -4253,11 +4258,6 @@ button.btn-close svg {
   background: #0d1122 !important;
 }
 
-.newModalGap {
-  padding: 10px;
-  background-color: #fff;
-}
-
 .desti_card tr td:nth-child(1) p {
   font-weight: 500;
 }
@@ -4268,7 +4268,7 @@ button.btn-close svg {
 
 .noFormaControl select {
   border: 1px solid lightgrey;
-  padding: 8px !important;
+  padding: 6px 12px !important;
   width: 100% !important;
   display: block;
 }
@@ -4299,9 +4299,7 @@ button.btn_web svg {
   padding: 10px 20px;
 }
 
-.newModalGap label {
-  margin-bottom: 5px;
-}
+
 
 .modal-dialog .shipRefer {
   padding: 0px !important;
@@ -4348,7 +4346,7 @@ span.cursor-pointer {
 }
 
 .newModalGap {
-  padding: 10px;
+  padding: 15px;
   background-color: #fff;
   max-height: 500px;
   overflow-y: auto;
@@ -4621,8 +4619,9 @@ select {
 }
 
 .newModalGap label {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
+  margin-bottom: 5px;
 }
 
 .modalUpdateFreight input {
@@ -4699,6 +4698,11 @@ input.form-control {
   font-size: 16px;
   font-weight: 600;
   line-height: normal !important;
+  transition: all 0.6s ease;
+}
+
+.blueBtn:hover {
+  background-color: var(--maroon) !important;
 }
 
 .cost-table thead {
@@ -4781,15 +4785,21 @@ td {
 .barBtn {
   border: unset;
   background: unset;
+  display: none;
 }
 
 .barBtn i {
-  font-size: 25px;
+  font-size: 23px;
   color: #1b2244;
 }
 
 .mobileSideBarHead {
   display: none;
+}
+
+/* new css 18/03/2026 */
+.main_div {
+  width: 100% !important;
 }
 
 /* mobile responsive */
@@ -4799,7 +4809,7 @@ td {
   }
 
   .mobileSideBarHead .sidebar {
-    position: absolute;
+    position: fixed;
     top: 0px;
     height: 100%;
     left: 0px;
@@ -4815,7 +4825,7 @@ td {
   }
 
   .mobileSideBarHead.show .sidebar {
-    width: 200px !important;
+    width: 250px !important;
   }
 
   .mobileSideBarHead.show .closeSideMob {
@@ -4823,17 +4833,16 @@ td {
   }
 
   .closeSideMob {
-    position: relative;
-    color: var(--red);
-    z-index: 99;
-    top: -69px;
-    right: -166px;
-    font-size: 16px;
+    position: fixed;
+    top: 5px;
+    right: 20px;
+    font-size: 19px;
+    z-index: 999999;
+    color: var(--maroon);
+    cursor: pointer;
+    left: 226px;
   }
 
-  .barBtn {
-    display: block !important;
-  }
 
   .main_div {
     width: 100% !important;
@@ -4841,7 +4850,101 @@ td {
 
   .wpWrapper {
     height: unset;
+    padding: unset !important;
+    padding-top: 15px !important;
+  }
+
+  main {
+    padding: unset;
+    padding-bottom: 10px;
+  }
+
+  .mobileSideBarHead {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 99;
+    transition: 0.3s;
+  }
+
+  .barBtn {
+    display: block !important;
+  }
+
+  /* header end */
+
+  /* chat section */
+
+
+  .topChatHeader {
+    margin-top: 10px;
+  }
+
+  .chatLeftTab+h5,
+  .leftChatBorder {
+    border-right: 1px solid var(--borderLight);
   }
 }
 
 /*  end mobile responsive */
+
+
+/* chat */
+.topChatHeader {
+  background-color: var(--maroon);
+  color: #fff;
+  border-radius: 12px 12px 0px 0px !important;
+}
+
+.chatArea {
+  background-color: rgb(243, 244, 247);
+  border-radius: 0px 0px 12px 12px;
+}
+
+.leftChatSide {
+  border: 1px solid var(--borderLight);
+  border-radius: 12px;
+  border-top: none;
+  border-right: none;
+  height: 100%;
+}
+
+.chatLeftTab li:first-child button {
+  border-left: unset !important;
+  border-radius: 8px 8px 0px 0px !important;
+}
+
+
+.assignTaskTable .table-responsive {
+  border: 1px solid var(--borderLight);
+}
+
+.tableBorderBtn {
+  border: 1px solid var(--blue);
+  border-radius: 5px;
+  padding: 2px 6px;
+  color: #000000;
+  font-weight: 600;
+  font-size: 11px;
+  background-color: unset;
+  transition: all 0.6s ease;
+}
+
+.tableBorderBtn:hover {
+  border-color: var(--maroon);
+
+}
+
+.tableICon i:hover {
+  color: var(--maroon);
+}
+
+
+
+.newModalGap h5 {
+  font-weight: 600;
+  font-size: 17px !important;
+}

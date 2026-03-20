@@ -10,11 +10,9 @@ import { useContext } from 'react';
 import { MyContext1 } from '../../Context/MyContext';
 import logo from '../../../src/Assests/favicon.png';
 import SideBar from '../Sidebar/SideBar';
+import { useLocation } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [count, setCount] = useState(0);
@@ -61,78 +59,102 @@ const Header = () => {
     localStorage.clear();
     navigate('/');
   };
+
+  // pp
+  const [openMob, setOpenMob] = useState(false);
+  const location = useLocation();
+  useEffect(() => {
+
+    if (window.innerWidth <= 767) {
+      setOpenMob(false);
+    }
+
+  }, [location.pathname]);
+  useEffect(() => {
+
+    const handleScroll = () => {
+      if (window.innerWidth <= 767) {
+        setOpenMob(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+
+  }, []);
+
   return (
     <>
-      <header className='header mobileHeader' style={{ backgroundColor: "#f0f2f5" }}>
-
-
+      <header className='header' style={{ backgroundColor: "#f0f2f5" }}>
         <div className="container-fluid">
-          <div className='d-block d-sm-none'>
-            <img src={logo} alt="Logo" height={30} />
-          </div>
-          <button className='d-none barBtn' onClick={() => setOpen(true)}><i class="fa fa-bars" aria-hidden="true"></i></button>
-          <div>
-            <div className='d-flex justify-content-end align-items-center gap-4'>
-              <div className=''>
-                <Dropdown>
-                  <Dropdown.Toggle variant="" id="dropdown-basic">
-                    <NotificationsActiveIcon className='fs-3' />
-                    {count > 0 && <Badge bg="danger">{count}</Badge>}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className='sidebar123 pt-0'>
-                    <p className=' ps-3 notiHead mb-0 py-2'>Notifications</p>
-                    <div className='notificationScroll'>
-                      {notifications.length > 0 ? (
-                        notifications.map((notification, index) => (
-                          <div className='bg-light border-bottom notificationAsiaBack' onClick={handleNotificationClick} key={index}>
-                            <Dropdown.Item>
-                              <h6 className='mt-2'>{notification.title}</h6>
-                              <p className='description'><small>{notification.description}</small></p>
-                            </Dropdown.Item>
-                          </div>
-                        ))
-                      ) : (
-                        <p className='text-center'>No new notifications</p>
-                      )}
-                    </div>
-                  </Dropdown.Menu>
-                </Dropdown>
+          <div className='d-flex justify-content-between align-items-center justify-content-md-end'>
+            <div className='d-block d-md-none'>
+              <img src={logo} alt="Logo" height={40} />
+            </div>
+            <div>
+              <div className='d-flex justify-content-end align-items-center gap-2 gap-sm-4'>
+                <div className=''>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="" id="dropdown-basic">
+                      <NotificationsActiveIcon className='fs-3' />
+                      {count > 0 && <Badge bg="danger">{count}</Badge>}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className='sidebar123 pt-0'>
+                      <p className=' ps-3 notiHead mb-0 py-2'>Notifications</p>
+                      <div className='notificationScroll'>
+                        {notifications.length > 0 ? (
+                          notifications.map((notification, index) => (
+                            <div className='bg-light border-bottom notificationAsiaBack' onClick={handleNotificationClick} key={index}>
+                              <Dropdown.Item>
+                                <h6 className='mt-2'>{notification.title}</h6>
+                                <p className='description'><small>{notification.description}</small></p>
+                              </Dropdown.Item>
+                            </div>
+                          ))
+                        ) : (
+                          <p className='text-center'>No new notifications</p>
+                        )}
+                      </div>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                <div style={{ width: '35px', height: '35px' }} className='me-0 me-md-5'>
+                  <img
+                    src={text ? `${process.env.REACT_APP_BASE_URL_image}${text}` : `${process.env.REACT_APP_BASE_URL_image}${image}`}
+                    alt="img"
+                    id="basic-button"
+                    aria-controls={anchorEl ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={anchorEl ? 'true' : undefined}
+                    onClick={(e) => setAnchorEl(e.currentTarget)}
+                    style={{ cursor: 'pointer', width: '100%', height: '100%', borderRadius: '50%' }}
+                  />
+                </div>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={() => setAnchorEl(null)}
+                  MenuListProps={{ 'aria-labelledby': 'basic-button' }}
+                >
+                  <MenuItem onClick={() => { navigate('/supplier/profile'); setAnchorEl(null); }}>Profile</MenuItem>
+                  <MenuItem onClick={() => { navigate('/supplier/changepassword'); setAnchorEl(null); }}>Change Password</MenuItem>
+                  <MenuItem onClick={() => { navigate('/supplier/user'); setAnchorEl(null); }}>Chatting</MenuItem>
+                  <MenuItem onClick={() => { navigate('/supplier/ProfileSection'); setAnchorEl(null); }}>Profile Section</MenuItem>
+                  <MenuItem onClick={() => { handleLogout(); setAnchorEl(null); }}>Logout</MenuItem>
+                </Menu>
+                <button className='d-none barBtn' onClick={() => setOpenMob(true)}><i class="fa fa-bars" aria-hidden="true"></i></button>
               </div>
-              <div style={{ width: '35px', height: '35px' }} className='me-0 me-sm-5'>
-                <img
-                  src={text ? `${process.env.REACT_APP_BASE_URL_image}${text}` : `${process.env.REACT_APP_BASE_URL_image}${image}`}
-                  alt="img"
-                  id="basic-button"
-                  aria-controls={anchorEl ? 'basic-menu' : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={anchorEl ? 'true' : undefined}
-                  onClick={(e) => setAnchorEl(e.currentTarget)}
-                  style={{ cursor: 'pointer', width: '100%', height: '100%', borderRadius: '50%' }}
-                />
-              </div>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={() => setAnchorEl(null)}
-                MenuListProps={{ 'aria-labelledby': 'basic-button' }}
-              >
-                <MenuItem onClick={() => { navigate('/supplier/profile'); setAnchorEl(null); }}>Profile</MenuItem>
-                <MenuItem onClick={() => { navigate('/supplier/changepassword'); setAnchorEl(null); }}>Change Password</MenuItem>
-                <MenuItem onClick={() => { navigate('/supplier/user'); setAnchorEl(null); }}>Chatting</MenuItem>
-                <MenuItem onClick={() => { navigate('/supplier/ProfileSection'); setAnchorEl(null); }}>Profile Section</MenuItem>
-                <MenuItem onClick={() => { handleLogout(); setAnchorEl(null); }}>Logout</MenuItem>
-              </Menu>
-
             </div>
           </div>
-
         </div>
         <ToastContainer />
       </header>
-      <div className={`mobileSideBarHead ${open ? "show" : ""}`}>
-        <i class="fa fa-times d-none closeSideMob" aria-hidden="true" onClick={() => setOpen(false)}></i>
-        <SideBar />
+      <div on className={`mobileSideBarHead ${openMob ? "show" : ""}`}>
+        <i className={`fa fa-times closeSideMob ${openMob ? "d-block" : "d-none"}`}
+          aria-hidden="true" onClick={() => setOpenMob(false)}></i>
+        <SideBar closeMobileSidebar={() => setOpenMob(false)} />
       </div>
     </>
   );

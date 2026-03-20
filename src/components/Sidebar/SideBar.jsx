@@ -134,7 +134,7 @@ const userControlRoutes = {
     },
   ],
 };
-const SideBar = ({ children }) => {
+const SideBar = ({ children, closeMobileSidebar }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const [openDropdown, setOpenDropdown] = useState(null); // Track the currently open dropdown
@@ -173,9 +173,11 @@ const SideBar = ({ children }) => {
   const handleDropdownToggle = (index) => {
     setOpenDropdown((prevIndex) => (prevIndex === index ? null : index));
   };
+
+  // pp
+
   return (
     <div className="main-container sideBarpageMain">
-
       <motion.div
         animate={{
           width: isOpen ? "300px" : "42px",
@@ -251,6 +253,7 @@ const SideBar = ({ children }) => {
                       className="sub_routes">
                       {route.subRoutes.map((subRoute, subIndex) => (
                         <NavLink
+
                           to={subRoute.path}
                           key={subIndex}
                           className={({ isActive }) =>
@@ -276,6 +279,7 @@ const SideBar = ({ children }) => {
                 className={({ isActive }) =>
                   isActive ? "link active" : "link"
                 }
+
               >
                 <div className="icon">{route.icon}</div>
                 <AnimatePresence>
@@ -309,8 +313,6 @@ const SideBar = ({ children }) => {
       >
         <main>{children}</main>
       </motion.div>
-
-
     </div>
   );
 };
