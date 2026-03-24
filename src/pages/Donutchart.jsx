@@ -27,7 +27,7 @@ const Donutchart = () => {
           <Chart
             type="pie"
             width={330}
-            height={520}
+            height={350}
             series={[parseInt(data), parseInt(data1), parseInt(data2)]}
             options={{
               labels: ['Air Freight', 'Road Freight', 'Sea Freight'], colors: ['#9eece3', '#be191d', '#1b2245']
