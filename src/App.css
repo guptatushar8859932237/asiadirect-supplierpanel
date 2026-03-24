@@ -826,7 +826,6 @@ ul.navbar-nav i {
 .cardDash {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   position: relative;
-  margin: 12px 20px 30px 0px;
   cursor: pointer;
 }
 
@@ -863,15 +862,20 @@ ul.navbar-nav i {
 }
 
 .bg1 {
-  background-color: #f2f2f3;
+  background-color: #ff112f0f;
 }
 
+
 .bg2 {
-  background-color: #f2f2f3;
+  background-color: #8fa1ff1a;
 }
 
 .bg3 {
-  background-color: #f2f2f3;
+  background-color: #b7e9ff3d;
+}
+
+.bg4 {
+  background-color: #b7ffd03d;
 }
 
 .card {
@@ -1027,17 +1031,7 @@ th {
   background-color: unset !important;
 } */
 
-.manageFreight button {
-  background-color: #1b2245 !important;
-  color: #fff;
-  border: unset;
-  padding: 9px 20px !important;
-  border-radius: 5px;
-  font-size: 15px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  line-height: normal !important;
-}
+
 
 p.text-primary {
   color: var(--blue) !important;
@@ -1051,6 +1045,7 @@ p.text-primary {
   background: var(--maroon) !important;
   color: white;
   padding: 15px;
+  border-radius: 12px 12px 0px 0px;
 }
 
 .modal-title {
@@ -2021,7 +2016,8 @@ ul.track-progress li:after {
   overflow-x: hidden;
 }
 
-.content {
+.content,
+.chatArea {
   background-image: url("./Assests/messgae.png");
 }
 
@@ -2432,7 +2428,7 @@ ul {
 .img_profile {
   height: 137px;
   width: 137px;
-  margin-left: 30px;
+  margin: auto;
 }
 
 .icon_para {
@@ -2506,18 +2502,26 @@ ul {
 
 .custom-modal-content {
   background-color: white;
-  border-radius: 8px;
-  width: 100%;
+  border-radius: 12px;
+  width: 90%;
   max-width: 500px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-modal-content label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
 .custom-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #be191d;
+  background-color: var(--maroon);
   padding: 17px;
+  border-radius: 12px 12px 0px 0px;
+  color: #ffff;
 }
 
 .custom-modal-title {
@@ -3289,14 +3293,15 @@ a.dropdown-item.li_icon.NewDropdown {
   display: none; 
 } */
 .para_dash {
-  font-size: 30px;
+  font-size: 25px;
   margin-bottom: 0px;
+  font-weight: 700;
 }
 
 .hd_dash {
   padding: 30px 30px 0px;
   margin-bottom: 0px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -3990,7 +3995,7 @@ a.link.active svg {
   width: 50%;
 }
 
-section.tableMain thead {
+.tableMain thead {
   background: #1b2245;
   color: #fff;
   /* padding: 10px 20px !important; */
@@ -4024,7 +4029,7 @@ section.tableMain thead {
   margin-bottom: 2px;
 }
 
-section.tableMain p {
+.tableMain p {
   margin-bottom: 3px;
   font-size: 15px;
 }
@@ -4218,7 +4223,7 @@ button.btn-close svg {
 }
 
 .newModal .MuiBox-root {
-  border-radius: 5px !important;
+  border-radius: 12px !important;
 }
 
 .newModal input {
@@ -4350,7 +4355,7 @@ span.cursor-pointer {
   background-color: #fff;
   max-height: 500px;
   overflow-y: auto;
-  overflow-x: clip;
+  border-radius: 0px 0px 12px 12px;
 }
 
 .table-responsive select {
@@ -4662,8 +4667,9 @@ button.bg_page {
   width: 100%;
 }
 
-input.form-control {
+.form-control {
   font-size: 14px;
+  border: 1px solid var(--borderLight);
 }
 
 .popup-overlay {
@@ -4689,13 +4695,26 @@ input.form-control {
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
-.blueBtn {
+.blueBtn,
+.manageFreight button {
   background-color: #1b2245 !important;
   color: #fff;
   border: unset;
   padding: 10px 20px;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: normal !important;
+  transition: all 0.6s ease;
+}
+
+.redBtn {
+  background-color: var(--maroon) !important;
+  color: #fff;
+  border: unset;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 15px;
   font-weight: 600;
   line-height: normal !important;
   transition: all 0.6s ease;
@@ -4897,6 +4916,8 @@ td {
   background-color: var(--maroon);
   color: #fff;
   border-radius: 12px 12px 0px 0px !important;
+  font-size: 17px;
+  font-weight: 600;
 }
 
 .chatArea {
@@ -4942,9 +4963,42 @@ td {
   color: var(--maroon);
 }
 
-
-
 .newModalGap h5 {
   font-weight: 600;
   font-size: 17px !important;
+}
+
+select.form-select {
+  font-size: 14px;
+}
+
+.tableDesign th {
+  background: var(--maroon) !important;
+  color: #ffff !important;
+  font-weight: 600;
+}
+
+.modal-content {
+  border-radius: 15px;
+}
+
+.profileContent p {
+  font-size: 14px;
+}
+
+.profileContent h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.changePassForm label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.changePassForm {
+  border: 1px solid var(--borderLight);
+  border-radius: 12px;
+  padding: 20px;
 }

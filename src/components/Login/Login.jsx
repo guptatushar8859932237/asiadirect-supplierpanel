@@ -127,7 +127,7 @@ export default function Login() {
                       Login
                     </button>
                   </div>
-                  <div className="mt-3">
+                  <div className="mt-3 text-end">
                     <NavLink to="/forgoten-password" className="forget_pass">
                       Forgot Password?
                     </NavLink>

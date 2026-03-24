@@ -702,6 +702,12 @@ export default function WarehouseOrder() {
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
+                            width: {
+                              xs: "95%",   // mobile
+                              sm: "90%",   // tablet
+                              md: "90%",   // small laptop
+                              lg: "90%",   // desktop
+                            },
                           }}
                         >
                           <div className="modal-header">
@@ -715,7 +721,7 @@ export default function WarehouseOrder() {
                               <CloseIcon />
                             </button>
                           </div>
-                          <div className="newModalGap noFormaControl">
+                          <div className="newModalGap noFormaControl table-responsive">
                             <table className="table table-striped">
                               <thead>
                                 <tr>
@@ -754,16 +760,12 @@ export default function WarehouseOrder() {
                                       <td>{doc?.warehouse_receipt_number}</td>
                                       <td>{doc?.warehouse_ref}</td>
                                       <td>{doc?.weight}</td>
-                                      <td>
-                                        <button
-                                          className="btn btn-sm btn-primary"
-                                          onClick={() => {
-                                            // setEditDtaawProduct(doc);
-                                            editmodalopen1product(doc);
-                                          }}
-                                        >
-                                          Edit
-                                        </button>
+                                      <td className="tableICon">
+                                        <i onClick={() => {
+                                          // setEditDtaawProduct(doc);
+                                          editmodalopen1product(doc);
+                                        }} className="fa fa-pencil-square-o edit_icon"></i>
+
                                       </td>
                                     </tr>
                                   ))
@@ -792,8 +794,8 @@ export default function WarehouseOrder() {
                             width: {
                               xs: "95%",   // mobile
                               sm: "80%",   // tablet
-                              md: "60%",   // small laptop
-                              lg: "40%",   // desktop
+                              md: "70%",   // small laptop
+                              lg: "60%",   // desktop
                             },
                           }}
                         >
@@ -807,8 +809,8 @@ export default function WarehouseOrder() {
                             </button>
                           </div>
                           <div className="newModalGap noFormaControl">
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Date</label>
                                 <input
                                   type="date"
@@ -820,7 +822,7 @@ export default function WarehouseOrder() {
                                 ></input>
                               </div>
 
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Order Id</label>
                                 <input
                                   type="type"
@@ -831,7 +833,7 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Courier waybill_ref</label>
                                 <input
                                   type="type"
@@ -842,7 +844,7 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Dispatch Date</label>
                                 <input
                                   type="date"
@@ -853,9 +855,9 @@ export default function WarehouseOrder() {
                                 ></input>
                               </div>
                             </div>
-                            <h5>Package Information</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mt-3 mb-2">Package Information</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Customer Name</label>
                                 <input
                                   className="form-control"
@@ -865,7 +867,7 @@ export default function WarehouseOrder() {
                                   placeholder="customer name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Customer ref</label>
                                 <input
                                   className="form-control"
@@ -875,59 +877,61 @@ export default function WarehouseOrder() {
                                   placeholder="customer name"
                                 ></input>
                               </div>
-                              <div className="col-12">
-                                <div className="row">
-                                  <div className="col-6">
-                                    <label>Country of Origin</label>
-                                    <select
-                                      name="collection_from"
-                                      value={prodata.collection_from}
-                                      onChange={handlechangewarehouse}
-                                    >
-                                      <option>Select</option>
-                                      {countries &&
-                                        countries.length > 0 &&
-                                        countries.map((item, index) => {
-                                          return (
-                                            <>
-                                              <option
-                                                key={index}
-                                                value={item.id}
-                                              >
-                                                {item.name}
-                                              </option>
-                                            </>
-                                          );
-                                        })}
-                                    </select>
-                                  </div>
-                                  <div className="col-6">
-                                    <label> Destination Country</label>
-                                    <select
-                                      name="delivery_to"
-                                      value={prodata.delivery_to}
-                                      onChange={handlechangewarehouse}
-                                    >
-                                      <option>Select</option>
-                                      {countries &&
-                                        countries.length > 0 &&
-                                        countries.map((item, index) => {
-                                          return (
-                                            <>
-                                              <option
-                                                key={index}
-                                                value={item.id}
-                                              >
-                                                {item.name}
-                                              </option>
-                                            </>
-                                          );
-                                        })}
-                                    </select>
-                                  </div>
-                                </div>
+
+
+                              <div className="col-md-6">
+                                <label>Country of Origin</label>
+                                <select
+                                  name="collection_from"
+                                  value={prodata.collection_from}
+                                  onChange={handlechangewarehouse}
+                                  className="form-select"
+                                >
+                                  <option>Select</option>
+                                  {countries &&
+                                    countries.length > 0 &&
+                                    countries.map((item, index) => {
+                                      return (
+                                        <>
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                          >
+                                            {item.name}
+                                          </option>
+                                        </>
+                                      );
+                                    })}
+                                </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
+                                <label> Destination Country</label>
+                                <select
+                                  name="delivery_to"
+                                  value={prodata.delivery_to}
+                                  onChange={handlechangewarehouse}
+                                  className="form-select"
+                                >
+                                  <option>Select</option>
+                                  {countries &&
+                                    countries.length > 0 &&
+                                    countries.map((item, index) => {
+                                      return (
+                                        <>
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                          >
+                                            {item.name}
+                                          </option>
+                                        </>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+
+
+                              <div className="col-md-6">
                                 <label>Box Marking</label>
                                 <input
                                   className="form-control"
@@ -936,7 +940,7 @@ export default function WarehouseOrder() {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Good Description</label>
                                 <input
                                   type="Good Description"
@@ -947,10 +951,10 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Packing Type</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.package_type}
                                   name="package_type"
                                   onChange={handlechangewarehouse}
@@ -963,10 +967,10 @@ export default function WarehouseOrder() {
                                   <option value="Bag">Bag</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Hazardous </label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.hazardous}
                                   name="hazardous"
                                   onChange={handlechangewarehouse}
@@ -977,7 +981,7 @@ export default function WarehouseOrder() {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Description of Hazardous </label>
                                 <input
                                   type="type"
@@ -988,7 +992,7 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Total Package</label>
                                 <input
                                   type="text"
@@ -1000,7 +1004,7 @@ export default function WarehouseOrder() {
                                 ></input>
                               </div>
 
-                              <div className="col-6">
+                              <div className="col-md-12">
                                 <label>Total Dimension </label>
                                 <input
                                   type="text"
@@ -1011,21 +1015,24 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
+                              <div className="col-lg-12">
+                                <label>Comment on Packages</label>
+                                <textarea
+                                  className="w-100 form-control"
+                                  name="package_comment"
+                                  value={prodata.package_comment}
+                                  placeholder="Other Information"
+                                ></textarea>
+
+                              </div>
                             </div>
-                            <label>Comment on Packages</label>
-                            <textarea
-                              className="w-100"
-                              name="package_comment"
-                              value={prodata.package_comment}
-                              placeholder="Other Information"
-                            ></textarea>
-                            <h5>Damaged Goods</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mt-3 mb-2">Damaged Goods</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Damaged Goods</label>
                                 <select
                                   type="text"
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.damage_goods}
                                   name="damage_goods"
                                   onChange={handlechangewarehouse}
@@ -1036,7 +1043,7 @@ export default function WarehouseOrder() {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Damaged Packed</label>
                                 <input
                                   type="text"
@@ -1046,7 +1053,7 @@ export default function WarehouseOrder() {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-12">
                                 <label>Attach File</label>
                                 <input
                                   type="file"
@@ -1056,15 +1063,15 @@ export default function WarehouseOrder() {
                                 ></input>
                               </div>
 
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Comment on Damaged</label>
-                                <br />
-                                <textarea className="w-100" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
+
+                                <textarea className="w-100 form-control" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
                               </div>
                             </div>
-                            <h5>Supplier Information</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mt-3 mb-2">Supplier Information</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Supplier Name (Company)</label>
                                 <input
                                   type="text"
@@ -1074,7 +1081,7 @@ export default function WarehouseOrder() {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Name (Person)</label>
                                 <input
                                   type="text"
@@ -1084,7 +1091,7 @@ export default function WarehouseOrder() {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Address</label>
                                 <input
                                   type="text"
@@ -1094,7 +1101,7 @@ export default function WarehouseOrder() {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Contact</label>
                                 <input
                                   type="text"
@@ -1106,12 +1113,12 @@ export default function WarehouseOrder() {
                                 ></input>
                               </div>
                             </div>
-                            <h5>Cargo Handeling</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mt-3 mb-2">Cargo Handeling</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Warehouse Collect</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.warehouse_collect}
                                   name="warehouse_collect"
                                   onChange={handlechangewarehouse}
@@ -1122,7 +1129,7 @@ export default function WarehouseOrder() {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Cost To Collect</label>
                                 <input
                                   type="text"
@@ -1132,10 +1139,10 @@ export default function WarehouseOrder() {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Storage</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.warehouse_storage}
                                   name="warehouse_storage"
                                   onChange={handlechangewarehouse}
@@ -1146,7 +1153,7 @@ export default function WarehouseOrder() {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Cost</label>
                                 <input
                                   type="text"
@@ -1157,11 +1164,11 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Handeling Required</label>
                                 <select
                                   type="text"
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.handling_required}
                                   name="handling_required"
                                   onChange={handlechangewarehouse}
@@ -1172,7 +1179,7 @@ export default function WarehouseOrder() {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Handeling cost</label>
                                 <input
                                   type="text"
@@ -1183,10 +1190,10 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.warehouse_dispatch}
                                   name="warehouse_dispatch"
                                   onChange={handlechangewarehouse}
@@ -1197,7 +1204,7 @@ export default function WarehouseOrder() {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>cost to dispatch</label>
                                 <input
                                   type="text"
@@ -1208,7 +1215,7 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Attach Product Image</label>
                                 <input
                                   type="file"
@@ -1218,7 +1225,7 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Attach Other</label>
                                 <input
                                   type="file"
@@ -1228,7 +1235,7 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Warehouse Comment</label>
                                 <textarea
                                   className="form-control"
@@ -1239,14 +1246,15 @@ export default function WarehouseOrder() {
                                 ></textarea>
                               </div>
                             </div>
-                            <Button
+                            <button
+                              className="blueBtn mt-3"
                               variant="contained"
                               onClick={
                                 editpostData
                               }
                             >
                               Edit
-                            </Button>
+                            </button>
                           </div>
                         </Box>
                       </Modal>
@@ -1265,8 +1273,8 @@ export default function WarehouseOrder() {
                             width: {
                               xs: "95%",   // mobile
                               sm: "80%",   // tablet
-                              md: "60%",   // small laptop
-                              lg: "40%",   // desktop
+                              md: "70%",   // small laptop
+                              lg: "60%",   // desktop
                             },
                           }}
                         >
@@ -1478,7 +1486,7 @@ export default function WarehouseOrder() {
                                 ></input>
                               </div>
 
-                              <div className="col-md-6">
+                              <div className="col-md-12">
                                 <label>Total Dimension </label>
                                 <input
                                   type="text"
@@ -1527,7 +1535,7 @@ export default function WarehouseOrder() {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-md-6">
+                              <div className="col-md-12">
                                 <label>Attach File</label>
                                 <input
                                   type="file"
@@ -1686,7 +1694,7 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-md-12">
+                              <div className="col-md-6">
                                 <label>Attach Product Image</label>
                                 <input
                                   type="file"
@@ -1696,7 +1704,7 @@ export default function WarehouseOrder() {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-md-12">
+                              <div className="col-md-6">
                                 <label>Attach Other</label>
                                 <input
                                   type="file"
@@ -1741,6 +1749,12 @@ export default function WarehouseOrder() {
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
+                            width: {
+                              xs: "95%",   // mobile
+                              sm: "80%",   // tablet
+                              md: "70%",   // small laptop
+                              lg: "60%",   // desktop
+                            },
                           }}
                         >
                           <div className="modal-header">
@@ -1755,8 +1769,8 @@ export default function WarehouseOrder() {
                             </button>
                           </div>
                           <div className="newModalGap noFormaControl">
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Goods Description</label>
                                 <input
                                   className="form-control"
@@ -1766,7 +1780,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Hazardous</label>
                                 <input
                                   className="form-control"
@@ -1776,9 +1790,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Date Received</label>
                                 <input
                                   type="date"
@@ -1789,7 +1802,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Package Type</label>
                                 <input
                                   className="form-control"
@@ -1799,9 +1812,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Packages</label>
                                 <input
                                   className="form-control"
@@ -1811,7 +1823,7 @@ export default function WarehouseOrder() {
                                   value={productData.packages}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Dimension</label>
                                 <input
                                   className="form-control"
@@ -1821,9 +1833,8 @@ export default function WarehouseOrder() {
                                   value={productData.dimension}
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Weight</label>
                                 <input
                                   className="form-control"
@@ -1833,7 +1844,7 @@ export default function WarehouseOrder() {
                                   placeholder="0.00"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Ref</label>
                                 <input
                                   className="form-control"
@@ -1843,9 +1854,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Freight</label>
                                 <input
                                   className="form-control"
@@ -1855,7 +1865,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Groupage Batch Ref</label>
                                 <input
                                   className="form-control"
@@ -1865,9 +1875,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Warehouse Receipt Number</label>
                                 <input
                                   className="form-control"
@@ -1877,7 +1886,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Date Dispatched</label>
                                 <input
                                   className="form-control"
@@ -1888,9 +1897,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Supplier Address</label>
                                 <input
                                   className="form-control"
@@ -1900,7 +1908,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Collect</label>
                                 <input
                                   className="form-control"
@@ -1910,9 +1918,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Costs To Collect</label>
                                 <input
                                   className="form-control"
@@ -1922,7 +1929,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Port Of Loading</label>
                                 <input
                                   className="form-control"
@@ -1932,9 +1939,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
                                 <input
                                   className="form-control"
@@ -1944,7 +1950,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Cost</label>
                                 <input
                                   className="form-control"
@@ -1954,9 +1960,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Cost To Dispatch</label>
                                 <input
                                   className="form-control"
@@ -1966,7 +1971,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Waybill Ref</label>
                                 <input
                                   className="form-control"
@@ -1976,9 +1981,9 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Supplier Email</label>
                                 <input
                                   className="form-control"
@@ -1988,7 +1993,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Contact</label>
                                 <input
                                   className="form-control"
@@ -1999,14 +2004,15 @@ export default function WarehouseOrder() {
                                 ></input>
                               </div>
                             </div>
-                            <Button
+                            <button
+                              className="blueBtn mt-3"
                               variant="contained"
                               onClick={() => {
                                 editproduct123();
                               }}
                             >
                               Edit Product
-                            </Button>
+                            </button>
                           </div>
                         </Box>
                       </Modal>
@@ -2025,8 +2031,8 @@ export default function WarehouseOrder() {
                             width: {
                               xs: "95%",   // mobile
                               sm: "80%",   // tablet
-                              md: "60%",   // small laptop
-                              lg: "40%",   // desktop
+                              md: "70%",   // small laptop
+                              lg: "60%",   // desktop
                             },
                           }}
                         >
@@ -2044,8 +2050,8 @@ export default function WarehouseOrder() {
                             </button>
                           </div>
                           <div className="newModalGap noFormaControl">
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Goods Description</label>
                                 <input
                                   className="form-control"
@@ -2054,7 +2060,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Hazardous</label>
                                 <input
                                   className="form-control"
@@ -2063,9 +2069,9 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Date Received</label>
                                 <input
                                   type="date"
@@ -2075,7 +2081,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Package Type</label>
                                 <input
                                   className="form-control"
@@ -2084,9 +2090,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Packages</label>
                                 <input
                                   className="form-control"
@@ -2095,7 +2100,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Dimension</label>
                                 <input
                                   className="form-control"
@@ -2104,9 +2109,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Weight</label>
                                 <input
                                   className="form-control"
@@ -2115,7 +2119,7 @@ export default function WarehouseOrder() {
                                   placeholder="0.00"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Ref</label>
                                 <input
                                   className="form-control"
@@ -2124,9 +2128,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Freight</label>
                                 <input
                                   className="form-control"
@@ -2135,7 +2138,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Groupage Batch Ref</label>
                                 <input
                                   className="form-control"
@@ -2144,9 +2147,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Warehouse Receipt Number</label>
                                 <input
                                   className="form-control"
@@ -2155,7 +2157,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Date Dispatched</label>
                                 <input
                                   className="form-control"
@@ -2164,9 +2166,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Supplier Address</label>
                                 <input
                                   className="form-control"
@@ -2175,7 +2176,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Collect</label>
                                 <input
                                   className="form-control"
@@ -2183,10 +2184,10 @@ export default function WarehouseOrder() {
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input>
+
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Costs To Collect</label>
                                 <input
                                   className="form-control"
@@ -2195,7 +2196,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Port Of Loading</label>
                                 <input
                                   className="form-control"
@@ -2204,9 +2205,9 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
                                 <input
                                   className="form-control"
@@ -2215,7 +2216,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Cost</label>
                                 <input
                                   className="form-control"
@@ -2224,9 +2225,9 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Cost To Dispatch</label>
                                 <input
                                   className="form-control"
@@ -2235,7 +2236,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Waybill Ref</label>
                                 <input
                                   className="form-control"
@@ -2244,9 +2245,8 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Supplier Email</label>
                                 <input
                                   className="form-control"
@@ -2255,7 +2255,7 @@ export default function WarehouseOrder() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Contact</label>
                                 <input
                                   className="form-control"
@@ -2265,14 +2265,15 @@ export default function WarehouseOrder() {
                                 ></input>
                               </div>
                             </div>
-                            <Button
+                            <button
+                              className="blueBtn mt-3"
                               variant="contained"
                               onClick={() => {
                                 handleClickAssdsdsdsignId();
                               }}
                             >
                               Add Product
-                            </Button>
+                            </button>
                           </div>
                         </Box>
                       </Modal>
@@ -2282,8 +2283,9 @@ export default function WarehouseOrder() {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </div >
+      )
+      }
     </>
   );
 }

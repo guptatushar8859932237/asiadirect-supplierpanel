@@ -18,13 +18,13 @@ export default function Attendancemanagement() {
 
   const [input, setInput] = useState({
     leave_from: "",
-    leave_to:"" ,
+    leave_to: "",
     reason: ""
   });
 
   const [inputdata, setInputdata] = useState({
-   leave_from: "",
-    leave_to:"" ,
+    leave_from: "",
+    leave_to: "",
     reason: ""
   });
 
@@ -37,7 +37,7 @@ export default function Attendancemanagement() {
         page: page,
         limit: pageSize,
         search: search,
-        supplier_id:supplier_id.id
+        supplier_id: supplier_id.id
       };
 
       const response = await axios.post(
@@ -65,14 +65,14 @@ export default function Attendancemanagement() {
     const { name, value } = e.target;
     setInput((prev) => ({ ...prev, [name]: value }));
   };
-const supplier_id = JSON.parse(localStorage.getItem("data123"))
+  const supplier_id = JSON.parse(localStorage.getItem("data123"))
   // ---------------- ADD SUPPLIER ----------------
   const handleAddSupplier = () => {
     const data = {
-      supplier_id:supplier_id.id ,
-    leave_from:input.leave_from ,
-    leave_to: input.leave_to,
-    reason: input.reason
+      supplier_id: supplier_id.id,
+      leave_from: input.leave_from,
+      leave_to: input.leave_to,
+      reason: input.reason
     };
 
     axios
@@ -118,24 +118,24 @@ const supplier_id = JSON.parse(localStorage.getItem("data123"))
     });
   };
 
-const openModal2 = (id) => {
-  const usr = data.find((p) => p.id === id);
+  const openModal2 = (id) => {
+    const usr = data.find((p) => p.id === id);
 
-  if (usr) {
-    setInputdata({
-      id: usr.id,
-      leave_from: usr.leave_from
-        ? usr.leave_from.split("T")[0]
-        : "",
-      leave_to: usr.leave_to
-        ? usr.leave_to.split("T")[0]
-        : "",
-      reason: usr.reason || "",
-    });
-  }
+    if (usr) {
+      setInputdata({
+        id: usr.id,
+        leave_from: usr.leave_from
+          ? usr.leave_from.split("T")[0]
+          : "",
+        leave_to: usr.leave_to
+          ? usr.leave_to.split("T")[0]
+          : "",
+        reason: usr.reason || "",
+      });
+    }
 
-  setIsModalOpen2(true);
-};
+    setIsModalOpen2(true);
+  };
 
 
   // ---------------- HANDLE UPDATE INPUT ----------------
@@ -149,32 +149,32 @@ const openModal2 = (id) => {
     }
   };
 
-const postData1234 = () => {
-  const payload = {
-    id: inputdata.id,
+  const postData1234 = () => {
+    const payload = {
+      id: inputdata.id,
 
-    leave_from: inputdata.leave_from
-      ? new Date(inputdata.leave_from).toISOString()
-      : null,
+      leave_from: inputdata.leave_from
+        ? new Date(inputdata.leave_from).toISOString()
+        : null,
 
-    leave_to: inputdata.leave_to
-      ? new Date(inputdata.leave_to).toISOString()
-      : null,
+      leave_to: inputdata.leave_to
+        ? new Date(inputdata.leave_to).toISOString()
+        : null,
 
-    reason: inputdata.reason,
+      reason: inputdata.reason,
+    };
+
+    axios
+      .post(`${process.env.REACT_APP_BASE_URL}updateSupplierLeave`, payload)
+      .then((res) => {
+        toast.success(res.data.message);
+        setIsModalOpen2(false);
+        getdata();
+      })
+      .catch((err) => {
+        toast.error(err.response?.data?.message || "Update failed!");
+      });
   };
-
-  axios
-    .post(`${process.env.REACT_APP_BASE_URL}updateSupplierLeave`, payload)
-    .then((res) => {
-      toast.success(res.data.message);
-      setIsModalOpen2(false);
-      getdata();
-    })
-    .catch((err) => {
-      toast.error(err.response?.data?.message || "Update failed!");
-    });
-};
 
 
   // ---------------- GET COUNTRIES ----------------
@@ -183,92 +183,97 @@ const postData1234 = () => {
     const value = e.target.value;
     setSearchQuery(value);
     setCurrentPage(1);
-    getdata(1, value); 
+    getdata(1, value);
   };
   return (
     <>
       <>
         <div className="wpWrapper">
           <div className="container-fluid">
-            <div className="d-flex justify-content-between my-3">
-              <h4>Leave Management</h4>
-              <div className="d-flex">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="px-2 py-1"
-                  value={searchQuery}
-                  onChange={handleSearch}
-                />
-                <button
-                  className="btn btn-primary ms-2"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                 Add Leave
-                </button>
-              </div>
-            </div>
-            {/* ---------------- TABLE ---------------- */}
-            {loader ? (
-              <div className="loader-container">
-                <div className="loader"></div>
-                <p>Loading...</p>
-              </div>
-            ) : (
-              <div className="table-responsive">
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Sr.No.</th>
-                      <th>Leave From</th>
-                      <th>Leave To</th>
-                      <th>Reason</th>
-                      <th>Status</th>
-                      <th>Admin Remark</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map((item, index) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{new Date(item.leave_from).toLocaleDateString("en-GB")}</td>
-                        <td>{new Date(item.leave_to).toLocaleDateString("en-GB")}</td>
-                        <td>{item.reason}</td>
-                        <td>{item?.status===1?"Approve":item?.status===2?"Reject":"Pending"}</td>
-                        <td>{item?.admin_remark}</td>
-                       
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {/* PAGINATION */}
-                <div className="d-flex justify-content-end align-items-end my-3">
-                  <button
-                    disabled={currentPage === 1}
-                    onClick={() => {
-                      setCurrentPage(currentPage - 1);
-                      getdata(currentPage - 1, searchQuery);
-                    }}
-                  >
-                    ◀
-                  </button>
+            <div className="row manageFreight">
 
-                  <span className="mx-2">
-                    Page {currentPage} of {totalPages}
-                  </span>
-
+              <div className="d-flex justify-content-between my-3  flex-wrap gap-2 align-items-center">
+                <h4 className="mb-0 freight_hd"> Leave Management</h4>
+                <div className="d-flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChange={handleSearch}
+                    className="px-2 py-1 rounded"
+                  />
                   <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => {
-                      setCurrentPage(currentPage + 1);
-                      getdata(currentPage + 1, searchQuery);
-                    }}
+                    className="blueBtn"
+                    onClick={() => setIsModalOpen(true)}
                   >
-                    ▶
+                    Add Leave
                   </button>
                 </div>
               </div>
-            )}
+              {/* ---------------- TABLE ---------------- */}
+              {loader ? (
+                <div className="loader-container">
+                  <div className="loader"></div>
+                  <p>Loading...</p>
+                </div>
+              ) : (
+                <div className="table-responsive tableDesign">
+                  <table className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Sr.No.</th>
+                        <th>Leave From</th>
+                        <th>Leave To</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Admin Remark</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.map((item, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{new Date(item.leave_from).toLocaleDateString("en-GB")}</td>
+                          <td>{new Date(item.leave_to).toLocaleDateString("en-GB")}</td>
+                          <td>{item.reason}</td>
+                          <td>{item?.status === 1 ? "Approve" : item?.status === 2 ? "Reject" : "Pending"}</td>
+                          <td>{item?.admin_remark}</td>
+
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {/* PAGINATION */}
+                  <div className="d-flex justify-content-end align-items-end my-3">
+                    <button
+                      className="bg_page"
+                      disabled={currentPage === 1}
+                      onClick={() => {
+                        setCurrentPage(currentPage - 1);
+                        getdata(currentPage - 1, searchQuery);
+                      }}
+                    >
+                      <i class="fi fi-rr-angle-small-left page_icon"></i>
+                    </button>
+
+                    <span className="mx-2">
+                      Page {currentPage} of {totalPages}
+                    </span>
+
+                    <button
+                      className="bg_page"
+                      disabled={currentPage === totalPages}
+                      onClick={() => {
+                        setCurrentPage(currentPage + 1);
+                        getdata(currentPage + 1, searchQuery);
+                      }}
+                    >
+                      <i class="fi fi-rr-angle-small-right page_icon"></i>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         {/* ---------------- ADD SUPPLIER MODAL ---------------- */}
@@ -276,7 +281,7 @@ const postData1234 = () => {
           <div className="custom-modal">
             <div className="custom-modal-content">
               <div className="custom-modal-header">
-                <h5>Apply Leave</h5>
+                <h5 className="mb-0">Apply Leave</h5>
                 <button
                   className="btn-close"
                   onClick={() => setIsModalOpen(false)}
@@ -308,10 +313,10 @@ const postData1234 = () => {
                   placeholder="Explain Your Reason"
                   onChange={handlechange}
                 />
-              
+
               </div>
               <div className="custom-modal-footer">
-                <button className="btn btn-primary" onClick={handleAddSupplier}>
+                <button className="blueBtn" onClick={handleAddSupplier}>
                   Add Leave
                 </button>
               </div>

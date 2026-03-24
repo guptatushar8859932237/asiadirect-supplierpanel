@@ -82,7 +82,7 @@ export default function Taskmanager() {
               </div>
               <div className="row assignTaskTable">
                 <div className="col-md-12">
-                  <div className="table-responsive mt-3">
+                  <div className="table-responsive tableDesign mt-3">
                     <table className="table table-striped tableICon">
                       <thead>
                         <tr>

@@ -242,7 +242,7 @@ const Notification = () => {
       <div className="wpWrapper">
         <div className="container-fluid">
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <h4>supplier Notification</h4>
+            <h4 className="mb-0 freight_hd">supplier Notification</h4>
             {/* <button
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
@@ -396,7 +396,7 @@ const Notification = () => {
           </div>
 
           {/* Table */}
-          <div className="table-responsive mt-2">
+          <div className="table-responsive mt-2 tableDesign">
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -458,7 +458,7 @@ const Notification = () => {
                 onClick={() => handlePageChange(currentPage - 1)}
                 className="bg_page"
               >
-                &lt;
+                <i class="fi fi-rr-angle-small-left page_icon"></i>
               </button>
               <span className="mx-2">{`Page ${currentPage} of ${totalPage}`}</span>
               <button
@@ -466,7 +466,7 @@ const Notification = () => {
                 onClick={() => handlePageChange(currentPage + 1)}
                 className="bg_page"
               >
-                &gt;
+                <i class="fi fi-rr-angle-small-right page_icon"></i>
               </button>
             </div>
           </div>
