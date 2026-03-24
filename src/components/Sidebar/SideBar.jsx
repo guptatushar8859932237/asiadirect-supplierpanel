@@ -117,7 +117,7 @@ const userControlRoutes = {
       name: "Manage Suppliers",
       icon: <LocalShippingOutlinedIcon />,
     },
-     {
+    {
       path: "/supplier/contactus",
       name: "Contact Us",
       icon: <OtherHousesOutlinedIcon />,
@@ -139,7 +139,7 @@ const userControlRoutes = {
     },
   ],
 };
-const SideBar = ({ children }) => {
+const SideBar = ({ children, closeMobileSidebar }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const [openDropdown, setOpenDropdown] = useState(null); // Track the currently open dropdown
@@ -178,8 +178,11 @@ const SideBar = ({ children }) => {
   const handleDropdownToggle = (index) => {
     setOpenDropdown((prevIndex) => (prevIndex === index ? null : index));
   };
+
+  // pp
+
   return (
-    <div className="main-container">
+    <div className="main-container sideBarpageMain">
       <motion.div
         animate={{
           width: isOpen ? "300px" : "42px",
@@ -210,14 +213,14 @@ const SideBar = ({ children }) => {
             )}
           </AnimatePresence>
           {
-            isOpen? (<div className="bars" style={{ borderRadius: "20px" }}>
-            <BiLeftArrowCircle
-              onClick={toggle}
-              style={{ fontSize: "2rem", cursor: "pointer" }}
-            />
-          </div>):(   <BiRightArrowCircle size={30}  onClick={toggle}  color="blue" />)
+            isOpen ? (<div className="bars" style={{ borderRadius: "20px" }}>
+              <BiLeftArrowCircle
+                onClick={toggle}
+                style={{ fontSize: "2rem", cursor: "pointer" }}
+              />
+            </div>) : (<BiRightArrowCircle size={30} onClick={toggle} color="blue" />)
           }
-         
+
         </div>
         <section className="routes">
           {filteredRoutes.map((route, index) => {
@@ -255,6 +258,7 @@ const SideBar = ({ children }) => {
                       className="sub_routes">
                       {route.subRoutes.map((subRoute, subIndex) => (
                         <NavLink
+
                           to={subRoute.path}
                           key={subIndex}
                           className={({ isActive }) =>
@@ -280,6 +284,7 @@ const SideBar = ({ children }) => {
                 className={({ isActive }) =>
                   isActive ? "link active" : "link"
                 }
+
               >
                 <div className="icon">{route.icon}</div>
                 <AnimatePresence>

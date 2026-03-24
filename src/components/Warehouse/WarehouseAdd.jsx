@@ -44,10 +44,10 @@ export default function WarehouseAdd() {
   const [searchQuery, setSearchQuery] = useState("");
   const [prodata, setProdata] = useState("");
   // const [prodata, setProdata] = useState("");
-  const [productData, setProductData] = useState(""); 
+  const [productData, setProductData] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderID122, setOrderId122] = useState(false);
-  const [modalid,setModalid] = useState(null);
+  const [modalid, setModalid] = useState(null);
   const [warehouseID, setWarehouseID] = useState(null); //
   const [loader, setLoader] = useState(false);
   const [isModalOpenWarehouse, setIsModalOpenWarehouse] = useState(false);
@@ -331,47 +331,47 @@ export default function WarehouseAdd() {
     setProdata({ ...prodata, [name]: value });
   };
 
-  const handleClickAssdsdsdsignId =async()=>{
-       const payload = {
-        freight_id: productData.freight_ID,
-         added_by: "4",
-         warehouse_order_id: modalid,
-         product_description: productData.product_description,
-         Hazardous: productData.Hazardous,
-         date_received: productData.date_received,
-         package_type: productData.package_type,
-         packages: productData.packages,
-         dimension: productData.dimension,
-         weight: productData.weight,
-         warehouse_ref: productData.warehouse_ref,
-         freight: productData.freight,
-         groupage_batch_ref: productData.groupage_batch_ref,
-         supplier: productData.supplier,
-         warehouse_receipt_number: productData.warehouse_receipt_number,
-        //  tracking_number: tracking_id,
-         date_dspatched: productData.date_dspatched,
-         supplier_address: productData.supplier_address,
-         warehouse_collect: productData.warehouse_collect,
-         costs_to_collect: productData.costs_to_collect,
-         port_of_loading: productData.port_of_loading,
-         warehouse_dispatch: productData.warehouse_dispatch,
-         warehouse_cost: productData.warehouse_cost,
-         cost_to_dispatch: productData.cost_to_dispatch,
-         waybill_ref: productData.waybill_ref,
-         supplier_Email: productData.supplier_Email,
-         Supplier_Contact: productData.Supplier_Contact,
-       };
-       const response = await axios.post(
-         `${process.env.REACT_APP_BASE_URL}addWarehouseProduct`,
-         payload,
-       );
-       if (response.data.success === true) {
-         toast.success(response.data.message);
-         closesetProductModalOpen();
-         getData();
-       } else {
-         toast.error(response.data.message);
-       }
+  const handleClickAssdsdsdsignId = async () => {
+    const payload = {
+      freight_id: productData.freight_ID,
+      added_by: "4",
+      warehouse_order_id: modalid,
+      product_description: productData.product_description,
+      Hazardous: productData.Hazardous,
+      date_received: productData.date_received,
+      package_type: productData.package_type,
+      packages: productData.packages,
+      dimension: productData.dimension,
+      weight: productData.weight,
+      warehouse_ref: productData.warehouse_ref,
+      freight: productData.freight,
+      groupage_batch_ref: productData.groupage_batch_ref,
+      supplier: productData.supplier,
+      warehouse_receipt_number: productData.warehouse_receipt_number,
+      //  tracking_number: tracking_id,
+      date_dspatched: productData.date_dspatched,
+      supplier_address: productData.supplier_address,
+      warehouse_collect: productData.warehouse_collect,
+      costs_to_collect: productData.costs_to_collect,
+      port_of_loading: productData.port_of_loading,
+      warehouse_dispatch: productData.warehouse_dispatch,
+      warehouse_cost: productData.warehouse_cost,
+      cost_to_dispatch: productData.cost_to_dispatch,
+      waybill_ref: productData.waybill_ref,
+      supplier_Email: productData.supplier_Email,
+      Supplier_Contact: productData.Supplier_Contact,
+    };
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}addWarehouseProduct`,
+      payload,
+    );
+    if (response.data.success === true) {
+      toast.success(response.data.message);
+      closesetProductModalOpen();
+      getData();
+    } else {
+      toast.error(response.data.message);
+    }
   }
 
   return (
@@ -386,7 +386,7 @@ export default function WarehouseAdd() {
           <div className="container-fluid">
             <div className="row manageFreight">
               <div className="col-md-12">
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
                   <div>
                     <h4 className="freight_hd">Warehouse Order List</h4>
                   </div>
@@ -448,7 +448,7 @@ export default function WarehouseAdd() {
                                             <div className="">
                                               <p
                                                 className="origin"
-                                                style={{ fontSize: "14px" }}
+                                                style={{ fontSize: "13px" }}
                                               >
                                                 {item.product_desc}
                                               </p>
@@ -474,16 +474,17 @@ export default function WarehouseAdd() {
                                               </p>
                                             </div>
                                           </div>
-                                          <div className="col-md-2">
-                                            <div className="text-center">
+                                          <div className="col-lg-2 col-md-6 col-6">
+                                            <div>
                                               <p className="origin">
                                                 {item.nature_of_hazard}
                                               </p>
                                             </div>
                                           </div>
-                                          <div className="col-md-2">
+                                          <div className="col-lg-2 col-md-6 col-6">
                                             <div className="text-end">
                                               <button
+                                                className="tableBorderBtn"
                                                 onClick={() => {
                                                   handeleclickProduct(item);
                                                 }}
@@ -562,6 +563,12 @@ export default function WarehouseAdd() {
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
+                            width: {
+                              xs: "95%",
+                              sm: "80%",
+                              md: "60%",
+                              lg: "60%",
+                            },
                           }}
                         >
                           <div className="modal-header">
@@ -578,8 +585,8 @@ export default function WarehouseAdd() {
                             </button>
                           </div>
                           <div className="newModalGap noFormaControl">
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Goods Description</label>
                                 <input
                                   className="form-control"
@@ -588,7 +595,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Hazardous</label>
                                 <input
                                   className="form-control"
@@ -597,9 +604,8 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Date Received</label>
                                 <input
                                   type="date"
@@ -609,7 +615,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Package Type</label>
                                 <input
                                   className="form-control"
@@ -618,9 +624,9 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Packages</label>
                                 <input
                                   className="form-control"
@@ -629,7 +635,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Dimension</label>
                                 <input
                                   className="form-control"
@@ -638,9 +644,8 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Weight</label>
                                 <input
                                   className="form-control"
@@ -649,7 +654,7 @@ export default function WarehouseAdd() {
                                   placeholder="0.00"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Ref</label>
                                 <input
                                   className="form-control"
@@ -658,9 +663,9 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Freight</label>
                                 <input
                                   className="form-control"
@@ -669,7 +674,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Groupage Batch Ref</label>
                                 <input
                                   className="form-control"
@@ -678,9 +683,8 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Warehouse Receipt Number</label>
                                 <input
                                   className="form-control"
@@ -689,7 +693,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Date Dispatched</label>
                                 <input
                                   className="form-control"
@@ -698,9 +702,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Address</label>
                                 <input
                                   className="form-control"
@@ -709,7 +711,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Collect</label>
                                 <input
                                   className="form-control"
@@ -718,9 +720,8 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Costs To Collect</label>
                                 <input
                                   className="form-control"
@@ -729,7 +730,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Port Of Loading</label>
                                 <input
                                   className="form-control"
@@ -738,9 +739,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
                                 <input
                                   className="form-control"
@@ -749,7 +748,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Cost</label>
                                 <input
                                   className="form-control"
@@ -758,9 +757,8 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Cost To Dispatch</label>
                                 <input
                                   className="form-control"
@@ -769,7 +767,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Waybill Ref</label>
                                 <input
                                   className="form-control"
@@ -778,9 +776,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Email</label>
                                 <input
                                   className="form-control"
@@ -789,7 +785,7 @@ export default function WarehouseAdd() {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Contact</label>
                                 <input
                                   className="form-control"
@@ -799,14 +795,15 @@ export default function WarehouseAdd() {
                                 ></input>
                               </div>
                             </div>
-                            <Button
+                            <button
+                              className="blueBtn mt-3"
                               variant="contained"
                               onClick={() => {
                                 handleClickAssdsdsdsignId();
                               }}
                             >
                               Add Product
-                            </Button>
+                            </button>
                           </div>
                         </Box>
                       </Modal>
@@ -822,6 +819,13 @@ export default function WarehouseAdd() {
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
+                            width: {
+                              xs: "95%",   // mobile
+                              sm: "80%",   // tablet
+                              md: "60%",   // small laptop
+                              lg: "60%",   // desktop
+                            },
+
                           }}
                         >
                           <div className="modal-header">
@@ -1053,8 +1057,9 @@ export default function WarehouseAdd() {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </div >
+      )
+      }
     </>
   );
 }

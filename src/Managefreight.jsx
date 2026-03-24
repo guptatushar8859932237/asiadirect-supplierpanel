@@ -414,7 +414,7 @@ export default function Managefreight() {
     }
   };
   const hanldeclicknavi = async (freight_id) => {
-    console.log(freight_id);    
+    console.log(freight_id);
     const alldata = data.filter((item) => item.id === freight_id);
     console.log("Filtered Data:", alldata);
     const datapost = {
@@ -682,9 +682,9 @@ export default function Managefreight() {
     }
   };
 
-  const handledeleteNavigaate =(item)=>{
-  console.log(item)
-    navigate("/supplier/user", { state: { freight_id: item.sales_representative} });
+  const handledeleteNavigaate = (item) => {
+    console.log(item)
+    navigate("/supplier/user", { state: { freight_id: item.sales_representative } });
   }
 
   return (
@@ -699,14 +699,14 @@ export default function Managefreight() {
           <div className="container-fluid">
             <div className="row manageFreight">
               <div className="col-12">
-                <div className="d-flex justify-content-between">
+                <div className="d-flex justify-content-between flex-wrap gap-2">
                   <div className="">
                     <h4 className="freight_hd">Freight's</h4>
                   </div>
-                  <div className="d-flex justify-content-end">
-                    <div className="me-2 searchManageFre">
+                  <div className="d-flex justify-content-end gap-2">
+                    <div className="searchManageFre">
                       <input
-                        className="py-1 rounded ps-1"
+                        className="py-1 rounded ps-1 h-100"
                         type="text"
                         value={searchQuery}
                         onChange={handleSearch}
@@ -725,7 +725,7 @@ export default function Managefreight() {
             <div className="row">
               <div className="mt-4">
                 <div>
-                  <div className="table-responsive">
+                  <div>
                     <table className="table table-striped tableICon">
                       <tbody>
                         {currentdata &&
@@ -1709,7 +1709,7 @@ export default function Managefreight() {
                                                       value={
                                                         inputdata.dimension
                                                           ? 167 *
-                                                            inputdata.dimension
+                                                          inputdata.dimension
                                                           : inputdata.volumetric_weight
                                                       }
                                                       placeholder="Volumetric Weight"
@@ -1909,7 +1909,7 @@ export default function Managefreight() {
                                                     )}
                                                   </div>
                                                   {inputdata.hazardous ===
-                                                  "yes" ? (
+                                                    "yes" ? (
                                                     <div className=" col-lg-6  mb-3">
                                                       <label>
                                                         {" "}
@@ -2366,6 +2366,12 @@ export default function Managefreight() {
                       transform: "translate(-50%, -50%)",
                       bgcolor: "background.paper",
                       boxShadow: 24,
+                      width: {
+                        xs: "95%",   // mobile
+                        sm: "80%",   // tablet
+                        md: "60%",   // small laptop
+                        lg: "40%",   // desktop
+                      },
                     }}
                   >
                     <div className="modal-header">
@@ -2377,8 +2383,8 @@ export default function Managefreight() {
                     {/*header end */}
 
                     <div className="newModalGap noFormaControl">
-                      <div className="row my-3  ">
-                        <div className="col-6">
+                      <div className="row my-3 g-2">
+                        <div className="col-md-6 col-12">
                           <label>Delivery Type</label>
                           <select name="type" onChange={handlechange}>
                             <option value="">Select</option>
@@ -2386,7 +2392,7 @@ export default function Managefreight() {
                             <option value="normal">Consolidation</option>
                           </select>
                         </div>
-                        <div className="col-6">
+                        <div className="col-md-6 col-12">
                           <label>Priority </label>
                           <div className="shipRefer1 d-flex">
                             <div>
@@ -2425,8 +2431,8 @@ export default function Managefreight() {
                           </div>
                         </div>
                       </div>
-                      <div className="row mb-3">
-                        <div className="col-6">
+                      <div className="row mb-3 g-2">
+                        <div className="col-md-6 col-12">
                           <label>Country of Origin</label>
                           <select name="origin" onChange={handlechange}>
                             <option value="">Select</option>
@@ -2441,7 +2447,7 @@ export default function Managefreight() {
                               })}
                           </select>
                         </div>
-                        <div className="col-6">
+                        <div className="col-md-6 col-12">
                           <label>Delivery to Country </label>
                           <select name="destination" onChange={handlechange}>
                             <option value="">Select</option>
@@ -2457,8 +2463,8 @@ export default function Managefreight() {
                           </select>
                         </div>
                       </div>
-                      <div className="row mb-3">
-                        <div className="col-6">
+                      <div className="row mb-3 g-2">
+                        <div className="col-md-6 col-12">
                           <label>Start Date</label>
                           <input
                             type="date"
@@ -2469,7 +2475,7 @@ export default function Managefreight() {
                             onChange={handlechange}
                           />
                         </div>
-                        <div className="col-6">
+                        <div className="col-md-6 col-12">
                           <label>End Date </label>
                           <input
                             type="date"

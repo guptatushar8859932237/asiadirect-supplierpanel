@@ -76,7 +76,7 @@ export default function WarehouseOrder() {
         `${process.env.REACT_APP_BASE_URL}GetSupplierCreatedWarehouseOrders?supplier_id=${userId}`,
       );
       setLoader(false);
-      if (response.data && response.data.data) {     
+      if (response.data && response.data.data) {
         console.log(response.data.data);
         setData(response.data.data);
       } else {
@@ -180,142 +180,168 @@ export default function WarehouseOrder() {
     }
   };
   const handlechangewarehouse = (e) => {
-  const { name, value, files, type } = e.target;
-  setProdata((prev) => ({
-    ...prev,
-    [name]: type === "file" ? files[0] : value,
-  }));
-};
+    const { name, value, files, type } = e.target;
+
+    setProdata((prev) => ({
+      ...prev,
+      [name]: type === "file" ? files[0] : value,
+    }));
+  };
   const datauserId = JSON.parse(localStorage.getItem("data123"));
   console.log("User ID from localStorage:", datauserId);
-const postDataWarehouse = async () => {
-  try {
-    const formData = new FormData();
-    formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
-    formData.append("date_entry_created", prodata.date_entry_created || "");
-    formData.append("dispatched_date", prodata.dispatched_date || "");
-    formData.append("supplier_id", datauserId.id || "");
-    formData.append("collection_from", prodata.collection_from || "");
-    formData.append("delivery_to", prodata.delivery_to || "");
-    formData.append("package_comment", prodata.package_comment || "");
-    formData.append("customer_ref", prodata.customer_ref || "");
-    formData.append("customer_name", prodata.customer_name || "");
-    formData.append("box_marking", prodata.box_marking || "");
-    formData.append("package_type", prodata.package_type || "");
-    formData.append("hazardous", prodata.hazardous || "");
-    formData.append("added_by", 2);
-    formData.append("total_packeges", prodata.total_packeges || "");
-    formData.append("hazard_description", prodata.hazard_description || "");
-    formData.append("goods_description", prodata.goods_description || "");
-    formData.append("damage_goods", prodata.damage_goods || "");
-    formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
-    formData.append("damage_comment", prodata.damage_comment || "");
-    formData.append("supplier_company", prodata.supplier_company || "");
-    formData.append("supplier_person", prodata.supplier_person || "");
-    formData.append("supplier_address", prodata.supplier_address || "");
-    formData.append("warehouse_collect", prodata.warehouse_collect || "");
-    formData.append("costs_to_collect", prodata.costs_to_collect || "");
-    formData.append("warehouse_storage", prodata.warehouse_storage || "");
-    formData.append("warehouse_cost", prodata.warehouse_cost || "");
-    formData.append("handling_required", prodata.handling_required || "");
-    formData.append("handling_cost", prodata.handling_cost || "");
-    formData.append("warehouse_dispatch", prodata.warehouse_dispatch || "");
-    formData.append("cost_to_dispatch", prodata.cost_to_dispatch || "");
-    formData.append("warehouse_comment", prodata.warehouse_comment || "");
-    if (prodata.attach_other) {
-      formData.append("damage_images", prodata.attach_other);
+  const postDataWarehouse = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
+      formData.append("date_entry_created", prodata.date_entry_created || "");
+      formData.append("dispatched_date", prodata.dispatched_date || "");
+      formData.append("supplier_id", datauserId.id || "");
+      formData.append("collection_from", prodata.collection_from || "");
+      formData.append("delivery_to", prodata.delivery_to || "");
+      formData.append("package_comment", prodata.package_comment || "");
+      formData.append("customer_ref", prodata.customer_ref || "");
+      formData.append("customer_name", prodata.customer_name || "");
+      formData.append("box_marking", prodata.box_marking || "");
+      formData.append("package_type", prodata.package_type || "");
+      formData.append("hazardous", prodata.hazardous || "");
+      formData.append("added_by", 2);
+      formData.append("total_packeges", prodata.total_packeges || "");
+      formData.append("hazard_description", prodata.hazard_description || "");
+      formData.append("goods_description", prodata.goods_description || "");
+      formData.append("damage_goods", prodata.damage_goods || "");
+      formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
+      formData.append("damage_comment", prodata.damage_comment || "");
+      formData.append("supplier_company", prodata.supplier_company || "");
+      formData.append("supplier_person", prodata.supplier_person || "");
+      formData.append("supplier_address", prodata.supplier_address || "");
+      formData.append("warehouse_collect", prodata.warehouse_collect || "");
+      formData.append("costs_to_collect", prodata.costs_to_collect || "");
+      formData.append("warehouse_storage", prodata.warehouse_storage || "");
+      formData.append("warehouse_cost", prodata.warehouse_cost || "");
+      formData.append("handling_required", prodata.handling_required || "");
+      formData.append("handling_cost", prodata.handling_cost || "");
+      formData.append("warehouse_dispatch", prodata.warehouse_dispatch || "");
+      formData.append("cost_to_dispatch", prodata.cost_to_dispatch || "");
+      formData.append("warehouse_comment", prodata.warehouse_comment || "");
+      if (prodata.attach_other) {
+        formData.append("damage_images", prodata.attach_other);
+      }
+      if (prodata.Attach_product_image) {
+        formData.append("product_images", prodata.Attach_product_image);
+      }
+      if (prodata.attach_file) {
+        formData.append("documents", prodata.attach_file);
+      }
+      console.log("FormData Data:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}createOrderAndWarehouse`,
+        formData);
+      if (response.data.success === true) {
+        toast.success(response.data.message);
+        handleCloseModalWarehouse();
+        getData();
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      toast.error("Something went wrong");
     }
-    if (prodata.Attach_product_image) {
-      formData.append("product_images", prodata.Attach_product_image);
+  };
+  const editpostData = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
+      formData.append("date_entry_created", prodata.date_entry_created || "");
+      formData.append("dispatched_date", prodata.dispatched_date || "");
+      formData.append("days_in_warehouse", prodata.days_in_warehouse || "");
+      formData.append("supplier_id", datauserId.id || "");
+      formData.append("collection_from", prodata.collection_from || "");
+      formData.append("delivery_to", prodata.delivery_to || "");
+      formData.append("customer_name", prodata.customer_name || "");
+      formData.append("added_by", 2);
+      formData.append("package_comment", prodata.package_comment || "");
+      formData.append("customer_ref", prodata.customer_ref || "");
+      formData.append("box_marking", prodata.box_marking || "");
+      formData.append("package_type", prodata.package_type || "");
+      formData.append("hazardous", prodata.hazardous || "");
+      formData.append("total_packeges", prodata.total_packeges || "");
+      formData.append("hazard_description", prodata.hazard_description || "");
+      formData.append("goods_description", prodata.goods_description || "");
+      formData.append("damage_goods", prodata.damage_goods || "");
+      formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
+      formData.append("damage_comment", prodata.damage_comment || "");
+      formData.append("supplier_company", prodata.supplier_company || "");
+      formData.append("supplier_person", prodata.supplier_person || "");
+      formData.append("supplier_address", prodata.supplier_address || "");
+      formData.append("warehouse_collect", prodata.warehouse_collect || "");
+      formData.append("costs_to_collect", prodata.costs_to_collect || "");
+      formData.append("warehouse_storage", prodata.warehouse_storage || "");
+      formData.append("warehouse_cost", prodata.warehouse_cost || "");
+      formData.append("handling_required", prodata.handling_required || "");
+      formData.append("handling_cost", prodata.handling_cost || "");
+      formData.append("warehouse_dispatch", prodata.warehouse_dispatch || "");
+      formData.append("cost_to_dispatch", prodata.cost_to_dispatch || "");
+      formData.append("warehouse_comment", prodata.warehouse_comment || "");
+      formData.append("order_id", prodata.order_id || "");
+      if (prodata.attach_other) {
+        formData.append("damage_images", prodata.attach_other);
+      }
+      if (prodata.Attach_product_image) {
+        formData.append("product_images", prodata.Attach_product_image);
+      }
+      if (prodata.attach_file) {
+        formData.append("documents", prodata.attach_file);
+      }
+      console.log("FormData Data:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,
+        formData);
+      if (response.data.success === true) {
+        setEditmodalopen(false);
+        editmodalclose1()
+        toast.success(response.data.message);
+        getData();
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      toast.error("Something went wrong");
     }
-    if (prodata.attach_file) {
-      formData.append("documents", prodata.attach_file);
-    }
-    console.log("FormData Data:");
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
+  };
+  const updateWarehouse = async () => {
+    const payload = {
+      warehouse_id: warehouseID,
+      warehouse_name: prodata.warehouse_name,
+      warehouse_address: prodata.warehouse_address,
+      country: prodata.country,
+      town: prodata.town,
+      warehouse_number: prodata.warehouse_number,
+      mobile_number: prodata.mobile_number,
+      email: prodata.email,
+      contact_person: prodata.contact_person,
+      user_id: userId,
+      user_type: 2,
+    };
     const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}createOrderAndWarehouse`,
-      formData);
-    if (response.data.success === true) {
-      toast.success(response.data.message);
+      `${process.env.REACT_APP_BASE_URL}getAssignedOrdersBySupplier`,
+      payload,
+    );
+    if (response.data.success) {
+      toast.success("Warehouse Updated Successfully");
       handleCloseModalWarehouse();
       getData();
     } else {
       toast.error(response.data.message);
     }
-  } catch (error) {
-    console.error("API Error:", error);
-    toast.error("Something went wrong");
-  }
-};
-const editpostData = async () => {
-  try {
-    const formData = new FormData();
-    formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
-    formData.append("date_entry_created", prodata.date_entry_created || "");
-    formData.append("dispatched_date", prodata.dispatched_date || "");
-    formData.append("days_in_warehouse", prodata.days_in_warehouse || "");
-    formData.append("supplier_id", datauserId.id || "");
-    formData.append("collection_from", prodata.collection_from || "");
-    formData.append("delivery_to", prodata.delivery_to || "");
-    formData.append("customer_name", prodata.customer_name || "");
-    formData.append("added_by", 2);
-    formData.append("package_comment", prodata.package_comment || "");
-    formData.append("customer_ref", prodata.customer_ref || "");
-    formData.append("box_marking", prodata.box_marking || "");
-    formData.append("package_type", prodata.package_type || "");
-    formData.append("hazardous", prodata.hazardous || "");
-    formData.append("total_packeges", prodata.total_packeges || "");
-    formData.append("hazard_description", prodata.hazard_description || "");
-    formData.append("goods_description", prodata.goods_description || "");
-    formData.append("damage_goods", prodata.damage_goods || "");
-    formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
-    formData.append("damage_comment", prodata.damage_comment || "");
-    formData.append("supplier_company", prodata.supplier_company || "");
-    formData.append("supplier_person", prodata.supplier_person || "");
-    formData.append("supplier_address", prodata.supplier_address || "");
-    formData.append("warehouse_collect", prodata.warehouse_collect || "");
-    formData.append("costs_to_collect", prodata.costs_to_collect || "");
-    formData.append("warehouse_storage", prodata.warehouse_storage || "");
-    formData.append("warehouse_cost", prodata.warehouse_cost || "");
-    formData.append("handling_required", prodata.handling_required || "");
-    formData.append("handling_cost", prodata.handling_cost || "");
-    formData.append("warehouse_dispatch", prodata.warehouse_dispatch || "");
-    formData.append("cost_to_dispatch", prodata.cost_to_dispatch || "");
-    formData.append("warehouse_comment", prodata.warehouse_comment || "");
-    formData.append("order_id", prodata.order_id || "");
-    if (prodata.attach_other) {
-      formData.append("damage_images", prodata.attach_other);
-    }
-    if (prodata.Attach_product_image) {
-      formData.append("product_images", prodata.Attach_product_image);
-    }
-    if (prodata.attach_file) {
-      formData.append("documents", prodata.attach_file);
-    }
-    console.log("FormData Data:");
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
-    const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,
-      formData);
-    if (response.data.success === true) {
-      setEditmodalopen(false);
-      editmodalclose1()
-      toast.success(response.data.message);
-      getData();
-    } else {
-      toast.error(response.data.message);
-    }
-  } catch (error) {
-    console.error("API Error:", error);
-    toast.error("Something went wrong");
-  }
-};
-
+  };
   const handleProduct = (item) => {
     setDataProduct(item);
     setProductModalOpen(true);
@@ -388,7 +414,7 @@ const editpostData = async () => {
   const editmodalclose1 = () => {
     setEditmodalopen(false);
   };
-  
+
   const handlechnageeditwarehouse = (e) => {
     const { name, value } = e.target;
     setEditDtaawarehouse({ ...editDtaawarehouse, [name]: value });
@@ -474,28 +500,29 @@ const editpostData = async () => {
           <div className="container-fluid">
             <div className="row manageFreight">
               <div className="col-md-12">
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="d-flex justify-content-between align-items-center gap-2 flex-wrap">
                   <div>
                     <h4 className="freight_hd">Warehouse Order List</h4>
                   </div>
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="">
+                  <div className="d-flex gap-2 flex-wrap">
+                    <div>
                       <input
-                        className="px-2 py-1 rounded "
+                        className="px-2 py-1 rounded h-100"
                         placeholder="Search"
                         value={searchQuery}
                         onChange={handleSearch}
                       ></input>
                     </div>
-                    <div className="ms-1">
-                      <Button
+                    <div>
+                      <button
+                        className="blueBtn"
                         variant="contained"
                         onClick={() => {
                           handleOpenModalWarehouse();
                         }}
                       >
-                        Add Warehouse Order
-                      </Button>
+                        Add Warehouse
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -540,18 +567,18 @@ const editpostData = async () => {
                                             </p>
                                           </div>
                                         </div>
-                                        <div className="row align-items-center">
-                                          <div className="col-md-3">
+                                        <div className="row align-items-center g-1">
+                                          <div className="col-lg-3 col-md-12 col-12">
                                             <div className="">
                                               <p
                                                 className="origin"
-                                                style={{ fontSize: "14px" }}
+                                                style={{ fontSize: "13px" }}
                                               >
                                                 {item.goods_description}
                                               </p>
                                             </div>
                                           </div>
-                                          <div className="col-md-5">
+                                          <div className="col-lg-5 col-md-12 col-12">
                                             <div className="d-flex align-items-center justify-content-center">
                                               <p className="origin">
                                                 {item.collection_from_name}
@@ -564,43 +591,46 @@ const editpostData = async () => {
                                               </p>
                                             </div>
                                           </div>
-                                          <div className="col-md-2">
-                                            <div className="text-center">
-                                              <p className="origin">
-                                                <Button
-                                                  variant="contained"
-                                                  onClick={() => {
-                                                    handleProduct(item);
-                                                  }}
-                                                >
-                                                  Add Product
-                                                </Button>
-                                              </p>
+                                          <div className="col-lg-2 col-md-6 col-6">
+                                            <div className="origin">
+                                              <button
+                                                className="tableBorderBtn"
+                                                variant="contained"
+                                                onClick={() => {
+                                                  handleProduct(item);
+                                                }}
+                                              >
+                                                Add Product
+                                              </button>
                                             </div>
+
                                           </div>
-                                          <div className="col-md-2 d-flex">
-                                            <div className="text-center">
-                                              <p className="origin">
-                                                <VisibilityIcon
-                                                  onClick={() => {
-                                                    handleProductview(item);
-                                                  }}
-                                                  style={{ cursor: "pointer" }}
-                                                />
-                                              </p>
+                                          <div className="col-lg-2 col-md-6 col-6 d-flex justify-content-end gap-2 tableIcon">
+
+                                            <div className="origin">
+                                              {/* <VisibilityIcon
+                                                onClick={() => {
+                                                  handleProductview(item);
+                                                }}
+                                                style={{ cursor: "pointer" }}
+                                              /> */}
+                                              <i class="fa fa-eye" aria-hidden="true" onClick={() => {
+                                                handleProductview(item);
+                                              }}
+                                              ></i>
                                             </div>
-                                            <div className="text-center">
-                                              <p className="origin">
-                                                <div>
-                                                  <i
-                                                    className="fi fi-rr-edit edit_icon mx-2"
-                                                    onClick={() =>
-                                                      editmodalopen1(item)
-                                                    }
-                                                  ></i>
-                                                </div>
-                                              </p>
+
+
+                                            <div className="origin">
+                                              <div>
+                                                <i className="fa fa-pencil-square-o edit_icon"
+                                                  onClick={() =>
+                                                    editmodalopen1(item)
+                                                  }
+                                                ></i>
+                                              </div>
                                             </div>
+
                                           </div>
                                         </div>
                                         <div className="row">
@@ -672,6 +702,12 @@ const editpostData = async () => {
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
+                            width: {
+                              xs: "95%",   // mobile
+                              sm: "90%",   // tablet
+                              md: "90%",   // small laptop
+                              lg: "90%",   // desktop
+                            },
                           }}
                         >
                           <div className="modal-header">
@@ -685,7 +721,7 @@ const editpostData = async () => {
                               <CloseIcon />
                             </button>
                           </div>
-                          <div className="newModalGap noFormaControl">
+                          <div className="newModalGap noFormaControl table-responsive">
                             <table className="table table-striped">
                               <thead>
                                 <tr>
@@ -724,16 +760,12 @@ const editpostData = async () => {
                                       <td>{doc?.warehouse_receipt_number}</td>
                                       <td>{doc?.warehouse_ref}</td>
                                       <td>{doc?.weight}</td>
-                                      <td>
-                                        <button
-                                          className="btn btn-sm btn-primary"
-                                          onClick={() => {
-                                            // setEditDtaawProduct(doc);
-                                            editmodalopen1product(doc);
-                                          }}
-                                        >
-                                          Edit
-                                        </button>
+                                      <td className="tableICon">
+                                        <i onClick={() => {
+                                          // setEditDtaawProduct(doc);
+                                          editmodalopen1product(doc);
+                                        }} className="fa fa-pencil-square-o edit_icon"></i>
+
                                       </td>
                                     </tr>
                                   ))
@@ -759,6 +791,12 @@ const editpostData = async () => {
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
+                            width: {
+                              xs: "95%",   // mobile
+                              sm: "80%",   // tablet
+                              md: "70%",   // small laptop
+                              lg: "60%",   // desktop
+                            },
                           }}
                         >
                           <div className="modal-header">
@@ -771,8 +809,8 @@ const editpostData = async () => {
                             </button>
                           </div>
                           <div className="newModalGap noFormaControl">
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Date</label>
                                 <input
                                   type="date"
@@ -783,8 +821,8 @@ const editpostData = async () => {
                                   placeholder="Date"
                                 ></input>
                               </div>
-                           
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Warehouse Order Id</label>
                                 <input
                                   type="type"
@@ -795,7 +833,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Courier waybill_ref</label>
                                 <input
                                   type="type"
@@ -806,7 +844,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Dispatch Date</label>
                                 <input
                                   type="date"
@@ -817,9 +855,9 @@ const editpostData = async () => {
                                 ></input>
                               </div>
                             </div>
-                            <h5>Package Information</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mt-3 mb-2">Package Information</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Customer Name</label>
                                 <input
                                   className="form-control"
@@ -829,7 +867,7 @@ const editpostData = async () => {
                                   placeholder="customer name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Customer ref</label>
                                 <input
                                   className="form-control"
@@ -839,59 +877,61 @@ const editpostData = async () => {
                                   placeholder="customer name"
                                 ></input>
                               </div>
-                              <div className="col-12">
-                                <div className="row">
-                                  <div className="col-6">
-                                    <label>Country of Origin</label>
-                                    <select
-                                      name="collection_from"
-                                       value={prodata.collection_from}
-                                      onChange={handlechangewarehouse}
-                                    >
-                                      <option>Select</option>
-                                      {countries &&
-                                        countries.length > 0 &&
-                                        countries.map((item, index) => {
-                                          return (
-                                            <>
-                                              <option
-                                                key={index}
-                                                value={item.id}
-                                              >
-                                                {item.name}
-                                              </option>
-                                            </>
-                                          );
-                                        })}
-                                    </select>
-                                  </div>
-                                  <div className="col-6">
-                                    <label> Destination Country</label>
-                                    <select
-                                      name="delivery_to"
-                                      value={prodata.delivery_to}
-                                      onChange={handlechangewarehouse}
-                                    >
-                                      <option>Select</option>
-                                      {countries &&
-                                        countries.length > 0 &&
-                                        countries.map((item, index) => {
-                                          return (
-                                            <>
-                                              <option
-                                                key={index}
-                                                value={item.id}
-                                              >
-                                                {item.name}
-                                              </option>
-                                            </>
-                                          );
-                                        })}
-                                    </select>
-                                  </div>
-                                </div>
+
+
+                              <div className="col-md-6">
+                                <label>Country of Origin</label>
+                                <select
+                                  name="collection_from"
+                                  value={prodata.collection_from}
+                                  onChange={handlechangewarehouse}
+                                  className="form-select"
+                                >
+                                  <option>Select</option>
+                                  {countries &&
+                                    countries.length > 0 &&
+                                    countries.map((item, index) => {
+                                      return (
+                                        <>
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                          >
+                                            {item.name}
+                                          </option>
+                                        </>
+                                      );
+                                    })}
+                                </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
+                                <label> Destination Country</label>
+                                <select
+                                  name="delivery_to"
+                                  value={prodata.delivery_to}
+                                  onChange={handlechangewarehouse}
+                                  className="form-select"
+                                >
+                                  <option>Select</option>
+                                  {countries &&
+                                    countries.length > 0 &&
+                                    countries.map((item, index) => {
+                                      return (
+                                        <>
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                          >
+                                            {item.name}
+                                          </option>
+                                        </>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+
+
+                              <div className="col-md-6">
                                 <label>Box Marking</label>
                                 <input
                                   className="form-control"
@@ -900,7 +940,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Good Description</label>
                                 <input
                                   type="Good Description"
@@ -911,10 +951,10 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Packing Type</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.package_type}
                                   name="package_type"
                                   onChange={handlechangewarehouse}
@@ -927,10 +967,10 @@ const editpostData = async () => {
                                   <option value="Bag">Bag</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Hazardous </label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.hazardous}
                                   name="hazardous"
                                   onChange={handlechangewarehouse}
@@ -941,7 +981,7 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Description of Hazardous </label>
                                 <input
                                   type="type"
@@ -952,7 +992,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Total Package</label>
                                 <input
                                   type="text"
@@ -964,7 +1004,7 @@ const editpostData = async () => {
                                 ></input>
                               </div>
 
-                              <div className="col-6">
+                              <div className="col-md-12">
                                 <label>Total Dimension </label>
                                 <input
                                   type="text"
@@ -975,32 +1015,24 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
-                                <label>Total Weight </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={prodata.total_weight}
-                                  name="total_weight"
-                                  onChange={handlechangewarehouse}
-                                  placeholder=""
-                                ></input>
+                              <div className="col-lg-12">
+                                <label>Comment on Packages</label>
+                                <textarea
+                                  className="w-100 form-control"
+                                  name="package_comment"
+                                  value={prodata.package_comment}
+                                  placeholder="Other Information"
+                                ></textarea>
+
                               </div>
                             </div>
-                            <label>Comment on Packages</label>
-                            <textarea
-                              className="w-100"
-                              name="package_comment"
-                              value={prodata.package_comment}
-                              placeholder="Other Information"
-                            ></textarea>
-                            <h5>Damaged Goods</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mt-3 mb-2">Damaged Goods</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Damaged Goods</label>
                                 <select
                                   type="text"
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.damage_goods}
                                   name="damage_goods"
                                   onChange={handlechangewarehouse}
@@ -1011,7 +1043,7 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Damaged Packed</label>
                                 <input
                                   type="text"
@@ -1021,7 +1053,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-12">
                                 <label>Attach File</label>
                                 <input
                                   type="file"
@@ -1031,15 +1063,15 @@ const editpostData = async () => {
                                 ></input>
                               </div>
 
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Comment on Damaged</label>
-                                <br />
-                                <textarea className="w-100" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
+
+                                <textarea className="w-100 form-control" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
                               </div>
                             </div>
-                            <h5>Supplier Information</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mt-3 mb-2">Supplier Information</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Supplier Name (Company)</label>
                                 <input
                                   type="text"
@@ -1049,7 +1081,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Name (Person)</label>
                                 <input
                                   type="text"
@@ -1059,7 +1091,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Address</label>
                                 <input
                                   type="text"
@@ -1069,7 +1101,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Contact</label>
                                 <input
                                   type="text"
@@ -1081,12 +1113,12 @@ const editpostData = async () => {
                                 ></input>
                               </div>
                             </div>
-                            <h5>Cargo Handeling</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mt-3 mb-2">Cargo Handeling</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Warehouse Collect</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.warehouse_collect}
                                   name="warehouse_collect"
                                   onChange={handlechangewarehouse}
@@ -1097,7 +1129,7 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Cost To Collect</label>
                                 <input
                                   type="text"
@@ -1107,10 +1139,10 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Storage</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.warehouse_storage}
                                   name="warehouse_storage"
                                   onChange={handlechangewarehouse}
@@ -1121,7 +1153,7 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Cost</label>
                                 <input
                                   type="text"
@@ -1132,11 +1164,11 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Handeling Required</label>
                                 <select
                                   type="text"
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.handling_required}
                                   name="handling_required"
                                   onChange={handlechangewarehouse}
@@ -1147,7 +1179,7 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Handeling cost</label>
                                 <input
                                   type="text"
@@ -1158,10 +1190,10 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.warehouse_dispatch}
                                   name="warehouse_dispatch"
                                   onChange={handlechangewarehouse}
@@ -1172,7 +1204,7 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>cost to dispatch</label>
                                 <input
                                   type="text"
@@ -1183,7 +1215,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Attach Product Image</label>
                                 <input
                                   type="file"
@@ -1193,7 +1225,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Attach Other</label>
                                 <input
                                   type="file"
@@ -1203,7 +1235,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Warehouse Comment</label>
                                 <textarea
                                   className="form-control"
@@ -1214,14 +1246,15 @@ const editpostData = async () => {
                                 ></textarea>
                               </div>
                             </div>
-                            <Button
+                            <button
+                              className="blueBtn mt-3"
                               variant="contained"
                               onClick={
-                               editpostData
+                                editpostData
                               }
                             >
-                            Edit
-                            </Button>
+                              Edit
+                            </button>
                           </div>
                         </Box>
                       </Modal>
@@ -1237,6 +1270,12 @@ const editpostData = async () => {
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
+                            width: {
+                              xs: "95%",   // mobile
+                              sm: "80%",   // tablet
+                              md: "70%",   // small laptop
+                              lg: "60%",   // desktop
+                            },
                           }}
                         >
                           <div className="modal-header">
@@ -1251,9 +1290,9 @@ const editpostData = async () => {
                             </button>
                           </div>
                           <div className="newModalGap noFormaControl">
-                            <div className="row my-3  ">
-                            
-                              <div className="col-6">
+                            <div className="row g-2">
+
+                              <div className="col-md-6">
                                 <label>Date</label>
                                 <input
                                   type="date"
@@ -1264,8 +1303,8 @@ const editpostData = async () => {
                                   placeholder="Date"
                                 ></input>
                               </div>
-                           
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Warehouse Order Id</label>
                                 <input
                                   type="type"
@@ -1276,7 +1315,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Courier waybill_ref</label>
                                 <input
                                   type="type"
@@ -1287,7 +1326,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Dispatch Date</label>
                                 <input
                                   type="date"
@@ -1297,11 +1336,11 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              
+
                             </div>
-                            <h5>Package Information</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mb-2 mt-3">Package Information</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Customer Name</label>
                                 <input
                                   className="form-control"
@@ -1311,7 +1350,7 @@ const editpostData = async () => {
                                   placeholder="customer name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Customer ref</label>
                                 <input
                                   className="form-control"
@@ -1321,59 +1360,59 @@ const editpostData = async () => {
                                   placeholder="customer name"
                                 ></input>
                               </div>
-                              <div className="col-12">
-                                <div className="row">
-                                  <div className="col-6">
-                                    <label>Country of Origin</label>
-                                    <select
-                                      name="collection_from"
-                                       value={prodata.collection_from}
-                                      onChange={handlechangewarehouse}
-                                    >
-                                      <option>Select</option>
-                                      {countries &&
-                                        countries.length > 0 &&
-                                        countries.map((item, index) => {
-                                          return (
-                                            <>
-                                              <option
-                                                key={index}
-                                                value={item.id}
-                                              >
-                                                {item.name}
-                                              </option>
-                                            </>
-                                          );
-                                        })}
-                                    </select>
-                                  </div>
-                                  <div className="col-6">
-                                    <label> Destination Country</label>
-                                    <select
-                                      name="delivery_to"
-                                      value={prodata.delivery_to}
-                                      onChange={handlechangewarehouse}
-                                    >
-                                      <option>Select</option>
-                                      {countries &&
-                                        countries.length > 0 &&
-                                        countries.map((item, index) => {
-                                          return (
-                                            <>
-                                              <option
-                                                key={index}
-                                                value={item.id}
-                                              >
-                                                {item.name}
-                                              </option>
-                                            </>
-                                          );
-                                        })}
-                                    </select>
-                                  </div>
-                                </div>
+
+                              <div className="col-md-6">
+                                <label>Country of Origin</label>
+                                <select
+                                  name="collection_from"
+                                  value={prodata.collection_from}
+                                  onChange={handlechangewarehouse}
+                                  className="form-select"
+                                >
+                                  <option>Select</option>
+                                  {countries &&
+                                    countries.length > 0 &&
+                                    countries.map((item, index) => {
+                                      return (
+                                        <>
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                          >
+                                            {item.name}
+                                          </option>
+                                        </>
+                                      );
+                                    })}
+                                </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
+                                <label> Destination Country</label>
+                                <select
+                                  name="delivery_to"
+                                  value={prodata.delivery_to}
+                                  onChange={handlechangewarehouse}
+                                  className="form-select"
+                                >
+                                  <option>Select</option>
+                                  {countries &&
+                                    countries.length > 0 &&
+                                    countries.map((item, index) => {
+                                      return (
+                                        <>
+                                          <option
+                                            key={index}
+                                            value={item.id}
+                                          >
+                                            {item.name}
+                                          </option>
+                                        </>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+
+                              <div className="col-md-6">
                                 <label>Box Marking</label>
                                 <input
                                   className="form-control"
@@ -1382,7 +1421,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Good Description</label>
                                 <input
                                   type="text"
@@ -1393,10 +1432,10 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Packing Type</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.package_type}
                                   name="package_type"
                                   onChange={handlechangewarehouse}
@@ -1410,10 +1449,10 @@ const editpostData = async () => {
                                 </select>
                               </div>
 
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Hazardous </label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.hazardous}
                                   name="hazardous"
                                   onChange={handlechangewarehouse}
@@ -1424,8 +1463,7 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              {
-                                prodata.hazardous==="Yes"?  <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Description of Hazardous </label>
                                 <input
                                   type="type"
@@ -1435,10 +1473,8 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
-                              </div> :""
-                              }
-                            
-                              <div className="col-6">
+                              </div>
+                              <div className="col-md-6">
                                 <label>Total Package</label>
                                 <input
                                   type="text"
@@ -1450,7 +1486,7 @@ const editpostData = async () => {
                                 ></input>
                               </div>
 
-                              <div className="col-6">
+                              <div className="col-md-12">
                                 <label>Total Dimension </label>
                                 <input
                                   type="text"
@@ -1461,32 +1497,24 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
-                                <label>Total Weight </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={prodata.total_weight}
-                                  name="total_weight"
-                                  onChange={handlechangewarehouse}
-                                  placeholder=""
-                                ></input>
+                              <div className="col-md-12">
+                                <label>Comment on Packages</label>
+                                <textarea
+                                  className="w-100 form-control"
+                                  name="package_comment"
+                                  value={prodata.package_comment}
+                                  placeholder="Other Information"
+                                ></textarea>
+
                               </div>
                             </div>
-                            <label>Comment on Packages</label>
-                            <textarea
-                              className="w-100"
-                              name="package_comment"
-                              value={prodata.package_comment}
-                              placeholder="Other Information"
-                            ></textarea>
-                            <h5>Damaged Goods</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mb-2 mt-3">Damaged Goods</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Damaged Goods</label>
                                 <select
                                   type="text"
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.damage_goods}
                                   name="damage_goods"
                                   onChange={handlechangewarehouse}
@@ -1497,8 +1525,8 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
-                                <label>Damaged Packed (qty)</label>
+                              <div className="col-md-6">
+                                <label>Damaged Packed</label>
                                 <input
                                   type="text"
                                   className="form-control"
@@ -1507,7 +1535,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-12">
                                 <label>Attach File</label>
                                 <input
                                   type="file"
@@ -1517,15 +1545,15 @@ const editpostData = async () => {
                                 ></input>
                               </div>
 
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Comment on Damaged</label>
-                                <br />
-                                <textarea className="w-100" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
+
+                                <textarea className="w-100 form-control" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
                               </div>
                             </div>
-                            <h5>Supplier Information</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mb-2 mt-3">Supplier Information</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Supplier Name (Company)</label>
                                 <input
                                   type="text"
@@ -1535,7 +1563,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Name (Person)</label>
                                 <input
                                   type="text"
@@ -1545,7 +1573,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Address</label>
                                 <input
                                   type="text"
@@ -1555,7 +1583,7 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Contact</label>
                                 <input
                                   type="text"
@@ -1567,23 +1595,22 @@ const editpostData = async () => {
                                 ></input>
                               </div>
                             </div>
-                            <h5>Cargo Handling</h5>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <h5 className="mb-2 mt-3">Cargo Handeling</h5>
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Warehouse Collect</label>
-                                <select
-                                  className="form-control"
-                                  value={prodata.warehouse_collect}
+                                <select value={prodata.warehouse_collect}
                                   name="warehouse_collect"
                                   onChange={handlechangewarehouse}
                                   placeholder="customer name"
+                                  className="form-select"
                                 >
                                   <option value="">Select</option>
                                   <option value="Yes">Yes</option>
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Cost To Collect</label>
                                 <input
                                   type="text"
@@ -1593,10 +1620,10 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Storage</label>
                                 <select
-                                  className="form-control"
+                                  className="form-select"
                                   value={prodata.warehouse_storage}
                                   name="warehouse_storage"
                                   onChange={handlechangewarehouse}
@@ -1607,7 +1634,7 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Cost</label>
                                 <input
                                   type="text"
@@ -1618,22 +1645,21 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Handeling Required</label>
                                 <select
-                                  type="text"
-                                  className="form-control"
-                                  value={prodata.handling_required}
+                                  type="text" value={prodata.handling_required}
                                   name="handling_required"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
+                                  className="form-select"
                                 >
                                   <option value="">Select</option>
                                   <option value="Yes">Yes</option>
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Handeling cost</label>
                                 <input
                                   type="text"
@@ -1644,21 +1670,20 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
-                                <select
-                                  className="form-control"
-                                  value={prodata.warehouse_dispatch}
+                                <select value={prodata.warehouse_dispatch}
                                   name="warehouse_dispatch"
                                   onChange={handlechangewarehouse}
-                                  placeholder=""
+                                  className="form-select"
+
                                 >
                                   <option value="">Select</option>
                                   <option value="Yes">Yes</option>
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>cost to dispatch</label>
                                 <input
                                   type="text"
@@ -1669,7 +1694,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-12">
+                              <div className="col-md-6">
                                 <label>Attach Product Image</label>
                                 <input
                                   type="file"
@@ -1679,7 +1704,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-12">
+                              <div className="col-md-6">
                                 <label>Attach Other</label>
                                 <input
                                   type="file"
@@ -1689,7 +1714,7 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-12">
+                              <div className="col-md-12">
                                 <label>Warehouse Comment</label>
                                 <textarea
                                   className="form-control"
@@ -1700,14 +1725,15 @@ const editpostData = async () => {
                                 ></textarea>
                               </div>
                             </div>
-                            <Button
+                            <button
                               variant="contained"
                               onClick={
-                               postDataWarehouse
+                                postDataWarehouse
                               }
+                              className="blueBtn mt-3"
                             >
                               Save
-                            </Button>
+                            </button>
                           </div>
                         </Box>
                       </Modal>
@@ -1723,6 +1749,12 @@ const editpostData = async () => {
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
+                            width: {
+                              xs: "95%",   // mobile
+                              sm: "80%",   // tablet
+                              md: "70%",   // small laptop
+                              lg: "60%",   // desktop
+                            },
                           }}
                         >
                           <div className="modal-header">
@@ -1737,8 +1769,8 @@ const editpostData = async () => {
                             </button>
                           </div>
                           <div className="newModalGap noFormaControl">
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Goods Description</label>
                                 <input
                                   className="form-control"
@@ -1748,7 +1780,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Hazardous</label>
                                 <input
                                   className="form-control"
@@ -1758,9 +1790,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Date Received</label>
                                 <input
                                   type="date"
@@ -1771,7 +1802,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Package Type</label>
                                 <input
                                   className="form-control"
@@ -1781,9 +1812,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Packages</label>
                                 <input
                                   className="form-control"
@@ -1793,7 +1823,7 @@ const editpostData = async () => {
                                   value={productData.packages}
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Dimension</label>
                                 <input
                                   className="form-control"
@@ -1803,9 +1833,8 @@ const editpostData = async () => {
                                   value={productData.dimension}
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Weight</label>
                                 <input
                                   className="form-control"
@@ -1815,7 +1844,7 @@ const editpostData = async () => {
                                   placeholder="0.00"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Ref</label>
                                 <input
                                   className="form-control"
@@ -1825,9 +1854,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Freight</label>
                                 <input
                                   className="form-control"
@@ -1837,7 +1865,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Groupage Batch Ref</label>
                                 <input
                                   className="form-control"
@@ -1847,9 +1875,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Warehouse Receipt Number</label>
                                 <input
                                   className="form-control"
@@ -1859,7 +1886,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Date Dispatched</label>
                                 <input
                                   className="form-control"
@@ -1870,9 +1897,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Supplier Address</label>
                                 <input
                                   className="form-control"
@@ -1882,7 +1908,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Collect</label>
                                 <input
                                   className="form-control"
@@ -1892,9 +1918,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Costs To Collect</label>
                                 <input
                                   className="form-control"
@@ -1904,7 +1929,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Port Of Loading</label>
                                 <input
                                   className="form-control"
@@ -1914,9 +1939,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
                                 <input
                                   className="form-control"
@@ -1926,7 +1950,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Cost</label>
                                 <input
                                   className="form-control"
@@ -1936,9 +1960,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Cost To Dispatch</label>
                                 <input
                                   className="form-control"
@@ -1948,7 +1971,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Waybill Ref</label>
                                 <input
                                   className="form-control"
@@ -1958,9 +1981,9 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Supplier Email</label>
                                 <input
                                   className="form-control"
@@ -1970,7 +1993,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Contact</label>
                                 <input
                                   className="form-control"
@@ -1981,14 +2004,15 @@ const editpostData = async () => {
                                 ></input>
                               </div>
                             </div>
-                            <Button
+                            <button
+                              className="blueBtn mt-3"
                               variant="contained"
                               onClick={() => {
                                 editproduct123();
                               }}
                             >
                               Edit Product
-                            </Button>
+                            </button>
                           </div>
                         </Box>
                       </Modal>
@@ -2004,6 +2028,12 @@ const editpostData = async () => {
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
+                            width: {
+                              xs: "95%",   // mobile
+                              sm: "80%",   // tablet
+                              md: "70%",   // small laptop
+                              lg: "60%",   // desktop
+                            },
                           }}
                         >
                           <div className="modal-header">
@@ -2020,8 +2050,8 @@ const editpostData = async () => {
                             </button>
                           </div>
                           <div className="newModalGap noFormaControl">
-                            <div className="row my-3  ">
-                              <div className="col-6">
+                            <div className="row g-2">
+                              <div className="col-md-6">
                                 <label>Goods Description</label>
                                 <input
                                   className="form-control"
@@ -2030,7 +2060,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Hazardous</label>
                                 <input
                                   className="form-control"
@@ -2039,9 +2069,9 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Date Received</label>
                                 <input
                                   type="date"
@@ -2051,7 +2081,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Package Type</label>
                                 <input
                                   className="form-control"
@@ -2060,9 +2090,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Packages</label>
                                 <input
                                   className="form-control"
@@ -2071,7 +2100,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Dimension</label>
                                 <input
                                   className="form-control"
@@ -2080,9 +2109,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Weight</label>
                                 <input
                                   className="form-control"
@@ -2091,7 +2119,7 @@ const editpostData = async () => {
                                   placeholder="0.00"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Ref</label>
                                 <input
                                   className="form-control"
@@ -2100,9 +2128,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Freight</label>
                                 <input
                                   className="form-control"
@@ -2111,7 +2138,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Groupage Batch Ref</label>
                                 <input
                                   className="form-control"
@@ -2120,9 +2147,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Warehouse Receipt Number</label>
                                 <input
                                   className="form-control"
@@ -2131,7 +2157,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Date Dispatched</label>
                                 <input
                                   className="form-control"
@@ -2140,9 +2166,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Supplier Address</label>
                                 <input
                                   className="form-control"
@@ -2151,7 +2176,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Collect</label>
                                 <input
                                   className="form-control"
@@ -2159,10 +2184,10 @@ const editpostData = async () => {
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input>
+
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Costs To Collect</label>
                                 <input
                                   className="form-control"
@@ -2171,7 +2196,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Port Of Loading</label>
                                 <input
                                   className="form-control"
@@ -2180,9 +2205,9 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
                                 <input
                                   className="form-control"
@@ -2191,7 +2216,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Warehouse Cost</label>
                                 <input
                                   className="form-control"
@@ -2200,9 +2225,9 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+
+                              <div className="col-md-6">
                                 <label>Cost To Dispatch</label>
                                 <input
                                   className="form-control"
@@ -2211,7 +2236,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Waybill Ref</label>
                                 <input
                                   className="form-control"
@@ -2220,9 +2245,8 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                            </div>
-                            <div className="row my-3  ">
-                              <div className="col-6">
+
+                              <div className="col-md-6">
                                 <label>Supplier Email</label>
                                 <input
                                   className="form-control"
@@ -2231,7 +2255,7 @@ const editpostData = async () => {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-                              <div className="col-6">
+                              <div className="col-md-6">
                                 <label>Supplier Contact</label>
                                 <input
                                   className="form-control"
@@ -2241,14 +2265,15 @@ const editpostData = async () => {
                                 ></input>
                               </div>
                             </div>
-                            <Button
+                            <button
+                              className="blueBtn mt-3"
                               variant="contained"
                               onClick={() => {
                                 handleClickAssdsdsdsignId();
                               }}
                             >
                               Add Product
-                            </Button>
+                            </button>
                           </div>
                         </Box>
                       </Modal>
@@ -2258,8 +2283,9 @@ const editpostData = async () => {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </div >
+      )
+      }
     </>
   );
 }

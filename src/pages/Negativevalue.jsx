@@ -45,7 +45,7 @@ export default function Negativevalue() {
       {chartData && (
         <Chart
           type='bar'
-          height={500}
+          height={350}
           width={"100%"}
           series={chartData.series}
           options={{

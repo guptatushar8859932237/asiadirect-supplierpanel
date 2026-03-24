@@ -80,7 +80,7 @@
 //                             <div className="row">
 //                                 <div className="col-12">
 //                                     <h4 className="freight_hd">Change Password</h4>
-                                    
+
 //                                 </div>
 //                             </div>
 //                             <div className="row mt-2 py-2">
@@ -95,7 +95,7 @@
 //                                             placeholder="Old Password"
 //                                             value={data.oldpassword}
 //                                         />
-//                                         <label htmlFor="floatingInput" className="px-3">Old Password</label>
+//                                         <label htmlFor="floatingInput" >Old Password</label>
 //                                         {errors.oldpassword && (
 //                                             <div className="invalid-feedback">{errors.oldpassword}</div>
 //                                         )}
@@ -153,7 +153,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Ensure you import the CSS for toastify
+import "react-toastify/dist/ReactToastify.css";
 export default function Changepassword() {
   const currentuser = JSON?.parse(localStorage?.getItem("data123"));
   const [data, setData] = useState({
@@ -230,89 +230,85 @@ export default function Changepassword() {
     <>
       <div className="wpWrapper">
         <div className="container-fluid">
-             <div className="row mb-4">
-                <div className="col-12">
-                  <h4 className="freight_hd">Change Password</h4>
+          <div className="row mb-3">
+            <div className="col-12">
+              <h4 className="freight_hd text-center">Change Password</h4>
+            </div>
+          </div>
+          <div className="row py-2 justify-content-center">
+            <div className="col-lg-6 col-12">
+              <div className="changePassForm">
+                <div className="mb-3">
+                  <label htmlFor="floatingInput">
+                    Old Password
+                  </label>
+                  <input
+                    type="password"
+                    onChange={handleChange}
+                    name="oldpassword"
+                    className={`form-control px-3 ${errors.oldpassword ? "is-invalid" : ""
+                      }`}
+                    id="floatingInput"
+                    placeholder="Old Password"
+                    value={data.oldpassword}
+                  />
+
+                  {errors.oldpassword && (
+                    <div className="invalid-feedback">
+                      {errors.oldpassword}
+                    </div>
+                  )}
                 </div>
-              </div>
-          <div className="card">
-            <div className="card-body">
-             
-              <div className="row py-2 changePassForm">
-                <div className="col-lg-6">
-                  <div className="mb-3">
-                    <label htmlFor="floatingInput" className="px-3">
-                      Old Password
-                    </label>
-                    <input
-                      type="password"
-                      onChange={handleChange}
-                      name="oldpassword"
-                      className={`form-control px-3 ${
-                        errors.oldpassword ? "is-invalid" : ""
+                <div className="mb-3">
+                  <label htmlFor="floatingPassword">
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    onChange={handleChange}
+                    name="newpassword"
+                    className={`form-control px-3 ${errors.newpassword ? "is-invalid" : ""
                       }`}
-                      id="floatingInput"
-                      placeholder="Old Password"
-                      value={data.oldpassword}
-                    />
+                    id="floatingPassword"
+                    placeholder="New Password"
+                    value={data.newpassword}
+                  />
 
-                    {errors.oldpassword && (
-                      <div className="invalid-feedback">
-                        {errors.oldpassword}
-                      </div>
-                    )}
-                  </div>
-                  <div className="  mb-3">
-                    <label htmlFor="floatingPassword" className="px-3">
-                      New Password
-                    </label>
-                    <input
-                      type="password"
-                      onChange={handleChange}
-                      name="newpassword"
-                      className={`form-control px-3 ${
-                        errors.newpassword ? "is-invalid" : ""
+                  {errors.newpassword && (
+                    <div className="invalid-feedback">
+                      {errors.newpassword}
+                    </div>
+                  )}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="floatingPassword1" >
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    onChange={handleChange}
+                    name="confirmpassword"
+                    className={`form-control px-3 ${errors.confirmpassword ? "is-invalid" : ""
                       }`}
-                      id="floatingPassword"
-                      placeholder="New Password"
-                      value={data.newpassword}
-                    />
+                    id="floatingPassword1"
+                    placeholder="Confirm Password"
+                    value={data.confirmpassword}
+                  />
 
-                    {errors.newpassword && (
-                      <div className="invalid-feedback">
-                        {errors.newpassword}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="floatingPassword1" className="px-3">
-                      Confirm Password
-                    </label>
-                    <input
-                      type="password"
-                      onChange={handleChange}
-                      name="confirmpassword"
-                      className={`form-control px-3 ${
-                        errors.confirmpassword ? "is-invalid" : ""
-                      }`}
-                      id="floatingPassword1"
-                      placeholder="Confirm Password"
-                      value={data.confirmpassword}
-                    />
-
-                    {errors.confirmpassword && (
-                      <div className="invalid-feedback">
-                        {errors.confirmpassword}
-                      </div>
-                    )}
-                    {errors.passwordMatch && (
-                      <div className="invalid-feedback">
-                        {errors.passwordMatch}
-                      </div>
-                    )}
-                  </div>
+                  {errors.confirmpassword && (
+                    <div className="invalid-feedback">
+                      {errors.confirmpassword}
+                    </div>
+                  )}
+                  {errors.passwordMatch && (
+                    <div className="invalid-feedback">
+                      {errors.passwordMatch}
+                    </div>
+                  )}
+                </div>
+                <div className="text-center">
                   <button
-                    className="btn text-white mt-2"
+                    className="blueBtn mt-2"
                     style={{ backgroundColor: "#1b2245" }}
                     onClick={handleClick}
                   >

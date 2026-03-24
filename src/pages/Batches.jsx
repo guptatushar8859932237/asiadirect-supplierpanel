@@ -284,7 +284,7 @@ export default function Batches() {
           if (error.response && error.response.status === 400) {
             toast.error(
               error.response.data.message ||
-                "Permission Denied: You don’t have access to delete this batch"
+              "Permission Denied: You don’t have access to delete this batch"
             );
           } else {
             toast.error("Something went wrong while deleting the batch.");
@@ -489,7 +489,7 @@ export default function Batches() {
           if (error.response && error.response.status === 400) {
             toast.error(
               error.response.data.message ||
-                "Permission Denied: You don’t have access to this action"
+              "Permission Denied: You don’t have access to this action"
             );
           } else {
             toast.error("Something went wrong while assigning the batch.");
@@ -825,7 +825,7 @@ export default function Batches() {
                                     type="date"
                                     className="form-control"
                                     value={formattedDate}
-                                    // name="date_created"
+                                  // name="date_created"
                                   />
                                 </div>
                                 <div className="col-6">
@@ -838,10 +838,10 @@ export default function Batches() {
                                     value={
                                       inputdata?.date_of_first_received
                                         ? new Date(
-                                            inputdata.date_of_first_received
-                                          )
-                                            .toISOString()
-                                            .split("T")[0]
+                                          inputdata.date_of_first_received
+                                        )
+                                          .toISOString()
+                                          .split("T")[0]
                                         : ""
                                     }
                                   />
@@ -1562,13 +1562,13 @@ export default function Batches() {
                     </div>
 
                     <div className="text-center mt-4 unsetLt">
-                      <Button
+                      <button
                         variant="contained"
-                        className="submit_btn mt-3"
+                        className="blueBtn mt-3"
                         onClick={postData1234}
                       >
                         Submit
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 </Box>

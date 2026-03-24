@@ -10,10 +10,10 @@ export default function Dashboard() {
   const [countdata, setCountdata] = useState();
   const navigaet = useNavigate();
   /////////////////////////////get all count in box/////////////////////////////////////////
-  const getcountall = async() => {
+  const getcountall = async () => {
     try {
-      const response =  await axios.post(`${process.env.REACT_APP_BASE_URL}count-all`)
-      if(response.data.success ===true){
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}count-all`)
+      if (response.data.success === true) {
         console.log(response.data)
         setCountdata(response.data.details)
       }
@@ -28,7 +28,7 @@ export default function Dashboard() {
     <>
       <div className="wpWrapper dash_wrap">
         <div className="container-fluid">
-          <div class="row">
+          <div class="row g-4">
             <div class="col-lg-3" onClick={() => { navigaet('/supplier/manage-customer') }}>
               <div class="cardDash">
                 <h4 className="hd_dash">Clients</h4>
@@ -48,25 +48,25 @@ export default function Dashboard() {
             </div>
             <div class="col-lg-3" onClick={() => { navigaet('/supplier/managefreight') }}>
               <div class="cardDash">
-                <h4 className="hd_dash">Freights</h4>                                                
-                <div class="iconParent">                                                
-                  <div class="cardContent">                                                
-                    <p className="para_dash"><CountUp end={countdata?.no_of_freights} /></p>                                                
-                  </div>                                                
-                  <div class="iconGrad">                                                
-                    <i className="fa fa-plane"></i>                                                
-                  </div>                                                 
-                </div>                                                
-                <div class="cardBottom bg2">                                                
-                  <p>View More</p>                                                
-                  <i class="fi fi-rr-angle-double-small-right"></i>                                                
-                </div>                                                
-              </div>                                                
-            </div>                                                
-            <div class="col-lg-3" onClick={() => { navigaet('/supplier/order') }}>                                                
-              <div class="cardDash">                                                
-                <h4 className="hd_dash">Orders</h4>                                                
-                <div class="iconParent">                                                
+                <h4 className="hd_dash">Freights</h4>
+                <div class="iconParent">
+                  <div class="cardContent">
+                    <p className="para_dash"><CountUp end={countdata?.no_of_freights} /></p>
+                  </div>
+                  <div class="iconGrad">
+                    <i className="fa fa-plane"></i>
+                  </div>
+                </div>
+                <div class="cardBottom bg2">
+                  <p>View More</p>
+                  <i class="fi fi-rr-angle-double-small-right"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3" onClick={() => { navigaet('/supplier/order') }}>
+              <div class="cardDash">
+                <h4 className="hd_dash">Orders</h4>
+                <div class="iconParent">
                   <div class="cardContent">
                     <p className="para_dash"><CountUp end={countdata?.no_of_orders} /></p>
                   </div>
@@ -91,7 +91,7 @@ export default function Dashboard() {
                     <i className="fa fa-bars"></i>
                   </div>
                 </div>
-                <div class="cardBottom bg1"> 
+                <div class="cardBottom bg1">
                   <p>View More</p>
                   <i class="fi fi-rr-angle-double-small-right"></i>
                 </div>
@@ -132,8 +132,8 @@ export default function Dashboard() {
                 </div>
               </div> */}
           </div>
-          <div className="chart mt-3">
-            <div className="row">
+          <div className="chart mt-4">
+            <div className="row g-4">
               <div className="col-lg-7">
                 <div className="h-100 chartCol card">
                   <h4 className="graph_hd">Freight Status</h4>
