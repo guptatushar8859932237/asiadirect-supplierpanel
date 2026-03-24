@@ -69,22 +69,27 @@ const routes = [
       },
     ],
   },
+  // {
+  //   path: "",
+  //   name: "Warehouse",
+  //   icon: <WarehouseOutlinedIcon />,
+  //   subRoutes: [
+  //      {
+  //       path: "/supplier/AddWarehouse",
+  //       name: "Admin Warehouse",
+  //       icon: <WarehouseOutlinedIcon />,
+  //     },
+  //     {
+  //       path: "/supplier/WarehouseOrder",
+  //       name: "Supplier Warehouse Order",
+  //       icon: <ShoppingCartOutlinedIcon />,
+  //     },
+  //   ],
+  // },
   {
-    path: "",
-    name: "Warehouse",
+    path: "/supplier/WarehouseOrder",
+    name: "Warehouse Order",
     icon: <WarehouseOutlinedIcon />,
-    subRoutes: [
-       {
-        path: "/supplier/AddWarehouse",
-        name: "Admin Warehouse",
-        icon: <WarehouseOutlinedIcon />,
-      },
-      {
-        path: "/supplier/WarehouseOrder",
-        name: "Supplier Warehouse Order",
-        icon: <ShoppingCartOutlinedIcon />,
-      },
-    ],
   },
   {
     path: "/supplier/ProfileSection",

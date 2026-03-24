@@ -181,7 +181,6 @@ export default function WarehouseOrder() {
   };
   const handlechangewarehouse = (e) => {
   const { name, value, files, type } = e.target;
-
   setProdata((prev) => ({
     ...prev,
     [name]: type === "file" ? files[0] : value,
@@ -316,32 +315,7 @@ const editpostData = async () => {
     toast.error("Something went wrong");
   }
 };
-  const updateWarehouse = async () => {
-    const payload = {
-      warehouse_id: warehouseID,
-      warehouse_name: prodata.warehouse_name,
-      warehouse_address: prodata.warehouse_address,
-      country: prodata.country,
-      town: prodata.town,
-      warehouse_number: prodata.warehouse_number,
-      mobile_number: prodata.mobile_number,
-      email: prodata.email,
-      contact_person: prodata.contact_person,
-      user_id: userId,
-      user_type: 2,
-    };
-    const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}getAssignedOrdersBySupplier`,
-      payload,
-    );
-    if (response.data.success) {
-      toast.success("Warehouse Updated Successfully");
-      handleCloseModalWarehouse();
-      getData();
-    } else {
-      toast.error(response.data.message);
-    }
-  };
+
   const handleProduct = (item) => {
     setDataProduct(item);
     setProductModalOpen(true);
@@ -520,7 +494,7 @@ const editpostData = async () => {
                           handleOpenModalWarehouse();
                         }}
                       >
-                        Add Warehouse
+                        Add Warehouse Order
                       </Button>
                     </div>
                   </div>
@@ -1001,6 +975,17 @@ const editpostData = async () => {
                                   placeholder=""
                                 ></input>
                               </div>
+                              <div className="col-6">
+                                <label>Total Weight </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.total_weight}
+                                  name="total_weight"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
                             </div>
                             <label>Comment on Packages</label>
                             <textarea
@@ -1439,7 +1424,8 @@ const editpostData = async () => {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-6">
+                              {
+                                prodata.hazardous==="Yes"?  <div className="col-6">
                                 <label>Description of Hazardous </label>
                                 <input
                                   type="type"
@@ -1449,7 +1435,9 @@ const editpostData = async () => {
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
-                              </div>
+                              </div> :""
+                              }
+                            
                               <div className="col-6">
                                 <label>Total Package</label>
                                 <input
@@ -1469,6 +1457,17 @@ const editpostData = async () => {
                                   className="form-control"
                                   value={prodata.total_dimension}
                                   name="total_dimension"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-6">
+                                <label>Total Weight </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.total_weight}
+                                  name="total_weight"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1499,7 +1498,7 @@ const editpostData = async () => {
                                 </select>
                               </div>
                               <div className="col-6">
-                                <label>Damaged Packed</label>
+                                <label>Damaged Packed (qty)</label>
                                 <input
                                   type="text"
                                   className="form-control"
@@ -1568,7 +1567,7 @@ const editpostData = async () => {
                                 ></input>
                               </div>
                             </div>
-                            <h5>Cargo Handeling</h5>
+                            <h5>Cargo Handling</h5>
                             <div className="row my-3  ">
                               <div className="col-6">
                                 <label>Warehouse Collect</label>
