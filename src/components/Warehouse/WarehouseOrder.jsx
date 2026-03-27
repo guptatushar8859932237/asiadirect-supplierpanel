@@ -11,6 +11,7 @@ export default function WarehouseOrder() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [warehoyseid, setWarehoyseid] = useState("");
   const [prodata, setProdata] = useState("");
   const [lcientlist, setLcientlist] = useState([]);
   const [search, setSearch] = useState("");
@@ -19,6 +20,7 @@ export default function WarehouseOrder() {
   const [productData, setProductData] = useState("");
   const [editDtaawarehouse, setEditDtaawarehouse] = useState("");
   const [dataProduct, setDataProduct] = useState(null);
+  const [warehouseOrerID, setWarehouseOrerID] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showhazardous, setShowhazardous] = useState(false);
   const [editmodalopen, setEditmodalopen] = useState(false);
@@ -36,7 +38,9 @@ export default function WarehouseOrder() {
   const userId = JSON.parse(localStorage.getItem("data123"))?.id;
   const [show1, setShow1] = useState(false);
   const [selectedDocs, setSelectedDocs] = useState([]);
+  const [orderDatap, setOrderDatap] = useState([]);
   const [countries, setCountries] = useState([]);
+  const [supplierData, setSupplierData] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const handleClose = () => setShow1(false);
   const [selectedData, setSelectedData] = useState(null);
@@ -63,7 +67,19 @@ export default function WarehouseOrder() {
   };
   useEffect(() => {
     getData();
+    allOrder()
   }, []);
+
+  const allOrder=async()=>{
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}AllOrderNumbers`)
+      if(response.data.success){
+        setOrderDatap(response.data.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const handlechange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -165,7 +181,7 @@ export default function WarehouseOrder() {
       warehousing_date: "",
       freight: "",
       collection_from: "",
-      delivery_to: "",
+      destination_country: "",
       client_name: "",
       supplier_id: "",
     });
@@ -191,27 +207,33 @@ export default function WarehouseOrder() {
   console.log("User ID from localStorage:", datauserId);
   const postDataWarehouse = async () => {
     try {
+//  warehouse_id, 
       const formData = new FormData();
       formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
+      formData.append("warehouse_order_id", prodata.warehouse_order_id || "");
+      formData.append("warehouse_id", prodata.warehouse_id || "");
       formData.append("date_entry_created", prodata.date_entry_created || "");
-      formData.append("dispatched_date", prodata.dispatched_date || "");
+      formData.append("dispatch_date", prodata.dispatch_date || "");
+      formData.append("date_received", prodata.date_received || "");
       formData.append("supplier_id", datauserId.id || "");
       formData.append("collection_from", prodata.collection_from || "");
-      formData.append("delivery_to", prodata.delivery_to || "");
+      formData.append("destination_country", prodata.destination_country || "");
       formData.append("package_comment", prodata.package_comment || "");
       formData.append("customer_ref", prodata.customer_ref || "");
       formData.append("customer_name", prodata.customer_name || "");
       formData.append("box_marking", prodata.box_marking || "");
+      formData.append("total_cbm", prodata.total_cbm || "");
       formData.append("package_type", prodata.package_type || "");
       formData.append("hazardous", prodata.hazardous || "");
       formData.append("added_by", 2);
-      formData.append("total_packeges", prodata.total_packeges || "");
+      formData.append("total_packages", prodata.total_packages || "");
       formData.append("hazard_description", prodata.hazard_description || "");
       formData.append("goods_description", prodata.goods_description || "");
-      formData.append("damage_goods", prodata.damage_goods || "");
+      formData.append("damaged_goods", prodata.damaged_goods || "");
       formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
       formData.append("damage_comment", prodata.damage_comment || "");
       formData.append("supplier_company", prodata.supplier_company || "");
+      formData.append("supplier_contact", prodata.supplier_contact || "");
       formData.append("supplier_person", prodata.supplier_person || "");
       formData.append("supplier_address", prodata.supplier_address || "");
       formData.append("warehouse_collect", prodata.warehouse_collect || "");
@@ -255,12 +277,15 @@ export default function WarehouseOrder() {
     try {
       const formData = new FormData();
       formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
-      formData.append("date_entry_created", prodata.date_entry_created || "");
-      formData.append("dispatched_date", prodata.dispatched_date || "");
+      formData.append("date_received", prodata.date_received || "");
+      formData.append("warehouse_order_id", prodata.warehouse_order_id || "");
+      formData.append("id", warehouseOrerID || "");
+      formData.append("dispatch_date", prodata.dispatch_date || "");
       formData.append("days_in_warehouse", prodata.days_in_warehouse || "");
       formData.append("supplier_id", datauserId.id || "");
       formData.append("collection_from", prodata.collection_from || "");
-      formData.append("delivery_to", prodata.delivery_to || "");
+       formData.append("total_packages", prodata.total_packages || "");
+      formData.append("destination_country", prodata.destination_country || "");
       formData.append("customer_name", prodata.customer_name || "");
       formData.append("added_by", 2);
       formData.append("package_comment", prodata.package_comment || "");
@@ -268,10 +293,10 @@ export default function WarehouseOrder() {
       formData.append("box_marking", prodata.box_marking || "");
       formData.append("package_type", prodata.package_type || "");
       formData.append("hazardous", prodata.hazardous || "");
-      formData.append("total_packeges", prodata.total_packeges || "");
       formData.append("hazard_description", prodata.hazard_description || "");
+      formData.append("total_cbm", prodata.total_cbm || "");
       formData.append("goods_description", prodata.goods_description || "");
-      formData.append("damage_goods", prodata.damage_goods || "");
+      formData.append("damaged_goods", prodata.damaged_goods || "");
       formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
       formData.append("damage_comment", prodata.damage_comment || "");
       formData.append("supplier_company", prodata.supplier_company || "");
@@ -301,7 +326,11 @@ export default function WarehouseOrder() {
         console.log(pair[0], pair[1]);
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,
+        `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,{
+        params: {
+          supplier_id: datauserId.id, // ✅ query param
+        },
+      },
         formData);
       if (response.data.success === true) {
         setEditmodalopen(false);
@@ -343,13 +372,23 @@ export default function WarehouseOrder() {
     }
   };
   const handleProduct = (item) => {
+    setWarehoyseid(item.id)
     setDataProduct(item);
     setProductModalOpen(true);
   };
-  const handleProductview = (item) => {
+  const handleProductview =async (item) => {
     console.log(item)
-    setSelectedDocs(item.products);
+try {
+    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}getSupplierWarehouseProducts?supplier_warehouse_id=${item.id}`)
+    if(response.data.success){
+      console.log(response.data.data)
+       setSelectedDocs(response.data.data);
     setModalproduct(true);
+    }
+  } catch (error) {
+  console.log(error)
+}
+  
   };
   const setModalproduct33 = () => {
     setModalproduct(false);
@@ -367,9 +406,10 @@ export default function WarehouseOrder() {
       user_id: datauserId.id,
       order_id: dataProduct.order_id,
       added_by: "4",
+      supplier_warehouse_id:warehoyseid,
       warehouse_order_id: dataProduct.warehouse_id,
       product_description: productData.product_description,
-      Hazardous: productData.Hazardous,
+      hazardous: productData.hazardous,
       date_received: productData.date_received,
       package_type: productData.package_type,
       packages: productData.packages,
@@ -381,7 +421,7 @@ export default function WarehouseOrder() {
       supplier: productData.supplier,
       warehouse_receipt_number: productData.warehouse_receipt_number,
       tracking_number: tracking_id,
-      date_dspatched: productData.date_dspatched,
+      date_dispatched: productData.date_dispatched,
       supplier_address: productData.supplier_address,
       warehouse_collect: productData.warehouse_collect,
       costs_to_collect: productData.costs_to_collect,
@@ -390,23 +430,25 @@ export default function WarehouseOrder() {
       warehouse_cost: productData.warehouse_cost,
       cost_to_dispatch: productData.cost_to_dispatch,
       waybill_ref: productData.waybill_ref,
-      supplier_Email: productData.supplier_Email,
-      Supplier_Contact: productData.Supplier_Contact,
+      supplier_email: productData.supplier_email,
+      supplier_contact: productData.supplier_contact,
     };
-    const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}addWarehouseProduct`,
-      payload,
-    );
-    if (response.data.success === true) {
-      toast.success(response.data.message);
-      closesetProductModalOpen();
-      getData();
-    } else {
-      toast.error(response.data.message);
-    }
+    console.log(payload)
+    // const response = await axios.post(
+    //   `${process.env.REACT_APP_BASE_URL}addSupplierWarehouseProduct`,
+    //   payload,
+    // );
+    // if (response.data.success === true) {
+    //   toast.success(response.data.message);
+    //   closesetProductModalOpen();
+    //   getData();
+    // } else {
+    //   toast.error(response.data.message);
+    // }
   };
   const editmodalopen1 = (item) => {
     console.log(item);
+    setWarehouseOrerID(item.id)
     setEditmodalopen(true);
     setEditDtaawarehouse(item);
     setProdata(item)
@@ -431,9 +473,11 @@ export default function WarehouseOrder() {
     console.log(productData);
     try {
       const payload = {
+  
+        id:productData.id,
         warehouse_products_id: productData.id,
         product_description: productData.product_description,
-        Hazardous: productData.Hazardous,
+        hazardous: productData.hazardous,
         date_received: productData.date_received,
         package_type: productData.package_type,
         packages: productData.packages,
@@ -445,7 +489,7 @@ export default function WarehouseOrder() {
         supplier: productData.supplier,
         warehouse_receipt_number: productData.warehouse_receipt_number,
         tracking_number: productData.tracking_number,
-        date_dspatched: productData.date_dspatched,
+        date_dispatched: productData.date_dispatched,
         supplier_address: productData.supplier_address,
         warehouse_collect: productData.warehouse_collect,
         costs_to_collect: productData.costs_to_collect,
@@ -454,11 +498,11 @@ export default function WarehouseOrder() {
         warehouse_cost: productData.warehouse_cost,
         cost_to_dispatch: productData.cost_to_dispatch,
         waybill_ref: productData.waybill_ref,
-        supplier_Email: productData.supplier_Email,
-        Supplier_Contact: productData.Supplier_Contact,
+        supplier_email: productData.supplier_email,
+        supplier_contact: productData.supplier_contact,
       };
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}updateWareHouseProductBySupplier`,
+        `${process.env.REACT_APP_BASE_URL}updateSupplierWarehouseProduct`,
         payload,
       );
       if (response.data.success === true) {
@@ -488,6 +532,27 @@ export default function WarehouseOrder() {
         console.log(error.response.data);
       });
   };
+
+  useEffect(()=>{
+    GetSupplierCreatedWarehouseOrders1()
+  },[])
+
+ const GetSupplierCreatedWarehouseOrders1 = async () => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BASE_URL}getSupplierWarehouses`,
+      {
+        params: {
+          supplier_id: datauserId.id, // ✅ query param
+        },
+      }
+    );
+
+    setSupplierData(response.data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
   return (
     <>
       {loader ? (
@@ -521,7 +586,7 @@ export default function WarehouseOrder() {
                           handleOpenModalWarehouse();
                         }}
                       >
-                        Add Warehouse
+                        Add Warehouse Order
                       </button>
                     </div>
                   </div>
@@ -549,8 +614,8 @@ export default function WarehouseOrder() {
                                               className="client_nm"
                                               style={{ fontSize: "18px" }}
                                             >
-                                              {item.warehouse_number} / OR000
-                                              {item.order_id}
+                                              {item.warehouse_number} 
+                                              {/* {item.order_id} */}
                                             </p>
                                             <p
                                               className="fright_no mx-2"
@@ -562,7 +627,7 @@ export default function WarehouseOrder() {
                                           <div className="">
                                             <p className="port_date">
                                               {new Date(
-                                                item.warehousing_date,
+                                                item.created_at,
                                               ).toLocaleDateString("en-GB")}
                                             </p>
                                           </div>
@@ -587,7 +652,7 @@ export default function WarehouseOrder() {
                                                 <i className="fi fi-rr-arrow-right mx-2 arr_icon"></i>
                                               </div>
                                               <p className="origin">
-                                                {item.delivery_to_name}
+                                                {item.destination_country_name}
                                               </p>
                                             </div>
                                           </div>
@@ -640,7 +705,7 @@ export default function WarehouseOrder() {
                                                 type="radio"
                                                 className="input_user mb-0"
                                               />
-                                              {item.assign_to_batch === 0 ? (
+                                              {/* {item.assign_to_batch === 0 ? (
                                                 <div className="d-flex align-items-center">
                                                   <span className="dot bg-danger me-2"></span>
                                                   <p
@@ -660,7 +725,7 @@ export default function WarehouseOrder() {
                                                     Batch Assigned
                                                   </p>
                                                 </div>
-                                              )}
+                                              )} */}
                                             </div>
                                           </div>
                                         </div>
@@ -745,7 +810,7 @@ export default function WarehouseOrder() {
                                   selectedDocs.map((doc, index) => (
                                     <tr key={index}>
                                       <td>{doc?.product_description}</td>
-                                      <td>{doc?.Hazardous}</td>
+                                      <td>{doc?.hazardous}</td>
                                       <td>
                                         {new Date(
                                           doc?.date_received,
@@ -813,13 +878,16 @@ export default function WarehouseOrder() {
                               <div className="col-md-6">
                                 <label>Date</label>
                                 <input
-                                  type="date"
-                                  className="form-control"
-                                  value={prodata.date_entry_created}
-                                  name="date_entry_created"
-                                  onChange={handlechangewarehouse}
-                                  placeholder="Date"
-                                ></input>
+  type="date"
+  className="form-control"
+  value={
+    prodata.date_received
+      ? prodata.date_received.split("T")[0]
+      : ""
+  }
+  name="date_received"
+  onChange={handlechangewarehouse}
+/>
                               </div>
 
                               <div className="col-md-6">
@@ -846,13 +914,24 @@ export default function WarehouseOrder() {
                               </div>
                               <div className="col-md-6">
                                 <label>Dispatch Date</label>
-                                <input
+                                {/* <input
                                   type="date"
                                   className="form-control"
                                   name="dispatched_date"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
-                                ></input>
+                                ></input> */}
+                                                                <input
+  type="date"
+  className="form-control"
+  value={
+    prodata.dispatch_date
+      ? prodata.dispatch_date.split("T")[0]
+      : ""
+  }
+  name="dispatch_date"
+  onChange={handlechangewarehouse}
+/>
                               </div>
                             </div>
                             <h5 className="mt-3 mb-2">Package Information</h5>
@@ -907,8 +986,8 @@ export default function WarehouseOrder() {
                               <div className="col-md-6">
                                 <label> Destination Country</label>
                                 <select
-                                  name="delivery_to"
-                                  value={prodata.delivery_to}
+                                  name="destination_country"
+                                  value={prodata.destination_country}
                                   onChange={handlechangewarehouse}
                                   className="form-select"
                                 >
@@ -981,7 +1060,9 @@ export default function WarehouseOrder() {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              <div className="col-md-6">
+                              {
+                                prodata.hazardous==="Yes"?
+                                 <div className="col-md-6">
                                 <label>Description of Hazardous </label>
                                 <input
                                   type="type"
@@ -991,26 +1072,39 @@ export default function WarehouseOrder() {
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
+                              </div>:""
+                              }
+                             
+                              <div className="col-md-6">
+                                <label>Total cbm</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.total_cbm}
+                                  name="total_cbm"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
                               </div>
                               <div className="col-md-6">
                                 <label>Total Package</label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={prodata.total_packeges}
-                                  name="total_packeges"
+                                  value={prodata.total_packages}
+                                  name="total_packages"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
                               </div>
 
-                              <div className="col-md-12">
+                              <div className="col-md-6">
                                 <label>Total Dimension </label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={prodata.total_dimension}
-                                  name="total_dimension"
+                                  value={prodata.total_cbm}
+                                  name="total_cbm"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1033,8 +1127,8 @@ export default function WarehouseOrder() {
                                 <select
                                   type="text"
                                   className="form-select"
-                                  value={prodata.damage_goods}
-                                  name="damage_goods"
+                                  value={prodata.damaged_goods}
+                                  name="damaged_goods"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 >
@@ -1044,7 +1138,7 @@ export default function WarehouseOrder() {
                                 </select>
                               </div>
                               <div className="col-md-6">
-                                <label>Damaged Packed</label>
+                                <label>Damaged Packed (qty)</label>
                                 <input
                                   type="text"
                                   className="form-control"
@@ -1280,7 +1374,7 @@ export default function WarehouseOrder() {
                         >
                           <div className="modal-header">
                             <h2 id="modal-modal-title">
-                              Add Warehouse
+                              Add Warehouse  Order
                             </h2>
                             <button
                               className="btn btn-close"
@@ -1297,8 +1391,8 @@ export default function WarehouseOrder() {
                                 <input
                                   type="date"
                                   className="form-control"
-                                  value={prodata.date_entry_created}
-                                  name="date_entry_created"
+                                  value={prodata.date_received}
+                                  name="date_received"
                                   onChange={handlechangewarehouse}
                                   placeholder="Date"
                                 ></input>
@@ -1331,7 +1425,8 @@ export default function WarehouseOrder() {
                                 <input
                                   type="date"
                                   className="form-control"
-                                  name="dispatched_date"
+                                  name="dispatch_date"
+                                  value={prodata.dispatch_date}
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1389,8 +1484,8 @@ export default function WarehouseOrder() {
                               <div className="col-md-6">
                                 <label> Destination Country</label>
                                 <select
-                                  name="delivery_to"
-                                  value={prodata.delivery_to}
+                                  name="destination_country"
+                                  value={prodata.destination_country}
                                   onChange={handlechangewarehouse}
                                   className="form-select"
                                 >
@@ -1411,7 +1506,6 @@ export default function WarehouseOrder() {
                                     })}
                                 </select>
                               </div>
-
                               <div className="col-md-6">
                                 <label>Box Marking</label>
                                 <input
@@ -1463,6 +1557,8 @@ export default function WarehouseOrder() {
                                   <option value="No">No</option>
                                 </select>
                               </div>
+                               {
+                                prodata.hazardous==="Yes"?
                               <div className="col-md-6">
                                 <label>Description of Hazardous </label>
                                 <input
@@ -1473,26 +1569,36 @@ export default function WarehouseOrder() {
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
-                              </div>
+                              </div>:""}
                               <div className="col-md-6">
                                 <label>Total Package</label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={prodata.total_packeges}
-                                  name="total_packeges"
+                                  value={prodata.total_packages}
+                                  name="total_packages"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
                               </div>
-
-                              <div className="col-md-12">
+                              <div className="col-md-6">
                                 <label>Total Dimension </label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={prodata.total_dimension}
-                                  name="total_dimension"
+                                  value={prodata.total_cbm}
+                                  name="total_cbm"
+                                  onChange={handlechangewarehouse}
+                                  placeholder=""
+                                ></input>
+                              </div>
+                              <div className="col-md-6">
+                                <label>Total Weight </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={prodata.total_weight}
+                                  name="total_weight"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1502,6 +1608,7 @@ export default function WarehouseOrder() {
                                 <textarea
                                   className="w-100 form-control"
                                   name="package_comment"
+                                  onChange={handlechangewarehouse}
                                   value={prodata.package_comment}
                                   placeholder="Other Information"
                                 ></textarea>
@@ -1515,8 +1622,8 @@ export default function WarehouseOrder() {
                                 <select
                                   type="text"
                                   className="form-select"
-                                  value={prodata.damage_goods}
-                                  name="damage_goods"
+                                  value={prodata.damaged_goods}
+                                  name="damaged_goods"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 >
@@ -1526,7 +1633,7 @@ export default function WarehouseOrder() {
                                 </select>
                               </div>
                               <div className="col-md-6">
-                                <label>Damaged Packed</label>
+                                <label>Damaged Packed (qty)</label>
                                 <input
                                   type="text"
                                   className="form-control"
@@ -1572,6 +1679,26 @@ export default function WarehouseOrder() {
                                   name="supplier_person"
                                   onChange={handlechangewarehouse}
                                 ></input>
+                              </div>
+                               <div className="col-md-6">
+                                <label>Select Warehouse</label>
+                                <select value={prodata.warehouse_id}
+                                  name="warehouse_id"
+                                  onChange={handlechangewarehouse}
+                                  className="form-select"
+
+                                >
+                                  <option value="">Select</option>
+                                  {
+                                    supplierData.map((item)=>{
+                                      return(
+                                        <>
+                                        <option value={item.id} >{item.warehouse_name} {item.country_name}</option>
+                                        </>
+                                      )
+                                    })
+}
+                                </select>
                               </div>
                               <div className="col-md-6">
                                 <label>Supplier Address</label>
@@ -1794,13 +1921,17 @@ export default function WarehouseOrder() {
                               <div className="col-md-6">
                                 <label>Date Received</label>
                                 <input
-                                  type="date"
-                                  className="form-control"
-                                  name="date_received"
-                                  value={productData.date_received}
-                                  onChange={handlechangegetdatainput}
-                                  placeholder="warehouse name"
-                                ></input>
+  type="date"
+  className="form-control"
+  name="date_received"
+  value={
+    productData.date_received
+      ? productData.date_received.split("T")[0]
+      : ""
+  }
+  onChange={handlechangegetdatainput}
+  placeholder="warehouse name"
+/>
                               </div>
                               <div className="col-md-6">
                                 <label>Package Type</label>
@@ -1857,13 +1988,22 @@ export default function WarehouseOrder() {
 
                               <div className="col-md-6">
                                 <label>Freight</label>
-                                <input
+                                {/* <input
                                   className="form-control"
                                   name="freight"
                                   value={productData.freight}
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
-                                ></input>
+                                ></input> */}
+                                <select  className="form-control"
+                                  name="freight"
+                                  value={productData.freight}
+                                  onChange={handlechangegetdatainput}>
+                                  <option>select</option>
+                                  <option value="Sea">Sea</option>
+                                  <option value="Air">Air</option>
+                                  <option value="Road">Road</option>
+                                </select>
                               </div>
                               <div className="col-md-6">
                                 <label>Groupage Batch Ref</label>
@@ -1888,14 +2028,26 @@ export default function WarehouseOrder() {
                               </div>
                               <div className="col-md-6">
                                 <label>Date Dispatched</label>
-                                <input
+                                {/* <input
                                   className="form-control"
                                   type="date"
                                   name="date_dspatched"
                                   value={productData.date_dspatched}
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
-                                ></input>
+                                ></input> */}
+                               <input
+  type="date"
+  className="form-control"
+  name="date_dispatched"
+  value={
+    productData.date_dispatched
+      ? productData.date_dispatched.split("T")[0]
+      : ""
+  }
+  onChange={handlechangegetdatainput}
+  placeholder="warehouse name"
+/>
                               </div>
 
                               <div className="col-md-6">
@@ -1987,8 +2139,8 @@ export default function WarehouseOrder() {
                                 <label>Supplier Email</label>
                                 <input
                                   className="form-control"
-                                  name="supplier_Email"
-                                  value={productData.supplier_Email}
+                                  name="supplier_email"
+                                  value={productData.supplier_email}
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input>
@@ -1997,8 +2149,8 @@ export default function WarehouseOrder() {
                                 <label>Supplier Contact</label>
                                 <input
                                   className="form-control"
-                                  name="Supplier_Contact"
-                                  value={productData.Supplier_Contact}
+                                  name="supplier_contact"
+                                  value={productData.supplier_contact}
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input>
@@ -2064,7 +2216,7 @@ export default function WarehouseOrder() {
                                 <label>Hazardous</label>
                                 <input
                                   className="form-control"
-                                  name="Hazardous"
+                                  name="hazardous"
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input>
@@ -2131,12 +2283,20 @@ export default function WarehouseOrder() {
 
                               <div className="col-md-6">
                                 <label>Freight</label>
-                                <input
+                                {/* <input
                                   className="form-control"
                                   name="freight"
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
-                                ></input>
+                                ></input> */}
+                                <select  className="form-control"
+                                  name="freight"
+                                  onChange={handlechangegetdatainput}>
+                                    <option>select</option>
+                                    <option value="Sea">Sea</option>
+                                    <option value="Air">Air</option>
+                                    <option value="Road">Road</option>
+                                </select>
                               </div>
                               <div className="col-md-6">
                                 <label>Groupage Batch Ref</label>
@@ -2160,8 +2320,9 @@ export default function WarehouseOrder() {
                               <div className="col-md-6">
                                 <label>Date Dispatched</label>
                                 <input
+                                type="date"
                                   className="form-control"
-                                  name="date_dspatched"
+                                  name="date_dispatched"
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input>
@@ -2250,7 +2411,7 @@ export default function WarehouseOrder() {
                                 <label>Supplier Email</label>
                                 <input
                                   className="form-control"
-                                  name="supplier_Email"
+                                  name="supplier_email"
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input>
@@ -2259,7 +2420,7 @@ export default function WarehouseOrder() {
                                 <label>Supplier Contact</label>
                                 <input
                                   className="form-control"
-                                  name="Supplier_Contact"
+                                  name="supplier_contact"
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input>
