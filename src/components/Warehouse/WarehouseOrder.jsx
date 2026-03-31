@@ -326,12 +326,12 @@ export default function WarehouseOrder() {
         console.log(pair[0], pair[1]);
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,{
+        `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`, formData,{
         params: {
           supplier_id: datauserId.id, // ✅ query param
         },
       },
-        formData);
+       );
       if (response.data.success === true) {
         setEditmodalopen(false);
         editmodalclose1()
@@ -434,17 +434,17 @@ try {
       supplier_contact: productData.supplier_contact,
     };
     console.log(payload)
-    // const response = await axios.post(
-    //   `${process.env.REACT_APP_BASE_URL}addSupplierWarehouseProduct`,
-    //   payload,
-    // );
-    // if (response.data.success === true) {
-    //   toast.success(response.data.message);
-    //   closesetProductModalOpen();
-    //   getData();
-    // } else {
-    //   toast.error(response.data.message);
-    // }
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}addSupplierWarehouseProduct`,
+      payload,
+    );
+    if (response.data.success === true) {
+      toast.success(response.data.message);
+      closesetProductModalOpen();
+      getData();
+    } else {
+      toast.error(response.data.message);
+    }
   };
   const editmodalopen1 = (item) => {
     console.log(item);
