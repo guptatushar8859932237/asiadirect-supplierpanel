@@ -797,65 +797,6 @@ export default function Managefreight() {
                                                 Action
                                               </a>
                                               <div className="dropdown-menu">
-                                                {/* <a
-                                                  style={{ cursor: "pointer" }}
-                                                  className="dropdown-item li_icon"
-                                                  onClick={() => {
-                                                    handlelcickseedata(
-                                                      item.freight_id
-                                                    );
-                                                  }}
-                                                >
-                                                  <VisibilityIcon
-                                                    style={{
-                                                      color: "rgb(27 34 69)",
-                                                      cursor: "pointer",
-                                                      marginRight: "10px",
-                                                      width: "20px",
-                                                    }}
-                                                  />
-                                                  View
-                                                </a>
-                                                <a
-                                                  style={{ cursor: "pointer" }}
-                                                  className="dropdown-item li_icon"
-                                                  onClick={() => {
-                                                    handlelcickseedata1212(
-                                                      item
-                                                    );
-                                                  }}
-                                                >
-                                                  <SupportAgentSharpIcon
-                                                    style={{
-                                                      color: "rgb(27 34 69)",
-                                                      cursor: "pointer",
-                                                      marginRight: "10px",
-                                                      width: "20px",
-                                                    }}
-                                                  />
-                                                  Custom Clearance
-                                                </a>
-                                                <a
-                                                  className="dropdown-item li_icon"
-                                                  data-bs-toggle="modal"
-                                                  data-bs-target="#staticBackdrop"
-                                                  style={{ cursor: "pointer" }}
-                                                  onClick={() => {
-                                                    handleupdate(
-                                                      item.freight_id
-                                                    );
-                                                  }}
-                                                >
-                                                  <FaEdit
-                                                    style={{
-                                                      color: "rgb(27 34 69)",
-                                                      marginRight: "10px",
-                                                      width: "20px",
-                                                      height: "15px",
-                                                    }}
-                                                  />
-                                                  Edit
-                                                </a> */}
                                                 <a
                                                   style={{ cursor: "pointer" }}
                                                   className="dropdown-item li_icon"
@@ -1025,6 +966,8 @@ export default function Managefreight() {
                                         </label>
                                       </div>
                                       <div>
+                                        {item?.is_approved == "1"
+                                          ? <span className="text-success">Approved</span>  :""}
                                         {item?.sales_name == "undefined"
                                           ? ""
                                           : item?.sales_name}

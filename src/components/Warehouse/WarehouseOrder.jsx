@@ -865,7 +865,7 @@ try {
                           }}
                         >
                           <div className="modal-header">
-                            <h2 id="modal-modal-title">Edit Warehouse</h2>
+                            <h2 id="modal-modal-title">Edit Warehouse Order</h2>
                             <button
                               className="btn btn-close"
                               onClick={editmodalclose1}
@@ -2191,7 +2191,7 @@ try {
                           <div className="modal-header">
                             <h2 id="modal-modal-title">
                               {orderID122
-                                ? "Edit Warehouse"
+                                ? "Edit Warehouse Product"
                                 : "Add Warehouse Product"}
                             </h2>
                             <button

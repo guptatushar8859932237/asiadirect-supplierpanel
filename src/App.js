@@ -41,7 +41,6 @@ import OrderDetailspagemain from "./pages/OrderDetailspagemain";
 import WarehouseDetails from "./pages/WarehouseDetails";
 import BatchorderDetails from "./pages/BatchorderDetails";
 import Excel from "./components/Excel";
-import Testingwork from "./components/Testuing/Testingwork";
 import Query from "./pages/Query";
 import Customeclearingbill from "./bill/Customeclearingbill";
 import MAnageshipments from "./components/shipment/MAnageshipments";
@@ -320,11 +319,11 @@ export default function App() {
                   path="/supplier/supplier/countryoforigin"
                   element={<Countryoforigin />}
                 />
-                <Route
+                {/* <Route
                   index
                   path="/supplier/supplier/testingwork"
                   element={<Testingwork />}
-                />
+                /> */}
                 <Route
                   index
                   path="/supplier/supplier/Trackbatch"

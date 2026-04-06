@@ -45,11 +45,11 @@ const routes = [
         name: "Freight's",
         icon: <SupervisorAccountOutlinedIcon />,
       },
-      {
-        path: "/supplier/custom-clearance-order",
-        name: "Custom Clearing's",
-        icon: <SupervisorAccountOutlinedIcon />,
-      },
+      // {
+      //   path: "/supplier/custom-clearance-order",
+      //   name: "Custom Clearing's",
+      //   icon: <SupervisorAccountOutlinedIcon />,
+      // },
     ],
   },
   {
