@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal, Box, Button, Select } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CloseIcon from "@mui/icons-material/Close";
+import Swal from "sweetalert2";
 const pageSize = 10;
 export default function WarehouseOrder() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -85,12 +86,16 @@ export default function WarehouseOrder() {
     setData({ ...data, [name]: value });
     setShowhazardous(data.hazardous);
   };
-  const getData = async () => {
+  const getData = async (page) => {
     setLoader(true);
+     const payload = {
+      user_id: datauserId.id,
+      page: page,
+      limit: pageSize,
+    };
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}GetSupplierCreatedWarehouseOrders?supplier_id=${userId}`,
-      );
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}GetSupplierCreatedWarehouseOrders`,payload) 
       setLoader(false);
       if (response.data && response.data.data) {
         console.log(response.data.data);
@@ -110,9 +115,11 @@ export default function WarehouseOrder() {
       }
     }
   };
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+ const handlePageChange = (page) => {
+  console.log(page)
+  setCurrentPage(page);
+  getData(page);
+};
   const filteredData = data.filter((item) => {
     return (
       item?.client_name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
@@ -258,21 +265,49 @@ export default function WarehouseOrder() {
       for (let pair of formData.entries()) {
         console.log(pair[0], pair[1]);
       }
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}createOrderAndWarehouse`,
-        formData);
-      if (response.data.success === true) {
-        toast.success(response.data.message);
-        handleCloseModalWarehouse();
-        getData();
-      } else {
-        toast.error(response.data.message);
+        const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}createOrderAndWarehouse`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }
-    } catch (error) {
-      console.error("API Error:", error);
-      toast.error("Something went wrong");
+    );
+
+    // ✅ Success
+    if (response?.data?.success) {
+      toast.success(response.data.message || "Data saved successfully");
+      handleCloseModalWarehouse();
+      getData(currentPage);
+    } else {
+      // ❌ Backend error
+      toast.error(response?.data?.message || "Something went wrong");
     }
-  };
+  } catch (error) {
+    console.error("Full Error:", error);
+
+    // 🔥 Backend Error (MOST IMPORTANT)
+    if (error.response) {
+      const message =
+        error.response.data?.message ||
+        JSON.stringify(error.response.data) ||
+        "Server error";
+
+      toast.error(message);
+    }
+
+    // ❌ Network error
+    else if (error.request) {
+      toast.error("Server not responding. Please try again.");
+    }
+
+    // ❌ JS / Unknown error
+    else {
+      toast.error(error.message || "Unexpected error occurred");
+    }
+  }
+};
   const editpostData = async () => {
     try {
       const formData = new FormData();
@@ -325,26 +360,66 @@ export default function WarehouseOrder() {
       for (let pair of formData.entries()) {
         console.log(pair[0], pair[1]);
       }
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`, formData,{
+     const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,
+      formData,
+      {
         params: {
-          supplier_id: datauserId.id, // ✅ query param
+          supplier_id: datauserId.id,
         },
-      },
-       );
-      if (response.data.success === true) {
-        setEditmodalopen(false);
-        editmodalclose1()
-        toast.success(response.data.message);
-        getData();
-      } else {
-        toast.error(response.data.message);
       }
-    } catch (error) {
-      console.error("API Error:", error);
-      toast.error("Something went wrong");
+    );
+
+    if (response?.data?.success) {
+      setEditmodalopen(false);
+      editmodalclose1();
+      toast.success(response.data.message || "Updated successfully");
+      getData(currentPage);
+    } else {
+      // ✅ Handle backend validation errors
+      if (Array.isArray(response?.data?.errors)) {
+        response.data.errors.forEach((err) => {
+          toast.error(err);
+        });
+      } else {
+        toast.error(response?.data?.message || "Something failed");
+      }
     }
-  };
+
+  } catch (error) {
+    console.error("Full Error:", error);
+
+    // ✅ Axios error handling (IMPORTANT)
+    if (error.response) {
+      // Backend responded with error
+      const data = error.response.data;
+
+      if (Array.isArray(data?.errors)) {
+        data.errors.forEach((err) => {
+          toast.error(err);
+        });
+      } else if (typeof data === "object") {
+        // show all keys if object
+        Object.values(data).forEach((val) => {
+          if (Array.isArray(val)) {
+            val.forEach((msg) => toast.error(msg));
+          } else {
+            toast.error(val);
+          }
+        });
+      } else {
+        toast.error(data?.message || "Server error");
+      }
+
+    } else if (error.request) {
+      // No response
+      toast.error("No response from server");
+    } else {
+      // Other error
+      toast.error(error.message);
+    }
+  }
+};
   const updateWarehouse = async () => {
     const payload = {
       warehouse_id: warehouseID,
@@ -366,7 +441,7 @@ export default function WarehouseOrder() {
     if (response.data.success) {
       toast.success("Warehouse Updated Successfully");
       handleCloseModalWarehouse();
-      getData();
+          getData(currentPage); 
     } else {
       toast.error(response.data.message);
     }
@@ -607,7 +682,7 @@ try {
                                 <>
                                   <tr key={item.id}>
                                     <td className="list_bd">
-                                      <div className="container-fluid">
+                                      <div>
                                         <div className="d-flex justify-content-between align-items-center">
                                           <div className="d-flex align-items-center">
                                             <p
@@ -701,6 +776,10 @@ try {
                                         <div className="row">
                                           <div className="col-md-6">
                                             <div className="d-flex align-items-center">
+                                              <div>
+                                        {item?.move_to_adminWarhouse == "1"
+                                          ? <span className="text-success">Approved</span>  :item.move_to_adminWarhouse == "2" ? <span className="text-danger">Rejected</span> : <span className="text-secondary">Pending</span>}
+                                      </div>
                                               <p
                                                 type="radio"
                                                 className="input_user mb-0"
@@ -876,7 +955,7 @@ try {
                           <div className="newModalGap noFormaControl">
                             <div className="row g-2">
                               <div className="col-md-6">
-                                <label>Date</label>
+                                <label>Recieve Date</label>
                                 <input
   type="date"
   className="form-control"
@@ -1387,7 +1466,7 @@ try {
                             <div className="row g-2">
 
                               <div className="col-md-6">
-                                <label>Date</label>
+                                <label>Recieve Date</label>
                                 <input
                                   type="date"
                                   className="form-control"

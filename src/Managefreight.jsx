@@ -921,7 +921,7 @@ export default function Managefreight() {
                                       </div>
                                     </div>
                                     <div className="d-flex justify-content-between">
-                                      <div>
+                                      {/* <div>
                                         <p
                                           type="radio"
                                           className="input_user mb-0"
@@ -964,10 +964,10 @@ export default function Managefreight() {
                                             </>
                                           )}
                                         </label>
-                                      </div>
+                                      </div> */}
                                       <div>
                                         {item?.is_approved == "1"
-                                          ? <span className="text-success">Approved</span>  :""}
+                                          ? <span className="text-success">Approved</span>  :item.is_approved == "2" ? <span className="text-danger">Rejected</span> : <span className="text-secondary">Pending</span>}
                                         {item?.sales_name == "undefined"
                                           ? ""
                                           : item?.sales_name}

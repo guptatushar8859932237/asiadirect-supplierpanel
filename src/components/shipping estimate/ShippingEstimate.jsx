@@ -8395,9 +8395,12 @@ export default function ShippingEstimate() {
                     </table>
                   </div>
                   <div className="text-center mt-3">
+                    {getdata.is_approved === 0 &&(
+
                     <button className="ship_btn" onClick={estimateCalculate}>
                       Get Quote
                     </button>
+                    )}
                   </div>
                 </div>
               </section>
