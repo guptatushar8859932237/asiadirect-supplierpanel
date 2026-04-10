@@ -15,7 +15,6 @@ export default function Profilemain() {
               <div class="iconParent">
                 <div class="cardContent">
                   <p className="para_dash">
-                    {/* <CountUp end={countdata?.no_of_clients} /> */}
                   </p>
                 </div>
                 <div class="iconGrad">

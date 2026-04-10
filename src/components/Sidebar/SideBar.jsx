@@ -33,6 +33,7 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import MessageIcon from '@mui/icons-material/Message';
 import { Rule } from "@mui/icons-material";
 const routes = [
   {
@@ -52,23 +53,23 @@ const routes = [
       // },
     ],
   },
-  {
-    path: "/supplier/manageTasks       ",
-    name: "Assigned Tasks",
-    icon: <AssignmentIndIcon />,
-  },
-  {
-    path: "",
-    name: "Batches",
-    icon: <WorkspacePremiumOutlinedIcon />,
-    subRoutes: [
-      {
-        path: "/supplier/Batches",
-        name: "Batches",
-        icon: <MilitaryTechOutlinedIcon />,
-      },
-    ],
-  },
+  // {
+  //   path: "/supplier/manageTasks       ",
+  //   name: "Assigned Tasks",
+  //   icon: <AssignmentIndIcon />,
+  // },
+  // {
+  //   path: "",
+  //   name: "Batches",
+  //   icon: <WorkspacePremiumOutlinedIcon />,
+  //   subRoutes: [
+  //     {
+  //       path: "/supplier/Batches",
+  //       name: "Batches",
+  //       icon: <MilitaryTechOutlinedIcon />,
+  //     },
+  //   ],
+  // },
   // {
   //   path: "",
   //   name: "Warehouse",
@@ -92,10 +93,15 @@ const routes = [
     icon: <WarehouseOutlinedIcon />,
   },
   {
-    path: "/supplier/ProfileSection",
-    name: "Employee Portal",
-    icon: <WarehouseOutlinedIcon />,
+    path: '/supplier/user',
+    name: "Messages",
+    icon: <MessageIcon />,
   },
+  // {
+  //   path: "/supplier/ProfileSection",
+  //   name: "Employee Portal",
+  //   icon: <WarehouseOutlinedIcon />,
+  // },
 ];
 const userControlRoutes = {
   path: "",
