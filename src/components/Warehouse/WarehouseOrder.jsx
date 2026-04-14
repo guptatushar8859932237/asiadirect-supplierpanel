@@ -23,6 +23,7 @@ export default function WarehouseOrder() {
   const [dataProduct, setDataProduct] = useState(null);
   const [warehouseOrerID, setWarehouseOrerID] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [showhazardous, setShowhazardous] = useState(false);
   const [editmodalopen, setEditmodalopen] = useState(false);
   const [modalproduct, setModalproduct] = useState(false);
@@ -47,6 +48,8 @@ export default function WarehouseOrder() {
   const [selectedData, setSelectedData] = useState(null);
   const navigate = useNavigate();
   const handleOpenModal = () => setIsModalOpen(true);
+  const [total, setTotal] = useState(0);
+  const pageSize = 10;
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption);
     setReemail(selectedOption);
@@ -56,6 +59,15 @@ export default function WarehouseOrder() {
   useEffect(() => {
     getcountry();
   }, []);
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedSearch(searchQuery);
+  }, 500); // ⏱ 500ms delay
+
+  return () => clearTimeout(timer); // cleanup
+}, [searchQuery]);
+
   const getcountry = () => {
     axios
       .get(`${process.env.REACT_APP_BASE_URL}GetCountries`)
@@ -67,59 +79,76 @@ export default function WarehouseOrder() {
       });
   };
   useEffect(() => {
-    getData();
-    allOrder()
+    allOrder();
   }, []);
-
-  const allOrder=async()=>{
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    getData(page, searchQuery);
+  };
+useEffect(() => {
+  getData(1, debouncedSearch);
+  setCurrentPage(1);
+}, [debouncedSearch]);
+  const allOrder = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}AllOrderNumbers`)
-      if(response.data.success){
-        setOrderDatap(response.data.data)
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}AllOrderNumbers`,
+      );
+      if (response.data.success) {
+        setOrderDatap(response.data.data);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
+//   const handlePageChange = (page) => {
+//   setCurrentPage(page);
+//   getData(page, debouncedSearch); // 👈 important
+// };
+  const handleSearch = (e) => {
+  setSearchQuery(e.target.value);
+};
   const handlechange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
     setShowhazardous(data.hazardous);
   };
-  const getData = async (page) => {
+  const getData = async (page = 1, search = "") => {
     setLoader(true);
-     const payload = {
-      user_id: datauserId.id,
-      page: page,
-      limit: pageSize,
-    };
+
     try {
+      const payload = {
+        user_id: datauserId.id,
+        page: page,
+        limit: pageSize,
+        search: search, // ✅ backend search
+      };
+
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}GetSupplierCreatedWarehouseOrders`,payload) 
+        `${process.env.REACT_APP_BASE_URL}GetSupplierCreatedWarehouseOrders`,
+        payload,
+      );
+
       setLoader(false);
-      if (response.data && response.data.data) {
-        console.log(response.data.data);
+
+      if (response.data.success) {
         setData(response.data.data);
+        setTotal(response.data.total); // ✅ total count
       } else {
-        toast.error("No warehouse orders found.");
+        toast.error("No data found");
       }
     } catch (error) {
       setLoader(false);
-      console.error("Error fetching warehouse orders:", error);
-      if (error.response && error.response.status === 400) {
-        toast.error(
-          error.response.data.message || "Data not found or permission denied.",
-        );
-      } else {
-        toast.error("Something went wrong while fetching orders.");
-      }
+      toast.error("Error fetching data");
     }
   };
- const handlePageChange = (page) => {
-  console.log(page)
-  setCurrentPage(page);
-  getData(page);
-};
+  // const handleSearch = (e) => {
+  //   const value = e.target.value;
+  //   setSearchQuery(value);
+  //   setCurrentPage(1);
+
+  //   getData(1, value); // ✅ search + reset page
+  // };
   const filteredData = data.filter((item) => {
     return (
       item?.client_name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
@@ -140,18 +169,16 @@ export default function WarehouseOrder() {
       item?.freight_number?.toLowerCase()?.includes(searchQuery?.toLowerCase())
     );
   });
-  const totalPage = Math.ceil(filteredData.length / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const currentData = filteredData.slice(startIndex, endIndex);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSelectedData({ ...selectedData, [name]: value });
   };
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-    setCurrentPage(1);
-  };
+  // const handleSearch = (e) => {
+  //   setSearchQuery(e.target.value);
+  //   setCurrentPage(1);
+  // };
+
+  const totalPage = Math.ceil(total / pageSize);
   useEffect(() => {
     updatecountry();
   }, []);
@@ -214,7 +241,7 @@ export default function WarehouseOrder() {
   console.log("User ID from localStorage:", datauserId);
   const postDataWarehouse = async () => {
     try {
-//  warehouse_id, 
+      //  warehouse_id,
       const formData = new FormData();
       formData.append("courier_waybill_ref", prodata.courier_waybill_ref || "");
       formData.append("warehouse_order_id", prodata.warehouse_order_id || "");
@@ -230,6 +257,7 @@ export default function WarehouseOrder() {
       formData.append("customer_name", prodata.customer_name || "");
       formData.append("box_marking", prodata.box_marking || "");
       formData.append("total_cbm", prodata.total_cbm || "");
+      formData.append("total_weight", prodata.total_weight || "");
       formData.append("package_type", prodata.package_type || "");
       formData.append("hazardous", prodata.hazardous || "");
       formData.append("added_by", 2);
@@ -255,8 +283,8 @@ export default function WarehouseOrder() {
       if (prodata.attach_other) {
         formData.append("damage_images", prodata.attach_other);
       }
-      if (prodata.Attach_product_image) {
-        formData.append("product_images", prodata.Attach_product_image);
+      if (prodata.Attach_Product_Image) {
+        formData.append("product_images", prodata.Attach_Product_Image);
       }
       if (prodata.attach_file) {
         formData.append("documents", prodata.attach_file);
@@ -265,49 +293,49 @@ export default function WarehouseOrder() {
       for (let pair of formData.entries()) {
         console.log(pair[0], pair[1]);
       }
-        const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}createOrderAndWarehouse`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}createOrderAndWarehouse`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         },
+      );
+
+      // ✅ Success
+      if (response?.data?.success) {
+        toast.success(response.data.message || "Data saved successfully");
+        handleCloseModalWarehouse();
+        getData(currentPage);
+      } else {
+        // ❌ Backend error
+        toast.error(response?.data?.message || "Something went wrong");
       }
-    );
+    } catch (error) {
+      console.error("Full Error:", error);
 
-    // ✅ Success
-    if (response?.data?.success) {
-      toast.success(response.data.message || "Data saved successfully");
-      handleCloseModalWarehouse();
-      getData(currentPage);
-    } else {
-      // ❌ Backend error
-      toast.error(response?.data?.message || "Something went wrong");
+      // 🔥 Backend Error (MOST IMPORTANT)
+      if (error.response) {
+        const message =
+          error.response.data?.message ||
+          JSON.stringify(error.response.data) ||
+          "Server error";
+
+        toast.error(message);
+      }
+
+      // ❌ Network error
+      else if (error.request) {
+        toast.error("Server not responding. Please try again.");
+      }
+
+      // ❌ JS / Unknown error
+      else {
+        toast.error(error.message || "Unexpected error occurred");
+      }
     }
-  } catch (error) {
-    console.error("Full Error:", error);
-
-    // 🔥 Backend Error (MOST IMPORTANT)
-    if (error.response) {
-      const message =
-        error.response.data?.message ||
-        JSON.stringify(error.response.data) ||
-        "Server error";
-
-      toast.error(message);
-    }
-
-    // ❌ Network error
-    else if (error.request) {
-      toast.error("Server not responding. Please try again.");
-    }
-
-    // ❌ JS / Unknown error
-    else {
-      toast.error(error.message || "Unexpected error occurred");
-    }
-  }
-};
+  };
   const editpostData = async () => {
     try {
       const formData = new FormData();
@@ -319,7 +347,7 @@ export default function WarehouseOrder() {
       formData.append("days_in_warehouse", prodata.days_in_warehouse || "");
       formData.append("supplier_id", datauserId.id || "");
       formData.append("collection_from", prodata.collection_from || "");
-       formData.append("total_packages", prodata.total_packages || "");
+      formData.append("total_packages", prodata.total_packages || "");
       formData.append("destination_country", prodata.destination_country || "");
       formData.append("customer_name", prodata.customer_name || "");
       formData.append("added_by", 2);
@@ -330,6 +358,7 @@ export default function WarehouseOrder() {
       formData.append("hazardous", prodata.hazardous || "");
       formData.append("hazard_description", prodata.hazard_description || "");
       formData.append("total_cbm", prodata.total_cbm || "");
+      formData.append("total_weight", prodata.total_weight || "");
       formData.append("goods_description", prodata.goods_description || "");
       formData.append("damaged_goods", prodata.damaged_goods || "");
       formData.append("damaged_pkg_qty", prodata.damaged_pkg_qty || "");
@@ -360,66 +389,64 @@ export default function WarehouseOrder() {
       for (let pair of formData.entries()) {
         console.log(pair[0], pair[1]);
       }
-     const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,
-      formData,
-      {
-        params: {
-          supplier_id: datauserId.id,
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}update-Order-And-Warehouse`,
+        formData,
+        {
+          params: {
+            supplier_id: datauserId.id,
+          },
         },
-      }
-    );
+      );
 
-    if (response?.data?.success) {
-      setEditmodalopen(false);
-      editmodalclose1();
-      toast.success(response.data.message || "Updated successfully");
-      getData(currentPage);
-    } else {
-      // ✅ Handle backend validation errors
-      if (Array.isArray(response?.data?.errors)) {
-        response.data.errors.forEach((err) => {
-          toast.error(err);
-        });
+      if (response?.data?.success) {
+        setEditmodalopen(false);
+        editmodalclose1();
+        toast.success(response.data.message || "Updated successfully");
+        getData(currentPage);
       } else {
-        toast.error(response?.data?.message || "Something failed");
+        // ✅ Handle backend validation errors
+        if (Array.isArray(response?.data?.errors)) {
+          response.data.errors.forEach((err) => {
+            toast.error(err);
+          });
+        } else {
+          toast.error(response?.data?.message || "Something failed");
+        }
+      }
+    } catch (error) {
+      console.error("Full Error:", error);
+
+      // ✅ Axios error handling (IMPORTANT)
+      if (error.response) {
+        // Backend responded with error
+        const data = error.response.data;
+
+        if (Array.isArray(data?.errors)) {
+          data.errors.forEach((err) => {
+            toast.error(err);
+          });
+        } else if (typeof data === "object") {
+          // show all keys if object
+          Object.values(data).forEach((val) => {
+            if (Array.isArray(val)) {
+              val.forEach((msg) => toast.error(msg));
+            } else {
+              toast.error(val);
+            }
+          });
+        } else {
+          toast.error(data?.message || "Server error");
+        }
+      } else if (error.request) {
+        // No response
+        toast.error("No response from server");
+      } else {
+        // Other error
+        toast.error(error.message);
       }
     }
-
-  } catch (error) {
-    console.error("Full Error:", error);
-
-    // ✅ Axios error handling (IMPORTANT)
-    if (error.response) {
-      // Backend responded with error
-      const data = error.response.data;
-
-      if (Array.isArray(data?.errors)) {
-        data.errors.forEach((err) => {
-          toast.error(err);
-        });
-      } else if (typeof data === "object") {
-        // show all keys if object
-        Object.values(data).forEach((val) => {
-          if (Array.isArray(val)) {
-            val.forEach((msg) => toast.error(msg));
-          } else {
-            toast.error(val);
-          }
-        });
-      } else {
-        toast.error(data?.message || "Server error");
-      }
-
-    } else if (error.request) {
-      // No response
-      toast.error("No response from server");
-    } else {
-      // Other error
-      toast.error(error.message);
-    }
-  }
-};
+  };
   const updateWarehouse = async () => {
     const payload = {
       warehouse_id: warehouseID,
@@ -441,29 +468,30 @@ export default function WarehouseOrder() {
     if (response.data.success) {
       toast.success("Warehouse Updated Successfully");
       handleCloseModalWarehouse();
-          getData(currentPage); 
+      getData(currentPage);
     } else {
       toast.error(response.data.message);
     }
   };
   const handleProduct = (item) => {
-    setWarehoyseid(item.id)
+    setWarehoyseid(item.id);
     setDataProduct(item);
     setProductModalOpen(true);
   };
-  const handleProductview =async (item) => {
-    console.log(item)
-try {
-    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}getSupplierWarehouseProducts?supplier_warehouse_id=${item.id}`)
-    if(response.data.success){
-      console.log(response.data.data)
-       setSelectedDocs(response.data.data);
-    setModalproduct(true);
+  const handleProductview = async (item) => {
+    console.log(item);
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}getSupplierWarehouseProducts?supplier_warehouse_id=${item.id}`,
+      );
+      if (response.data.success) {
+        console.log(response.data.data);
+        setSelectedDocs(response.data.data);
+        setModalproduct(true);
+      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-  console.log(error)
-}
-  
   };
   const setModalproduct33 = () => {
     setModalproduct(false);
@@ -481,7 +509,7 @@ try {
       user_id: datauserId.id,
       order_id: dataProduct.order_id,
       added_by: "4",
-      supplier_warehouse_id:warehoyseid,
+      supplier_warehouse_id: warehoyseid,
       warehouse_order_id: dataProduct.warehouse_id,
       product_description: productData.product_description,
       hazardous: productData.hazardous,
@@ -508,7 +536,7 @@ try {
       supplier_email: productData.supplier_email,
       supplier_contact: productData.supplier_contact,
     };
-    console.log(payload)
+    console.log(payload);
     const response = await axios.post(
       `${process.env.REACT_APP_BASE_URL}addSupplierWarehouseProduct`,
       payload,
@@ -523,10 +551,10 @@ try {
   };
   const editmodalopen1 = (item) => {
     console.log(item);
-    setWarehouseOrerID(item.id)
+    setWarehouseOrerID(item.id);
     setEditmodalopen(true);
     setEditDtaawarehouse(item);
-    setProdata(item)
+    setProdata(item);
   };
   const editmodalclose1 = () => {
     setEditmodalopen(false);
@@ -548,8 +576,7 @@ try {
     console.log(productData);
     try {
       const payload = {
-  
-        id:productData.id,
+        id: productData.id,
         warehouse_products_id: productData.id,
         product_description: productData.product_description,
         hazardous: productData.hazardous,
@@ -608,26 +635,26 @@ try {
       });
   };
 
-  useEffect(()=>{
-    GetSupplierCreatedWarehouseOrders1()
-  },[])
+  useEffect(() => {
+    GetSupplierCreatedWarehouseOrders1();
+  }, []);
 
- const GetSupplierCreatedWarehouseOrders1 = async () => {
-  try {
-    const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}getSupplierWarehouses`,
-      {
-        params: {
-          supplier_id: datauserId.id, // ✅ query param
+  const GetSupplierCreatedWarehouseOrders1 = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}getSupplierWarehouses`,
+        {
+          params: {
+            supplier_id: datauserId.id, // ✅ query param
+          },
         },
-      }
-    );
+      );
 
-    setSupplierData(response.data.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
+      setSupplierData(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       {loader ? (
@@ -646,12 +673,19 @@ try {
                   </div>
                   <div className="d-flex gap-2 flex-wrap">
                     <div>
-                      <input
+                      {/* <input
                         className="px-2 py-1 rounded h-100"
                         placeholder="Search"
                         value={searchQuery}
                         onChange={handleSearch}
-                      ></input>
+                      ></input> */}
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        className="p-2 rounded h-100"
+                        onChange={handleSearch}
+                      />
                     </div>
                     <div>
                       <button
@@ -689,7 +723,7 @@ try {
                                               className="client_nm"
                                               style={{ fontSize: "18px" }}
                                             >
-                                              {item.warehouse_number} 
+                                              {item.warehouse_number}
                                               {/* {item.order_id} */}
                                             </p>
                                             <p
@@ -743,10 +777,8 @@ try {
                                                 Add Product
                                               </button>
                                             </div>
-
                                           </div>
                                           <div className="col-lg-2 col-md-6 col-6 d-flex justify-content-end gap-2 tableIcon">
-
                                             <div className="origin">
                                               {/* <VisibilityIcon
                                                 onClick={() => {
@@ -754,32 +786,47 @@ try {
                                                 }}
                                                 style={{ cursor: "pointer" }}
                                               /> */}
-                                              <i class="fa fa-eye" aria-hidden="true" onClick={() => {
-                                                handleProductview(item);
-                                              }}
+                                              <i
+                                                class="fa fa-eye"
+                                                aria-hidden="true"
+                                                onClick={() => {
+                                                  handleProductview(item);
+                                                }}
                                               ></i>
                                             </div>
 
-
                                             <div className="origin">
                                               <div>
-                                                <i className="fa fa-pencil-square-o edit_icon"
+                                                <i
+                                                  className="fa fa-pencil-square-o edit_icon"
                                                   onClick={() =>
                                                     editmodalopen1(item)
                                                   }
                                                 ></i>
                                               </div>
                                             </div>
-
                                           </div>
                                         </div>
                                         <div className="row">
                                           <div className="col-md-6">
                                             <div className="d-flex align-items-center">
                                               <div>
-                                        {item?.move_to_adminWarhouse == "1"
-                                          ? <span className="text-success">Approved</span>  :item.move_to_adminWarhouse == "2" ? <span className="text-danger">Rejected</span> : <span className="text-secondary">Pending</span>}
-                                      </div>
+                                                {item?.move_to_adminWarhouse ==
+                                                "1" ? (
+                                                  <span className="text-success">
+                                                    Approved
+                                                  </span>
+                                                ) : item.move_to_adminWarhouse ==
+                                                  "2" ? (
+                                                  <span className="text-danger">
+                                                    Rejected
+                                                  </span>
+                                                ) : (
+                                                  <span className="text-secondary">
+                                                    Pending
+                                                  </span>
+                                                )}
+                                              </div>
                                               <p
                                                 type="radio"
                                                 className="input_user mb-0"
@@ -847,10 +894,10 @@ try {
                             left: "50%",
                             transform: "translate(-50%, -50%)",
                             width: {
-                              xs: "95%",   // mobile
-                              sm: "90%",   // tablet
-                              md: "90%",   // small laptop
-                              lg: "90%",   // desktop
+                              xs: "95%", // mobile
+                              sm: "90%", // tablet
+                              md: "90%", // small laptop
+                              lg: "90%", // desktop
                             },
                           }}
                         >
@@ -873,13 +920,8 @@ try {
                                   <th>Hazardous</th>
                                   <th>Date</th>
                                   <th>Dimension</th>
-                                  <th>Freight</th>
-                                  <th>Groupage Batch</th>
                                   <th>Package Type</th>
                                   <th>Packages</th>
-                                  <th>Tracking Nn</th>
-                                  <th>Warehouse Rec No</th>
-                                  <th>Warehouse Ref</th>
                                   <th>Weight</th>
                                   <th>Action</th>
                                 </tr>
@@ -896,20 +938,17 @@ try {
                                         ).toLocaleDateString("en-GB")}
                                       </td>
                                       <td>{doc?.dimension}</td>
-                                      <td>{doc?.freight}</td>
-                                      <td>{doc?.groupage_batch_ref}</td>
                                       <td>{doc?.package_type}</td>
                                       <td>{doc?.packages}</td>
-                                      <td>{doc?.tracking_number}</td>
-                                      <td>{doc?.warehouse_receipt_number}</td>
-                                      <td>{doc?.warehouse_ref}</td>
                                       <td>{doc?.weight}</td>
                                       <td className="tableICon">
-                                        <i onClick={() => {
-                                          // setEditDtaawProduct(doc);
-                                          editmodalopen1product(doc);
-                                        }} className="fa fa-pencil-square-o edit_icon"></i>
-
+                                        <i
+                                          onClick={() => {
+                                            // setEditDtaawProduct(doc);
+                                            editmodalopen1product(doc);
+                                          }}
+                                          className="fa fa-pencil-square-o edit_icon"
+                                        ></i>
                                       </td>
                                     </tr>
                                   ))
@@ -936,10 +975,10 @@ try {
                             left: "50%",
                             transform: "translate(-50%, -50%)",
                             width: {
-                              xs: "95%",   // mobile
-                              sm: "80%",   // tablet
-                              md: "70%",   // small laptop
-                              lg: "60%",   // desktop
+                              xs: "95%", // mobile
+                              sm: "80%", // tablet
+                              md: "70%", // small laptop
+                              lg: "60%", // desktop
                             },
                           }}
                         >
@@ -957,16 +996,16 @@ try {
                               <div className="col-md-6">
                                 <label>Recieve Date</label>
                                 <input
-  type="date"
-  className="form-control"
-  value={
-    prodata.date_received
-      ? prodata.date_received.split("T")[0]
-      : ""
-  }
-  name="date_received"
-  onChange={handlechangewarehouse}
-/>
+                                  type="date"
+                                  className="form-control"
+                                  value={
+                                    prodata.date_received
+                                      ? prodata.date_received.split("T")[0]
+                                      : ""
+                                  }
+                                  name="date_received"
+                                  onChange={handlechangewarehouse}
+                                />
                               </div>
 
                               <div className="col-md-6">
@@ -1000,17 +1039,17 @@ try {
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input> */}
-                                                                <input
-  type="date"
-  className="form-control"
-  value={
-    prodata.dispatch_date
-      ? prodata.dispatch_date.split("T")[0]
-      : ""
-  }
-  name="dispatch_date"
-  onChange={handlechangewarehouse}
-/>
+                                <input
+                                  type="date"
+                                  className="form-control"
+                                  value={
+                                    prodata.dispatch_date
+                                      ? prodata.dispatch_date.split("T")[0]
+                                      : ""
+                                  }
+                                  name="dispatch_date"
+                                  onChange={handlechangewarehouse}
+                                />
                               </div>
                             </div>
                             <h5 className="mt-3 mb-2">Package Information</h5>
@@ -1036,7 +1075,6 @@ try {
                                 ></input>
                               </div>
 
-
                               <div className="col-md-6">
                                 <label>Country of Origin</label>
                                 <select
@@ -1051,10 +1089,7 @@ try {
                                     countries.map((item, index) => {
                                       return (
                                         <>
-                                          <option
-                                            key={index}
-                                            value={item.id}
-                                          >
+                                          <option key={index} value={item.id}>
                                             {item.name}
                                           </option>
                                         </>
@@ -1076,10 +1111,7 @@ try {
                                     countries.map((item, index) => {
                                       return (
                                         <>
-                                          <option
-                                            key={index}
-                                            value={item.id}
-                                          >
+                                          <option key={index} value={item.id}>
                                             {item.name}
                                           </option>
                                         </>
@@ -1087,7 +1119,6 @@ try {
                                     })}
                                 </select>
                               </div>
-
 
                               <div className="col-md-6">
                                 <label>Box Marking</label>
@@ -1139,21 +1170,22 @@ try {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                              {
-                                prodata.hazardous==="Yes"?
-                                 <div className="col-md-6">
-                                <label>Description of Hazardous </label>
-                                <input
-                                  type="type"
-                                  className="form-control"
-                                  value={prodata.hazard_description}
-                                  name="hazard_description"
-                                  onChange={handlechangewarehouse}
-                                  placeholder=""
-                                ></input>
-                              </div>:""
-                              }
-                             
+                              {prodata.hazardous === "Yes" ? (
+                                <div className="col-md-6">
+                                  <label>Description of Hazardous </label>
+                                  <input
+                                    type="type"
+                                    className="form-control"
+                                    value={prodata.hazard_description}
+                                    name="hazard_description"
+                                    onChange={handlechangewarehouse}
+                                    placeholder=""
+                                  ></input>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+
                               <div className="col-md-6">
                                 <label>Total cbm</label>
                                 <input
@@ -1178,12 +1210,12 @@ try {
                               </div>
 
                               <div className="col-md-6">
-                                <label>Total Dimension </label>
+                                <label>Total Weight </label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={prodata.total_cbm}
-                                  name="total_cbm"
+                                  value={prodata.total_weight}
+                                  name="total_weight"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
                                 ></input>
@@ -1196,7 +1228,6 @@ try {
                                   value={prodata.package_comment}
                                   placeholder="Other Information"
                                 ></textarea>
-
                               </div>
                             </div>
                             <h5 className="mt-3 mb-2">Damaged Goods</h5>
@@ -1228,6 +1259,19 @@ try {
                               </div>
                               <div className="col-md-12">
                                 <label>Attach File</label>
+     {prodata?.files
+    ?.filter((item) => item.type === "damage")
+    ?.map((item) => (
+      <div key={item.id}>
+        <a
+          href={`${process.env.REACT_APP_BASE_URLdocument}${item.file}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Doc
+        </a>
+      </div>
+    ))}
                                 <input
                                   type="file"
                                   className="form-control"
@@ -1239,7 +1283,12 @@ try {
                               <div className="col-md-12">
                                 <label>Comment on Damaged</label>
 
-                                <textarea className="w-100 form-control" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
+                                <textarea
+                                  className="w-100 form-control"
+                                  name="damage_comment"
+                                  onChange={handlechangewarehouse}
+                                  value={prodata.damage_comment}
+                                ></textarea>
                               </div>
                             </div>
                             <h5 className="mt-3 mb-2">Supplier Information</h5>
@@ -1388,18 +1437,51 @@ try {
                                   placeholder=""
                                 ></input>
                               </div>
-                              <div className="col-md-12">
-                                <label>Attach Product Image</label>
-                                <input
-                                  type="file"
-                                  className="form-control"
-                                  name="Attach_Product_Image"
-                                  onChange={handlechangewarehouse}
-                                  placeholder=""
-                                ></input>
-                              </div>
+                             <div className="col-md-12">
+  <label>Attach Product Image</label>
+
+  {/* 👇 Show only if image exists */}
+   {prodata?.files
+    ?.filter((item) => item.type === "document")
+    ?.map((item) => (
+      <div key={item.id}>
+        <a
+          href={`${process.env.REACT_APP_BASE_URLdocument}${item.file}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Doc
+        </a>
+      </div>
+    ))}
+
+  <input
+    type="file"
+    className="form-control"
+    name="Attach_Product_Image"
+    onChange={handlechangewarehouse}
+  />
+</div>
+                              
                               <div className="col-md-12">
                                 <label>Attach Other</label>
+
+                                {/* 👇 Show only if image exists */}
+   {prodata?.files
+    ?.filter((item) => item.type === "document")
+    ?.map((item) => (
+      <div key={item.id}>
+        <a
+          href={`${process.env.REACT_APP_BASE_URLdocument}${item.file}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Doc
+        </a>
+      </div>
+    ))}
+
+
                                 <input
                                   type="file"
                                   className="form-control"
@@ -1422,9 +1504,7 @@ try {
                             <button
                               className="blueBtn mt-3"
                               variant="contained"
-                              onClick={
-                                editpostData
-                              }
+                              onClick={editpostData}
                             >
                               Edit
                             </button>
@@ -1444,17 +1524,15 @@ try {
                             left: "50%",
                             transform: "translate(-50%, -50%)",
                             width: {
-                              xs: "95%",   // mobile
-                              sm: "80%",   // tablet
-                              md: "70%",   // small laptop
-                              lg: "60%",   // desktop
+                              xs: "95%", // mobile
+                              sm: "80%", // tablet
+                              md: "70%", // small laptop
+                              lg: "60%", // desktop
                             },
                           }}
                         >
                           <div className="modal-header">
-                            <h2 id="modal-modal-title">
-                              Add Warehouse  Order
-                            </h2>
+                            <h2 id="modal-modal-title">Add Warehouse Order</h2>
                             <button
                               className="btn btn-close"
                               onClick={handleCloseModalWarehouse}
@@ -1464,7 +1542,6 @@ try {
                           </div>
                           <div className="newModalGap noFormaControl">
                             <div className="row g-2">
-
                               <div className="col-md-6">
                                 <label>Recieve Date</label>
                                 <input
@@ -1510,7 +1587,6 @@ try {
                                   placeholder=""
                                 ></input>
                               </div>
-
                             </div>
                             <h5 className="mb-2 mt-3">Package Information</h5>
                             <div className="row g-2">
@@ -1549,10 +1625,7 @@ try {
                                     countries.map((item, index) => {
                                       return (
                                         <>
-                                          <option
-                                            key={index}
-                                            value={item.id}
-                                          >
+                                          <option key={index} value={item.id}>
                                             {item.name}
                                           </option>
                                         </>
@@ -1574,10 +1647,7 @@ try {
                                     countries.map((item, index) => {
                                       return (
                                         <>
-                                          <option
-                                            key={index}
-                                            value={item.id}
-                                          >
+                                          <option key={index} value={item.id}>
                                             {item.name}
                                           </option>
                                         </>
@@ -1636,19 +1706,21 @@ try {
                                   <option value="No">No</option>
                                 </select>
                               </div>
-                               {
-                                prodata.hazardous==="Yes"?
-                              <div className="col-md-6">
-                                <label>Description of Hazardous </label>
-                                <input
-                                  type="type"
-                                  className="form-control"
-                                  value={prodata.hazard_description}
-                                  name="hazard_description"
-                                  onChange={handlechangewarehouse}
-                                  placeholder=""
-                                ></input>
-                              </div>:""}
+                              {prodata.hazardous === "Yes" ? (
+                                <div className="col-md-6">
+                                  <label>Description of Hazardous </label>
+                                  <input
+                                    type="type"
+                                    className="form-control"
+                                    value={prodata.hazard_description}
+                                    name="hazard_description"
+                                    onChange={handlechangewarehouse}
+                                    placeholder=""
+                                  ></input>
+                                </div>
+                              ) : (
+                                ""
+                              )}
                               <div className="col-md-6">
                                 <label>Total Package</label>
                                 <input
@@ -1691,7 +1763,6 @@ try {
                                   value={prodata.package_comment}
                                   placeholder="Other Information"
                                 ></textarea>
-
                               </div>
                             </div>
                             <h5 className="mb-2 mt-3">Damaged Goods</h5>
@@ -1734,7 +1805,12 @@ try {
                               <div className="col-md-12">
                                 <label>Comment on Damaged</label>
 
-                                <textarea className="w-100 form-control" name="damage_comment" onChange={handlechangewarehouse} value={prodata.damage_comment}></textarea>
+                                <textarea
+                                  className="w-100 form-control"
+                                  name="damage_comment"
+                                  onChange={handlechangewarehouse}
+                                  value={prodata.damage_comment}
+                                ></textarea>
                               </div>
                             </div>
                             <h5 className="mb-2 mt-3">Supplier Information</h5>
@@ -1759,24 +1835,25 @@ try {
                                   onChange={handlechangewarehouse}
                                 ></input>
                               </div>
-                               <div className="col-md-6">
+                              <div className="col-md-6">
                                 <label>Select Warehouse</label>
-                                <select value={prodata.warehouse_id}
+                                <select
+                                  value={prodata.warehouse_id}
                                   name="warehouse_id"
                                   onChange={handlechangewarehouse}
                                   className="form-select"
-
                                 >
                                   <option value="">Select</option>
-                                  {
-                                    supplierData.map((item)=>{
-                                      return(
-                                        <>
-                                        <option value={item.id} >{item.warehouse_name} {item.country_name}</option>
-                                        </>
-                                      )
-                                    })
-}
+                                  {supplierData.map((item) => {
+                                    return (
+                                      <>
+                                        <option value={item.id}>
+                                          {item.warehouse_name}{" "}
+                                          {item.country_name}
+                                        </option>
+                                      </>
+                                    );
+                                  })}
                                 </select>
                               </div>
                               <div className="col-md-6">
@@ -1805,7 +1882,8 @@ try {
                             <div className="row g-2">
                               <div className="col-md-6">
                                 <label>Warehouse Collect</label>
-                                <select value={prodata.warehouse_collect}
+                                <select
+                                  value={prodata.warehouse_collect}
                                   name="warehouse_collect"
                                   onChange={handlechangewarehouse}
                                   placeholder="customer name"
@@ -1854,7 +1932,8 @@ try {
                               <div className="col-md-6">
                                 <label>Handeling Required</label>
                                 <select
-                                  type="text" value={prodata.handling_required}
+                                  type="text"
+                                  value={prodata.handling_required}
                                   name="handling_required"
                                   onChange={handlechangewarehouse}
                                   placeholder=""
@@ -1878,11 +1957,11 @@ try {
                               </div>
                               <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
-                                <select value={prodata.warehouse_dispatch}
+                                <select
+                                  value={prodata.warehouse_dispatch}
                                   name="warehouse_dispatch"
                                   onChange={handlechangewarehouse}
                                   className="form-select"
-
                                 >
                                   <option value="">Select</option>
                                   <option value="Yes">Yes</option>
@@ -1933,9 +2012,7 @@ try {
                             </div>
                             <button
                               variant="contained"
-                              onClick={
-                                postDataWarehouse
-                              }
+                              onClick={postDataWarehouse}
                               className="blueBtn mt-3"
                             >
                               Save
@@ -1956,10 +2033,10 @@ try {
                             left: "50%",
                             transform: "translate(-50%, -50%)",
                             width: {
-                              xs: "95%",   // mobile
-                              sm: "80%",   // tablet
-                              md: "70%",   // small laptop
-                              lg: "60%",   // desktop
+                              xs: "95%", // mobile
+                              sm: "80%", // tablet
+                              md: "70%", // small laptop
+                              lg: "60%", // desktop
                             },
                           }}
                         >
@@ -2000,17 +2077,17 @@ try {
                               <div className="col-md-6">
                                 <label>Date Received</label>
                                 <input
-  type="date"
-  className="form-control"
-  name="date_received"
-  value={
-    productData.date_received
-      ? productData.date_received.split("T")[0]
-      : ""
-  }
-  onChange={handlechangegetdatainput}
-  placeholder="warehouse name"
-/>
+                                  type="date"
+                                  className="form-control"
+                                  name="date_received"
+                                  value={
+                                    productData.date_received
+                                      ? productData.date_received.split("T")[0]
+                                      : ""
+                                  }
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                />
                               </div>
                               <div className="col-md-6">
                                 <label>Package Type</label>
@@ -2074,10 +2151,12 @@ try {
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input> */}
-                                <select  className="form-control"
+                                <select
+                                  className="form-control"
                                   name="freight"
                                   value={productData.freight}
-                                  onChange={handlechangegetdatainput}>
+                                  onChange={handlechangegetdatainput}
+                                >
                                   <option>select</option>
                                   <option value="Sea">Sea</option>
                                   <option value="Air">Air</option>
@@ -2115,18 +2194,20 @@ try {
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input> */}
-                               <input
-  type="date"
-  className="form-control"
-  name="date_dispatched"
-  value={
-    productData.date_dispatched
-      ? productData.date_dispatched.split("T")[0]
-      : ""
-  }
-  onChange={handlechangegetdatainput}
-  placeholder="warehouse name"
-/>
+                                <input
+                                  type="date"
+                                  className="form-control"
+                                  name="date_dispatched"
+                                  value={
+                                    productData.date_dispatched
+                                      ? productData.date_dispatched.split(
+                                          "T",
+                                        )[0]
+                                      : ""
+                                  }
+                                  onChange={handlechangegetdatainput}
+                                  placeholder="warehouse name"
+                                />
                               </div>
 
                               <div className="col-md-6">
@@ -2213,7 +2294,6 @@ try {
                                 ></input>
                               </div>
 
-
                               <div className="col-md-6">
                                 <label>Supplier Email</label>
                                 <input
@@ -2260,10 +2340,10 @@ try {
                             left: "50%",
                             transform: "translate(-50%, -50%)",
                             width: {
-                              xs: "95%",   // mobile
-                              sm: "80%",   // tablet
-                              md: "70%",   // small laptop
-                              lg: "60%",   // desktop
+                              xs: "95%", // mobile
+                              sm: "80%", // tablet
+                              md: "70%", // small laptop
+                              lg: "60%", // desktop
                             },
                           }}
                         >
@@ -2300,7 +2380,6 @@ try {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-
 
                               <div className="col-md-6">
                                 <label>Date Received</label>
@@ -2368,13 +2447,15 @@ try {
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input> */}
-                                <select  className="form-control"
+                                <select
+                                  className="form-control"
                                   name="freight"
-                                  onChange={handlechangegetdatainput}>
-                                    <option>select</option>
-                                    <option value="Sea">Sea</option>
-                                    <option value="Air">Air</option>
-                                    <option value="Road">Road</option>
+                                  onChange={handlechangegetdatainput}
+                                >
+                                  <option>select</option>
+                                  <option value="Sea">Sea</option>
+                                  <option value="Air">Air</option>
+                                  <option value="Road">Road</option>
                                 </select>
                               </div>
                               <div className="col-md-6">
@@ -2399,7 +2480,7 @@ try {
                               <div className="col-md-6">
                                 <label>Date Dispatched</label>
                                 <input
-                                type="date"
+                                  type="date"
                                   className="form-control"
                                   name="date_dispatched"
                                   onChange={handlechangegetdatainput}
@@ -2424,7 +2505,6 @@ try {
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
                                 ></input>
-
                               </div>
 
                               <div className="col-md-6">
@@ -2446,7 +2526,6 @@ try {
                                 ></input>
                               </div>
 
-
                               <div className="col-md-6">
                                 <label>Warehouse Dispatch</label>
                                 <input
@@ -2465,7 +2544,6 @@ try {
                                   placeholder="warehouse name"
                                 ></input>
                               </div>
-
 
                               <div className="col-md-6">
                                 <label>Cost To Dispatch</label>
@@ -2523,9 +2601,8 @@ try {
               </div>
             </div>
           </div>
-        </div >
-      )
-      }
+        </div>
+      )}
     </>
   );
 }
