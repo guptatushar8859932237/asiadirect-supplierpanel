@@ -7744,7 +7744,6 @@ export default function ShippingEstimate() {
                           />
                         </td> */}
                         </tr>
-
                         <tr>
                           <td></td>
                           <td colSpan={6}>
@@ -7754,7 +7753,6 @@ export default function ShippingEstimate() {
                             {" "}
                             {totalChaDestinationTransit.toFixed(2)}{" "}
                           </td>
-                          {/* <td> {totalChaDestinationTransitRoe.toFixed(2)} </td> */}
                         </tr>
                         <tr>
                           <td> Admin Charges</td>
