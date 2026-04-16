@@ -36,7 +36,7 @@ export default function WarehouseOrder() {
   const [warehouseID, setWarehouseID] = useState(null); //
   const [loader, setLoader] = useState(false);
   const [isModalOpenWarehouse, setIsModalOpenWarehouse] = useState(false);
-  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);       
   const [updatedata, setUpdatedata] = useState(false);
   const userId = JSON.parse(localStorage.getItem("data123"))?.id;
   const [show1, setShow1] = useState(false);
@@ -442,7 +442,6 @@ useEffect(() => {
         // No response
         toast.error("No response from server");
       } else {
-        // Other error
         toast.error(error.message);
       }
     }
