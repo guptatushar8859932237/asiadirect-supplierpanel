@@ -237,8 +237,8 @@ export default function ShippingEstimate() {
   const oriforewarding3 = parseFloat(freight.origin_pickup_forewarding_gp) || 0;
   const oriforewarding4 = freight.origin_pick_up_forewarding_unitType
     ? oriforewarding1 *
-      oriforewarding2 *
-      freight.origin_pick_up_forewarding_unitTypeQTY
+    oriforewarding2 *
+    freight.origin_pick_up_forewarding_unitTypeQTY
     : 0.0;
   let finalValueforewarding = 0;
   if (oriforewarding4 > 0) {
@@ -331,8 +331,8 @@ export default function ShippingEstimate() {
   const oriinsurance3 = parseFloat(freight.freightorigin_insurance_gp) || 0;
   const oriinsurance4 = freight.freight_currency_insurance_unittype
     ? oriinsurance1 *
-      oriindsurance2 *
-      freight.freight_currency_insurance_unittypeQTY
+    oriindsurance2 *
+    freight.freight_currency_insurance_unittypeQTY
     : 0.0;
   let finalValueinsurance = 0;
   if (oriinsurance4 > 0) {
@@ -494,8 +494,8 @@ export default function ShippingEstimate() {
     parseFloat(freight.transit_change_Documentation_gp) || 0;
   const oridocumentation4 = freight.transit_change_Documentation_unitType
     ? oridocumentation1 *
-      oridocumentation2 *
-      freight.transit_change_Documentation_unitTypeQTY
+    oridocumentation2 *
+    freight.transit_change_Documentation_unitTypeQTY
     : 0.0;
   let finalValuedocumantation = 0;
   if (oridocumentation4 > 0) {
@@ -545,8 +545,8 @@ export default function ShippingEstimate() {
   const destinationdocumentation4 =
     freight.Destination_freight_currency_unitType
       ? destinationdocumentation1 *
-        destinationdocumentation2 *
-        freight.Destination_freight_currency_unitTypeQTY
+      destinationdocumentation2 *
+      freight.Destination_freight_currency_unitTypeQTY
       : 0.0;
   let finalValuedestanion = 0;
   if (destinationdocumentation4 > 0) {
@@ -572,8 +572,8 @@ export default function ShippingEstimate() {
     parseFloat(freight.Destination_THC_currency_gp) || 0;
   const destinationTHCdocumentation4 = freight.Destination_THC_currency_unitType
     ? destinationTHCdocumentation1 *
-      destinationTHCdocumentation2 *
-      freight.Destination_THC_currency_unitTypeQTY
+    destinationTHCdocumentation2 *
+    freight.Destination_THC_currency_unitTypeQTY
     : 0.0;
   let finalValueTHCdestanion = 0;
   if (destinationTHCdocumentation4 > 0) {
@@ -600,8 +600,8 @@ export default function ShippingEstimate() {
   const destinationUnpackdocumentation4 =
     freight.Destination_Unpack_currency_unitType
       ? destinationUnpackdocumentation1 *
-        destinationUnpackdocumentation2 *
-        freight.Destination_Unpack_currency_unitTypeQTY
+      destinationUnpackdocumentation2 *
+      freight.Destination_Unpack_currency_unitTypeQTY
       : 0.0;
   let finalValueUnpackdestanion = 0;
   if (destinationUnpackdocumentation4 > 0) {
@@ -630,8 +630,8 @@ export default function ShippingEstimate() {
   const destinationfuelsurchargedocumentation4 =
     freight.Destination_fuelsurcharge_currency_typeUnit
       ? destinationfuelsurchargedocumentation1 *
-        destinationfuelsurchargedocumentation2 *
-        freight.Destination_fuelsurcharge_currency_typeUnitQTY
+      destinationfuelsurchargedocumentation2 *
+      freight.Destination_fuelsurcharge_currency_typeUnitQTY
       : 0.0;
   let finalValueFulesurchargedestanion = 0;
   if (destinationfuelsurchargedocumentation4 > 0) {
@@ -662,8 +662,8 @@ export default function ShippingEstimate() {
   const destinatiadminsurcharge4 =
     freight.Destination_adminsurcharge_currency_unitType
       ? destinatiadminsurcharge1 *
-        destinatiadminsurcharge2 *
-        freight.Destination_adminsurcharge_currency_unitTypeQTY
+      destinatiadminsurcharge2 *
+      freight.Destination_adminsurcharge_currency_unitTypeQTY
       : 0.0;
   let finalValueadminsurchargedestanion = 0;
   if (destinatiadminsurcharge4 > 0) {
@@ -690,8 +690,8 @@ export default function ShippingEstimate() {
     parseFloat(freight.Destination_portcargo_currency_gp) || 0;
   const destinatiportcargo4 = freight.Destination_portcargo_currency_unitType
     ? destinatiportcargo1 *
-      destinatiportcargo2 *
-      freight.Destination_portcargo_currency_unitTypeQTY
+    destinatiportcargo2 *
+    freight.Destination_portcargo_currency_unitTypeQTY
     : 0.0;
   let finalValueportcargostanion = 0;
   if (destinatiportcargo4 > 0) {
@@ -744,8 +744,8 @@ export default function ShippingEstimate() {
   const destinati3rdpartyload4 =
     freight.Destination_3rdpartyDesc_currency_unitType
       ? destinati3rdpartyDesc1 *
-        destinati3rdpartyDesc2 *
-        freight.Destination_3rdpartyDesc_currency_unitTypeQTY
+      destinati3rdpartyDesc2 *
+      freight.Destination_3rdpartyDesc_currency_unitTypeQTY
       : 0.0;
   let finalValue3rdpartyloadstanion = 0;
   if (destinati3rdpartyload4 > 0) {
@@ -773,8 +773,8 @@ export default function ShippingEstimate() {
     parseFloat(freight.Destination_delivery_currency_gp) || 0;
   const destindeliveryyDesc4 = freight.Destination_delivery_currency_unitType
     ? destindeliveryyDesc1 *
-      destindeliveryyDesc2 *
-      freight.Destination_delivery_currency_unitTypeQTY
+    destindeliveryyDesc2 *
+    freight.Destination_delivery_currency_unitTypeQTY
     : 0.0;
   let finaldeliveryrtyloadstanion = 0;
   if (destindeliveryyDesc4 > 0) {
@@ -802,8 +802,8 @@ export default function ShippingEstimate() {
   const destindfuelchangerDesc4 =
     freight.Destination_fuelcharge_currency_unitType
       ? destindfuelchangerDesc1 *
-        destindfuelchangerDesc2 *
-        freight.Destination_fuelcharge_currency_unitTypeQTY
+      destindfuelchangerDesc2 *
+      freight.Destination_fuelcharge_currency_unitTypeQTY
       : 0.0;
   let finalfuelchangertyloadstanion = 0;
   if (destindfuelchangerDesc4 > 0) {
@@ -857,8 +857,8 @@ export default function ShippingEstimate() {
     parseFloat(freight.Destination_AdminAgrncy_currency_gp) || 0;
   const deadminAgencyesc4 = freight.Destination_AdminAgrncy_currency_unitType
     ? deadminAgencyesc1 *
-      deadminAgencyesc2 *
-      freight.Destination_AdminAgrncy_currency_unitQTY
+    deadminAgencyesc2 *
+    freight.Destination_AdminAgrncy_currency_unitQTY
     : 0.0;
   let finaldminAgencyestanion = 0;
   if (deadminAgencyesc4 > 0) {
@@ -884,8 +884,8 @@ export default function ShippingEstimate() {
     parseFloat(freight.Destination_disbursemant_currency_gp) || 0;
   const deaddisbursemantc4 = freight.Destination_disbursemant_currenc_unitType1
     ? deaddisbursemantc1 *
-      deaddisbursemantc2 *
-      freight.Destination_disbursemant_currency_unitTypeQTY
+    deaddisbursemantc2 *
+    freight.Destination_disbursemant_currency_unitTypeQTY
     : 0.0;
   let finaladdisbursematanion = 0;
   if (deaddisbursemantc4 > 0) {
@@ -1392,14 +1392,14 @@ export default function ShippingEstimate() {
                 <div
                   style={{
                     width: "100%",
-                    padding: "20px",
+                    padding: "10px",
                     outline: "auto",
                     height: "auto",
                   }}
                   className="pdf-page"
                 >
                   <p>
-                    <table style={{ margin: "20px" }}>
+                    <table>
                       <tbody>
                         <tr>
                           <td style={{ width: "50%" }}>
@@ -1419,7 +1419,6 @@ export default function ShippingEstimate() {
                                 marginBottom: "unset",
                                 borderBottom: "1px solid #cb191e",
                                 display: "inline-block",
-                                paddingBottom: 5,
                               }}
                             >
                               Asia Direct - Africa
@@ -1430,7 +1429,7 @@ export default function ShippingEstimate() {
                                 fontWeight: 500,
                                 marginBottom: "unset",
                                 lineHeight: "1.5",
-                                marginTop: 10,
+                                marginTop: 5,
                               }}
                             >
                               Asia Direct, Unit 4 Villa Valencia 2 Anemoon Road
@@ -1447,7 +1446,7 @@ export default function ShippingEstimate() {
                         </tr>
                       </tbody>
                     </table>
-                    <table style={{ paddingTop: "20px", marginTop: "20px" }}>
+                    <table style={{ paddingTop: "10px", }}>
                       <tbody>
                         <tr>
                           <td
@@ -1471,7 +1470,7 @@ export default function ShippingEstimate() {
                         border: "2px solid #1b2245",
                         padding: "10px 20px",
                         width: "100%",
-                        marginTop: 20,
+                        marginTop: 10,
                       }}
                     >
                       <tbody>
@@ -1530,7 +1529,7 @@ export default function ShippingEstimate() {
                                 color: "white",
                                 fontSize: 14,
                                 textAlign: "center",
-                                margin: "10px 0px",
+                                margin: "0px",
                                 padding: 2,
                               }}
                             >
@@ -1545,8 +1544,8 @@ export default function ShippingEstimate() {
                             <table style={{ width: "100%" }}>
                               <tbody>
                                 <tr>
-                                  {}
-                                  <td style={{ padding: "0px 10px" }}>
+                                  { }
+                                  <td style={{ padding: "10px" }}>
                                     <div
                                       style={{
                                         display: "flex",
@@ -1557,7 +1556,6 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
                                         }}
                                       >
                                         <strong> No. of Packages</strong>
@@ -1566,7 +1564,6 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
                                         }}
                                       >
                                         {getdata?.no_of_packages}
@@ -1582,7 +1579,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>Package Type</strong>
@@ -1591,7 +1588,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.package_type}
@@ -1607,7 +1604,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>Weight</strong>
@@ -1616,7 +1613,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.weight}
@@ -1632,7 +1629,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>M3</strong>
@@ -1641,7 +1638,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       ></p>
                                     </div>
@@ -1655,7 +1652,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>Volumetric (kgs)</strong>
@@ -1664,7 +1661,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.volumetric_weight}
@@ -1680,7 +1677,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>Chargeable</strong>
@@ -1689,7 +1686,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <input
@@ -1711,7 +1708,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>Commodity</strong>
@@ -1720,7 +1717,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.commodity}
@@ -1736,7 +1733,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>Hazardous</strong>
@@ -1745,7 +1742,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.hazardous}
@@ -1761,7 +1758,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>Incoterm</strong>
@@ -1770,7 +1767,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.incoterm}
@@ -1812,7 +1809,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong> Freight</strong>
@@ -1821,7 +1818,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.freight}
@@ -1838,7 +1835,7 @@ export default function ShippingEstimate() {
                                 color: "white",
                                 fontSize: 14,
                                 textAlign: "center",
-                                margin: "10px 0px",
+                                margin: "0px 0px",
                                 padding: 2,
                               }}
                             >
@@ -1896,28 +1893,28 @@ export default function ShippingEstimate() {
                               </tbody>
                             </table> */}
                           </td>
-                          <td style={{ width: "50%", paddingTop: 10 }}>
-                            <table>
-                              <tbody>
-                                <tr>
+                          <td style={{ width: "50%", paddingTop: 5 }}>
+                            {/* <table>
+                              <tbody> */}
+                            {/* <tr>
                                   <td
                                     style={{
                                       width: 170,
                                       display: "block",
-                                      padding: "0px 10px 10px 10px",
+                                      padding: "0px 10px 5px 10px",
                                       fontSize: 14,
                                     }}
                                   >
-                                    {/* <strong>Reference</strong> */}
+                                    <strong>Reference</strong>
                                   </td>
                                   <td
-                                    style={{ paddingBottom: 10, fontSize: 14 }}
+                                    style={{ paddingBottom: 5, fontSize: 14 }}
                                   >
-                                    {/* {getdata?.client_ref_name} */}
+                                    {getdata?.client_ref_name}
                                   </td>
-                                </tr>
-                                <tr>
-                                  {/* <td
+                                </tr> */}
+                            {/* <tr>
+                                  <td
                                     style={{
                                       padding: "0px 10px 10px 10px",
                                       width: 170,
@@ -1938,9 +1935,9 @@ export default function ShippingEstimate() {
                                     {new Date(getdata?.date).toLocaleDateString(
                                       "en-GB"
                                     )}
-                                  </td> */}
-                                </tr>
-                                {/* <tr>
+                                  </td>
+                                </tr> */}
+                            {/* <tr>
                                   <td
                                     style={{
                                       padding: "0px 10px 10px 10px",
@@ -1958,8 +1955,8 @@ export default function ShippingEstimate() {
                                     2023/11/07
                                   </td>
                                 </tr> */}
-                              </tbody>
-                            </table>
+                            {/* </tbody>
+                            </table> */}
                             <table
                               style={{
                                 background: "#1b2245",
@@ -1967,7 +1964,7 @@ export default function ShippingEstimate() {
                                 color: "white",
                                 fontSize: 14,
                                 textAlign: "center",
-                                margin: "10px 0px",
+                                margin: "5px 0px",
                                 padding: 2,
                               }}
                             >
@@ -1993,7 +1990,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong> Country of Origin</strong>
@@ -2002,7 +1999,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata.collection_from_name}
@@ -2018,7 +2015,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong> Place of Receipt</strong>
@@ -2027,7 +2024,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.port_of_loading}
@@ -2043,7 +2040,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>Port of Loading</strong>
@@ -2052,7 +2049,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.port_of_loading}
@@ -2068,7 +2065,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>Port of Discharge</strong>
@@ -2078,7 +2075,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.post_of_discharge}
@@ -2094,7 +2091,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong> Place of Delivery</strong>
@@ -2103,7 +2100,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.delivery_to_name}
@@ -2119,7 +2116,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong>
@@ -2131,7 +2128,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {getdata?.quote_received}
@@ -2147,7 +2144,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         <strong> Date</strong>
@@ -2156,7 +2153,7 @@ export default function ShippingEstimate() {
                                         style={{
                                           fontSize: 14,
                                           marginBottom: "unset",
-                                          marginTop: 10,
+                                          marginTop: 5,
                                         }}
                                       >
                                         {new Date(
