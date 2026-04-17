@@ -942,7 +942,7 @@ setProductData(item);
                                       <td>{doc?.hazardous}</td>
                                       <td>
                                         {new Date(
-                                          doc?.date_received,
+                                          doc?.date_received,      
                                         ).toLocaleDateString("en-GB")}
                                       </td>
                                       <td>{doc?.dimension}</td>
