@@ -14,8 +14,8 @@ export default function Clearencedetails() {
   const [calculation1, setCalculation1] = useState("");
   const [calculation2, setCalculation2] = useState("");
   const [calculation3, setCalculation3] = useState("");
-   const [rows, setRows] = useState([]);
-   const [finalAmount, setFinalAmount] = useState(0);
+  const [rows, setRows] = useState([]);
+  const [finalAmount, setFinalAmount] = useState(0);
   const [extrachange, setExtrachange] = useState("");
   const [hfCode, setHfCode] = useState("");
   const [data, setData] = useState({});
@@ -26,11 +26,10 @@ export default function Clearencedetails() {
   console.log(location.state.data1);
   const getdatallestimate = location?.state?.data[0];
   console.log(getdatallestimate);
-
   const handleclicknav = () => {
-    location?.state?.data1 ==="update"
-    ? navigate("/supplier/calculation-order")
-    : navigate("/supplier/custom-clearance-order")
+    location?.state?.data1 === "update"
+      ? navigate("/supplier/calculation-order")
+      : navigate("/supplier/custom-clearance-order");
   };
   const getdatainthispage = () => {
     axios
@@ -59,14 +58,12 @@ export default function Clearencedetails() {
     (calculation2 ? calculation2 : 0) +
     (calculation3 ? calculation3 : 0) +
     (extrachange ? extrachange : 0);
-
   const handleclick = () => {
     setOpenmodal(true);
   };
   const handelmdal = () => {
     setOpenmodal(false);
   };
-
   const handleInputChange = (e) => {
     setHfCode(e.target.value);
   };
@@ -75,58 +72,65 @@ export default function Clearencedetails() {
       e.preventDefault();
     }
   };
-
-   const handleClickHf = () => {
-      if (rows.length >= 3) {
-        toast.error('You can only add up to 3 rows.');
-        return;
-      }
-      const hfcoede = { hs_code: hfCode };
-  
-      axios
-        .post(`${process.env.REACT_APP_BASE_URL}find-hs-code`, hfcoede)
-        .then((response) => {
-          console.log(response.data.data)
-          setData(response.data.data);
-          setRows([...rows, {
+  const handleClickHf = () => {
+    if (rows.length >= 3) {
+      toast.error("You can only add up to 3 rows.");
+      return;
+    }
+    const hfcoede = { hs_code: hfCode };
+    axios
+      .post(`${process.env.REACT_APP_BASE_URL}find-hs-code`, hfcoede)
+      .then((response) => {
+        console.log(response.data.data);
+        setData(response.data.data);
+        setRows([
+          ...rows,
+          {
             hs_code: hfCode,
             hs_cod_desc: response.data.data.hs_cod_desc,
-            valueofgoods: '',
-            quotedRate: '',
+            valueofgoods: "",
+            quotedRate: "",
             csercount: 0,
             datavalttac: 0,
             datavat: 0,
-            estimate: 0
-          }]);
-          setHfCode('');
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
-    };
-    const handleChangeValueOfGood = (e, index) => {
-      const { name, value } = e.target;
-      const newRows = [...rows];
-      newRows[index][name] = value;
-      setRows(newRows);
-    };
-
-    const handleClickValue = (index) => {
-      const finalVal = rows[index].valueofgoods;
-      const calculate10 = finalVal * 0.1;
-      const overall = parseFloat(finalVal) + calculate10;
-      const finalRes = overall * parseFloat(rows[index].quotedRate);
-  
-      const newRows = [...rows];
-      newRows[index].csercount = finalRes;
-      newRows[index].datavalttac = (finalRes * 0.1).toFixed(2);
-      newRows[index].datavat = ((parseFloat(newRows[index].datavalttac) + finalRes) * 0.15).toFixed(2);
-      newRows[index].estimate = (parseFloat(newRows[index].datavat) + parseFloat(newRows[index].datavalttac)).toFixed(2);
-      setRows(newRows);
-  
-      const totalEstimate = newRows.reduce((acc, row) => acc + parseFloat(row.estimate), 0);
-      setFinalAmount(totalEstimate);
-    };
+            estimate: 0,
+          },
+        ]);
+        setHfCode("");
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
+  };
+  const handleChangeValueOfGood = (e, index) => {
+    const { name, value } = e.target;
+    const newRows = [...rows];
+    newRows[index][name] = value;
+    setRows(newRows);
+  };
+  const handleClickValue = (index) => {
+    const finalVal = rows[index].valueofgoods;
+    const calculate10 = finalVal * 0.1;
+    const overall = parseFloat(finalVal) + calculate10;
+    const finalRes = overall * parseFloat(rows[index].quotedRate);
+    const newRows = [...rows];
+    newRows[index].csercount = finalRes;
+    newRows[index].datavalttac = (finalRes * 0.1).toFixed(2);
+    newRows[index].datavat = (
+      (parseFloat(newRows[index].datavalttac) + finalRes) *
+      0.15
+    ).toFixed(2);
+    newRows[index].estimate = (
+      parseFloat(newRows[index].datavat) +
+      parseFloat(newRows[index].datavalttac)
+    ).toFixed(2);
+    setRows(newRows);
+    const totalEstimate = newRows.reduce(
+      (acc, row) => acc + parseFloat(row.estimate),
+      0,
+    );
+    setFinalAmount(totalEstimate);
+  };
   return (
     <>
       <div className="wpWrapper">
@@ -144,7 +148,6 @@ export default function Clearencedetails() {
                           style={{ cursor: "pointer" }}
                         />
                       </div>
-
                       <div>
                         <h4 className="freight_hd ms-3 mt-0 ">Estimate PDF</h4>
                       </div>
@@ -165,11 +168,6 @@ export default function Clearencedetails() {
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="mx-2">
-                        {/* {location?.state?.data1 === "update" ? ( */}
-                          {/* // <button onClick={handleclick}>Edit</button>""
-                        // ) : (
-                          // ""
-                        // )} */}
                       </div>
                       <div>
                         <MdDownloadForOffline
@@ -219,7 +217,7 @@ export default function Clearencedetails() {
                                           paddingBottom: 5,
                                         }}
                                       >
-                                       Asia Direct - Africa
+                                        Asia Direct - Africa
                                       </p>
                                       <p
                                         style={{
@@ -234,9 +232,12 @@ export default function Clearencedetails() {
                                         Lot 1644 Ext F nord Secteur 06, Tevragh
                                         Zeina Nouakchott , Mauritania
                                         www.asiaDirect.com */}
-Asia Direct, Unit 4 Villa Valencia 2 Anemoon Road Glen Marais 1619 South Africa Web www.asiaDirect.africa<br  />
-VAT Number: 4740280377
-TEL: +27 10 448 0733
+                                        Asia Direct, Unit 4 Villa Valencia 2
+                                        Anemoon Road Glen Marais 1619 South
+                                        Africa Web www.asiaDirect.africa
+                                        <br />
+                                        VAT Number: 4740280377 TEL: +27 10 448
+                                        0733
                                       </p>
                                     </td>
                                   </tr>
@@ -329,7 +330,7 @@ TEL: +27 10 448 0733
                                               }}
                                             >
                                               <strong>
-                                              Asia Direct - Africa
+                                                Asia Direct - Africa
                                               </strong>
                                             </td>
                                           </tr>
@@ -807,7 +808,7 @@ TEL: +27 10 448 0733
                                         fontSize: 15,
                                       }}
                                     >
-                                   Final Amount 
+                                      Final Amount
                                     </th>
                                     {/* <th
                                       style={{
@@ -879,8 +880,7 @@ TEL: +27 10 448 0733
                                             >
                                               {item.values_of_good}
                                             </td>
-                                           
-                                           
+
                                             <td
                                               style={{
                                                 padding: 5,
@@ -907,8 +907,7 @@ TEL: +27 10 448 0733
                                               }}
                                             >
                                              {/* <button>Edit</button> */}
-                                            {/* </td> */} 
-                                            
+                                            {/* </td> */}
                                           </tr>
                                         </>
                                       );
@@ -929,7 +928,7 @@ TEL: +27 10 448 0733
                                         fontSize: 15,
                                       }}
                                     >
-                                    Extra Charge
+                                      Extra Charge
                                     </th>
                                     <td
                                       style={{
@@ -966,7 +965,7 @@ TEL: +27 10 448 0733
                                         fontSize: 15,
                                       }}
                                     >
-                                    {extrachange ? extrachange : 0}
+                                      {extrachange ? extrachange : 0}
                                     </th>
                                     {/* <th
                                       style={{
@@ -998,7 +997,7 @@ TEL: +27 10 448 0733
                                         color: "black",
                                       }}
                                     >
-                                    Total Charge
+                                      Total Charge
                                     </td>
                                     <td
                                       style={{
@@ -1035,8 +1034,8 @@ TEL: +27 10 448 0733
                                         color: "black",
                                       }}
                                     >
-                                    {totalcalcualtion.toFixed(2)}
-                                      </td>
+                                      {totalcalcualtion.toFixed(2)}
+                                    </td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -1075,83 +1074,94 @@ TEL: +27 10 448 0733
           </div>
           <div className="newModalGap">
             <div className="row my-3  ">
-                <h4>Enter HS code</h4>
+              <h4>Enter HS code</h4>
               <div className="d-flex ms-2">
-              <div className="my-3">
-                <input onChange={handleInputChange} onKeyPress={handleValidate} value={hfCode}></input>
-              </div>
-              <div>
-              {hfCode && (
-                  <button className=" my-3 btn btn-secondary ms-2 rounded-100" onClick={handleClickHf}>
-                    +
-                  </button>
-                )}
-              </div>
+                <div className="my-3">
+                  <input
+                    onChange={handleInputChange}
+                    onKeyPress={handleValidate}
+                    value={hfCode}
+                  ></input>
+                </div>
+                <div>
+                  {hfCode && (
+                    <button
+                      className=" my-3 btn btn-secondary ms-2 rounded-100"
+                      onClick={handleClickHf}
+                    >
+                      +
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="table-responsive">
-              <table className="table border">
-                <thead className="esti_thead">
-                  <tr>
-                    <th>HS Code</th>
-                    <th>Description</th>
-                    <th>VAT%</th>
-                    <th>Value of Goods</th>
-                    <th>Quoted Rate</th>
-                    <th></th>
-                    <th>Value Of Goods</th>
-                    <th>VAT</th>
-                    <th>Import Duty</th>
-                    <th>Calculate</th>
-                  </tr>
-                </thead>
-                <tbody className='esti_tbody'>
-                  {rows.map((row, index) => (
-                    <tr key={index}>
-                      <th>{row.hs_code}</th>
-                      <td>{row.hs_cod_desc}</td>
-                      <td>15%</td>
-                      <td>
-                        <input
-                          onKeyPress={handleValidate}
-                          name="valueofgoods"
-                          className='form-control'
-                          value={row.valueofgoods}
-                          onChange={(e) => handleChangeValueOfGood(e, index)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          onKeyPress={handleValidate}
-                          name="quotedRate"
-                          className='form-control'
-                          value={row.quotedRate}
-                          onChange={(e) => handleChangeValueOfGood(e, index)} />
-                      </td>
-                      <td><button
-                        className="ms-2 py-1 btn rounded"
-                        onClick={() => handleClickValue(index)}
-                        style={{ backgroundColor: 'red', color: 'white' }}
-                      >
-                        Add
-                      </button></td>
-                      <td>{row.csercount}</td>
-                      <td>{row.datavalttac}</td>
-                      <td>{row.datavat}</td>
-                      <td>{row.estimate}</td>
+                <table className="table border">
+                  <thead className="esti_thead">
+                    <tr>
+                      <th>HS Code</th>
+                      <th>Description</th>
+                      <th>VAT%</th>
+                      <th>Value of Goods</th>
+                      <th>Quoted Rate</th>
+                      <th></th>
+                      <th>Value Of Goods</th>
+                      <th>VAT</th>
+                      <th>Import Duty</th>
+                      <th>Calculate</th>
                     </tr>
-                  ))}
-                  {rows.length > 0 && (
-                    <>
-                      <tr>
-                        <td colSpan="10" className="text-end">
-                          <strong>Final Amount: </strong> {finalAmount.toFixed(2)}
+                  </thead>
+                  <tbody className="esti_tbody">
+                    {rows.map((row, index) => (
+                      <tr key={index}>
+                        <th>{row.hs_code}</th>
+                        <td>{row.hs_cod_desc}</td>
+                        <td>15%</td>
+                        <td>
+                          <input
+                            onKeyPress={handleValidate}
+                            name="valueofgoods"
+                            className="form-control"
+                            value={row.valueofgoods}
+                            onChange={(e) => handleChangeValueOfGood(e, index)}
+                          />
                         </td>
+                        <td>
+                          <input
+                            onKeyPress={handleValidate}
+                            name="quotedRate"
+                            className="form-control"
+                            value={row.quotedRate}
+                            onChange={(e) => handleChangeValueOfGood(e, index)}
+                          />
+                        </td>
+                        <td>
+                          <button
+                            className="ms-2 py-1 btn rounded"
+                            onClick={() => handleClickValue(index)}
+                            style={{ backgroundColor: "red", color: "white" }}
+                          >
+                            Add
+                          </button>
+                        </td>
+                        <td>{row.csercount}</td>
+                        <td>{row.datavalttac}</td>
+                        <td>{row.datavat}</td>
+                        <td>{row.estimate}</td>
                       </tr>
-                    </>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                    ))}
+                    {rows.length > 0 && (
+                      <>
+                        <tr>
+                          <td colSpan="10" className="text-end">
+                            <strong>Final Amount: </strong>{" "}
+                            {finalAmount.toFixed(2)}
+                          </td>
+                        </tr>
+                      </>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
             <Button
               variant="contained"
