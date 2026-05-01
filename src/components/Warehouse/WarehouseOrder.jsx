@@ -36,7 +36,7 @@ export default function WarehouseOrder() {
   const [warehouseID, setWarehouseID] = useState(null); //
   const [loader, setLoader] = useState(false);
   const [isModalOpenWarehouse, setIsModalOpenWarehouse] = useState(false);
-  const [isModalOpen3, setIsModalOpen3] = useState(false);       
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [updatedata, setUpdatedata] = useState(false);
   const userId = JSON.parse(localStorage.getItem("data123"))?.id;
   const [show1, setShow1] = useState(false);
@@ -60,13 +60,13 @@ export default function WarehouseOrder() {
     getcountry();
   }, []);
 
-useEffect(() => {
-  const timer = setTimeout(() => {
-    setDebouncedSearch(searchQuery);
-  }, 500); // ⏱ 500ms delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500); // ⏱ 500ms delay
 
-  return () => clearTimeout(timer); // cleanup
-}, [searchQuery]);
+    return () => clearTimeout(timer); // cleanup
+  }, [searchQuery]);
 
   const getcountry = () => {
     axios
@@ -85,10 +85,10 @@ useEffect(() => {
     setCurrentPage(page);
     getData(page, searchQuery);
   };
-useEffect(() => {
-  getData(1, debouncedSearch);
-  setCurrentPage(1);
-}, [debouncedSearch]);
+  useEffect(() => {
+    getData(1, debouncedSearch);
+    setCurrentPage(1);
+  }, [debouncedSearch]);
   const allOrder = async () => {
     try {
       const response = await axios.get(
@@ -101,13 +101,13 @@ useEffect(() => {
       console.log(error);
     }
   };
-//   const handlePageChange = (page) => {
-//   setCurrentPage(page);
-//   getData(page, debouncedSearch); // 👈 important
-// };
+  //   const handlePageChange = (page) => {
+  //   setCurrentPage(page);
+  //   getData(page, debouncedSearch); // 👈 important
+  // };
   const handleSearch = (e) => {
-  setSearchQuery(e.target.value);
-};
+    setSearchQuery(e.target.value);
+  };
   const handlechange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -564,7 +564,7 @@ useEffect(() => {
     setEditDtaawarehouse({ ...editDtaawarehouse, [name]: value });
   };
   const editmodalopen1viewdoc = async (item) => {
-setProductData(item);
+    setProductData(item);
     setProductModalopenmodal(true);
   }
 
@@ -820,7 +820,7 @@ setProductData(item);
                                             <div className="d-flex align-items-center">
                                               <div>
                                                 {item?.move_to_adminWarhouse ==
-                                                "1" ? (
+                                                  "1" ? (
                                                   <span className="text-success">
                                                     Approved
                                                   </span>
@@ -942,7 +942,7 @@ setProductData(item);
                                       <td>{doc?.hazardous}</td>
                                       <td>
                                         {new Date(
-                                          doc?.date_received,      
+                                          doc?.date_received,
                                         ).toLocaleDateString("en-GB")}
                                       </td>
                                       <td>{doc?.dimension}</td>
@@ -1273,20 +1273,25 @@ setProductData(item);
                                 ></input>
                               </div>
                               <div className="col-md-12">
-                                <label>Attach File</label>
-     {prodata?.files
-    ?.filter((item) => item.type === "damage")
-    ?.map((item) => (
-      <div key={item.id}>
-        <a
-          href={`${process.env.REACT_APP_BASE_URLdocument}${item.file}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Doc
-        </a>
-      </div>
-    ))}
+                                <div className="d-flex gap-2">
+                                  <label>Attach File</label>
+                                  <div>
+                                    {prodata?.files
+                                      ?.filter((item) => item.type === "damage")
+                                      ?.map((item) => (
+                                        <div key={item.id}>
+                                          <a
+                                            href={`${process.env.REACT_APP_BASE_URLdocument}${item.file}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="viewDoc"
+                                          >
+                                            <i className="fi fi-rr-overview"></i>
+                                          </a>
+                                        </div>
+                                      ))}
+                                  </div>
+                                </div>
                                 <input
                                   type="file"
                                   className="form-control"
@@ -1452,51 +1457,61 @@ setProductData(item);
                                   placeholder=""
                                 ></input>
                               </div>
-                             <div className="col-md-12">
-  <label>Attach Product Image</label>
-
-  {/* 👇 Show only if image exists */}
-   {prodata?.files
-    ?.filter((item) => item.type === "document")
-    ?.map((item) => (
-      <div key={item.id}>
-        <a
-          href={`${process.env.REACT_APP_BASE_URLdocument}${item.file}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Doc
-        </a>
-      </div>
-    ))}
-
-  <input
-    type="file"
-    className="form-control"
-    name="Attach_Product_Image"
-    onChange={handlechangewarehouse}
-  />
-</div>
-                              
                               <div className="col-md-12">
-                                <label>Attach Other</label>
+                                <div className="d-flex gap-2">
+                                  <label>Attach Product Image</label>
+                                  <div>
 
-                                {/* 👇 Show only if image exists */}
-   {prodata?.files
-    ?.filter((item) => item.type === "document")
-    ?.map((item) => (
-      <div key={item.id}>
-        <a
-          href={`${process.env.REACT_APP_BASE_URLdocument}${item.file}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Doc
-        </a>
-      </div>
-    ))}
+                                    {/* 👇 Show only if image exists */}
+                                    {prodata?.files
+                                      ?.filter((item) => item.type === "document")
+                                      ?.map((item) => (
+                                        <div key={item.id}>
+                                          <a
+                                            href={`${process.env.REACT_APP_BASE_URLdocument}${item.file}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="viewDoc"
+                                          >
+                                            <i class="fi fi-rr-overview"></i>
+                                          </a>
+                                        </div>
+                                      ))}
 
+                                  </div>
+                                </div>
+                                <input
+                                  type="file"
+                                  className="form-control"
+                                  name="Attach_Product_Image"
+                                  onChange={handlechangewarehouse}
+                                />
 
+                              </div>
+
+                              <div className="col-md-12">
+                                <div className="d-flex gap-2">
+                                  <label>Attach Other</label>
+
+                                  {/* 👇 Show only if image exists */}
+                                  <div>
+                                    {prodata?.files
+                                      ?.filter((item) => item.type === "document")
+                                      ?.map((item) => (
+                                        <div key={item.id}>
+                                          <a
+                                            href={`${process.env.REACT_APP_BASE_URLdocument}${item.file}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="viewDoc"
+                                          >
+                                            <i class="fi fi-rr-overview"></i>
+                                          </a>
+                                        </div>
+                                      ))}
+
+                                  </div>
+                                </div>
                                 <input
                                   type="file"
                                   className="form-control"
@@ -2216,8 +2231,8 @@ setProductData(item);
                                   value={
                                     productData.date_dispatched
                                       ? productData.date_dispatched.split(
-                                          "T",
-                                        )[0]
+                                        "T",
+                                      )[0]
                                       : ""
                                   }
                                   onChange={handlechangegetdatainput}
@@ -2535,8 +2550,8 @@ setProductData(item);
                                   value={
                                     productData.date_dispatched
                                       ? productData.date_dispatched.split(
-                                          "T",
-                                        )[0]
+                                        "T",
+                                      )[0]
                                       : ""
                                   }
                                   disabled
@@ -2587,7 +2602,7 @@ setProductData(item);
                                   value={productData.port_of_loading}
                                   onChange={handlechangegetdatainput}
                                   placeholder="warehouse name"
-                                  disabled  
+                                  disabled
                                 ></input>
                               </div>
 
@@ -2660,7 +2675,7 @@ setProductData(item);
                                 ></input>
                               </div>
                             </div>
-                        
+
                           </div>
                         </Box>
                       </Modal>

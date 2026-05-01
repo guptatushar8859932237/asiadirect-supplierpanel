@@ -244,7 +244,7 @@ th {
 .link {
   display: flex;
   color: #ffffff;
-  /* gap: 8px; */
+  gap: 5px;
   padding: 10px;
   border-right: 4px solid transparent;
   transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
@@ -953,7 +953,11 @@ h1.logo {
 .sidebar .icon {
   position: relative;
   top: -3px;
-  width: 30px;
+}
+
+.sidebar .icon svg {
+  height: 20px;
+  width: 20px;
 }
 
 .header .dropdown svg {
@@ -1042,7 +1046,7 @@ p.text-primary {
 }
 
 .modal-header {
-  background: var(--maroon) !important;
+  background: var(--blue) !important;
   color: white;
   padding: 15px;
   border-radius: 12px 12px 0px 0px;
@@ -2518,7 +2522,7 @@ ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--maroon);
+  background-color: var(--blue);
   padding: 17px;
   border-radius: 12px 12px 0px 0px;
   color: #ffff;
@@ -3880,6 +3884,7 @@ a.link.active svg {
   font-weight: 500;
   background-color: var(--maroon);
   font-size: 20px;
+  border-radius: 5px 5px 0px 0px;
 }
 
 .sidebar123 {
@@ -4236,7 +4241,7 @@ button.btn-close svg {
 }
 
 #modal-modal-title {
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   color: #ffffff;
   font-size: 20px;
 }
@@ -5001,4 +5006,17 @@ select.form-select {
   border: 1px solid var(--borderLight);
   border-radius: 12px;
   padding: 20px;
+}
+
+.modal-header #modal-modal-title {
+  margin-bottom: unset;
+}
+
+.viewDoc {
+  font-size: 15px;
+  color: var(--blueColor);
+}
+
+.changePassForm label {
+  margin-bottom: 5px;
 }
