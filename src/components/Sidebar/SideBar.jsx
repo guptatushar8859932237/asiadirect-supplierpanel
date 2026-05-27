@@ -191,14 +191,14 @@ const SideBar = ({ children, closeMobileSidebar }) => {
     <div className="main-container sideBarpageMain">
       <motion.div
         animate={{
-          width: isOpen ? "300px" : "42px",
+          width: isOpen ? "300px" : "65px",
           transition: {
             duration: 0.5,
             type: "spring",
             damping: 10,
           },
         }}
-        className={`sidebar`}
+        className={`sidebar ${!isOpen ? "sidebar-closed" : ""}`}
       >
         <div className="top_section">
           <AnimatePresence>
@@ -224,9 +224,8 @@ const SideBar = ({ children, closeMobileSidebar }) => {
                 onClick={toggle}
                 style={{ fontSize: "2rem", cursor: "pointer" }}
               />
-            </div>) : (<BiRightArrowCircle size={30} onClick={toggle} color="blue" />)
+            </div>) : (<BiRightArrowCircle size={30} onClick={toggle} color="blue" style={{ cursor: "pointer" }} />)
           }
-
         </div>
         <section className="routes">
           {filteredRoutes.map((route, index) => {
