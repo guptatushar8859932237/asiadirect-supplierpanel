@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
+
 export default function Chatting() {
   const userData = JSON.parse(localStorage.getItem("data123"));
   const userId = userData?.id;
@@ -134,7 +135,7 @@ export default function Chatting() {
     }
   };
   return (
-    <div className="container">
+    <div className="container py-4 px-4">
       <div className="row mt-3">
         <div className="col-lg-3  col-md-4 px-md-0" style={{ height: "90vh", overflowY: "auto" }}>
           <div className="leftChatSide">

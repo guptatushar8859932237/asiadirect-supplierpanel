@@ -125,6 +125,7 @@ th {
   width: 5px;
   background: var(--blue);
   height: 100vh;
+  overflow-y: auto;
 }
 
 .sidebar svg {
@@ -776,7 +777,7 @@ a.dropdown-option {
 
 .wpWrapper {
   padding: 30px 20px 30px 15px !important;
-  height: 91vh;
+  height: calc(100vh - 70px);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #dadada #fff;
