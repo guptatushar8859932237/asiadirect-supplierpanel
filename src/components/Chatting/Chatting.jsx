@@ -13,6 +13,7 @@ export default function Chatting() {
   const [activeTab, setActiveTab] = useState("users");
   const [messageText, setMessageText] = useState("")
   const socketRef = useRef(null);
+  
   useEffect(() => {
     socketRef.current = io(process.env.REACT_APP_BASE_URLSOCKET);
     socketRef.current.on("receiveMessage", (data) => {
