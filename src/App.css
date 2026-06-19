@@ -4839,8 +4839,13 @@ button.bg_page {
 }
 
 .cost-table thead {
-  background: #fff;
-  color: #000;
+  background: #1b2245;
+  color: #fff;
+}
+
+.cost-table thead th {
+  border: 1px solid #000;
+  text-align: center;
 }
 
 .cost-table {
@@ -4898,6 +4903,35 @@ td {
   border: unset;
   width: 70px;
   padding: 0px 2px;
+}
+
+.cost-table tr.estimate-section-row td {
+  background: #f7f8fb;
+  border: 1px solid #000;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px !important;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.35px;
+  color: #1b2245;
+}
+
+.cost-table tr.estimate-section-row td strong {
+  font-weight: 700;
+}
+
+.cost-table tr:has(td[colspan="6"] strong) td {
+  background: #eef0f6;
+  border-top: 1px solid #1b2245;
+  border-bottom: 1px solid #1b2245;
+  font-weight: 700;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+}
+
+table.cost-table strong {
+  font-weight: 600;
 }
 
 .moileSideBarHead .sidebar {

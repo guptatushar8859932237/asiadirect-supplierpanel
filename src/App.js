@@ -101,7 +101,7 @@ const Uniovwersalpage = lazy(() => import("./components/Uniovwersalpage"));
 export default function App() {
   const [text, setText] = useState("");
   const [permission, setPermission] = useState("");
-  console.log("06-06-2026", "72:28");
+  console.log("19-06-2026", "18:11");
   return (
     <MyContext1.Provider value={{ text, setText }}>
       <MyContext2.Provider value={{ permission, setPermission }}>
@@ -260,7 +260,6 @@ export default function App() {
                   path="/supplier/supplier/contactus"
                   element={<Contactus />}
                 />
-               
                 <Route
                   index
                   path="/supplier/supplier/warehousedetails"

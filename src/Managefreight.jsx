@@ -189,6 +189,7 @@ export default function Managefreight() {
   }, []);
   const userid = JSON.parse(localStorage.getItem("data123"))?.id;
   const usertype = JSON.parse(localStorage.getItem("data123"))?.user_type;
+
   const frightData = async () => {
     try {
       const response = await axios.post(
@@ -598,22 +599,23 @@ export default function Managefreight() {
         console.log(error.response.data);
       });
   };
-  const handlestatus = (id) => {
-    console.log(id);
-    const data123 = {
-      freight_id: id,
-      status: "2",
-    };
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}supplier-freights`, data123)
-      .then((response) => {
-        toast.success(response.data.message);
-        frightData();
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  };
+
+  // const handlestatus = (id) => {
+  //   console.log(id);
+  //   const data123 = {
+  //     freight_id: id,
+  //     status: "2",
+  //   };
+  //   axios
+  //     .post(`${process.env.REACT_APP_BASE_URL}supplier-freights`, data123)
+  //     .then((response) => {
+  //       toast.success(response.data.message);
+  //       frightData();
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response.data);
+  //     });
+  // };
 
   const handleclickopenmodal = () => {
     setIsModalOpen(true);
