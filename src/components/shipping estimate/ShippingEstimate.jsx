@@ -69,6 +69,7 @@ export default function ShippingEstimate() {
   const [openmodal, setOpenmodal] = useState(false);
   const [selected, setSelected] = useState([]); // selected IDs
   const [open, setOpen] = useState(false);
+  const [companyAddress, setCompanyAddress] = useState(null);
   const navigate = useNavigate();
 
   // Dynamic Rows for each section
@@ -114,6 +115,32 @@ export default function ShippingEstimate() {
 
     fetchDropdowns();
   }, []);
+
+  useEffect(() => {
+    const fetchCompanyAddress = async () => {
+      const country = freight?.invoice_for_country;
+      if (!country) {
+        setCompanyAddress(null);
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}company-addresses`,
+          { params: { country } }
+        );
+        if (response.data && response.data.success && response.data.data && response.data.data.length > 0) {
+          setCompanyAddress(response.data.data[0]);
+        } else {
+          setCompanyAddress(null);
+        }
+      } catch (error) {
+        console.error("Error fetching company address:", error);
+        setCompanyAddress(null);
+      }
+    };
+
+    fetchCompanyAddress();
+  }, [freight?.invoice_for_country]);
 
   const getdata122 = location?.state?.data[0];
   console.log(getdata122);
@@ -180,6 +207,7 @@ export default function ShippingEstimate() {
           invoice_for_country: estimateData.invoice_for_country || prev?.invoice_for_country || "",
           final_base_currency: estimateData.final_base_currency || prev?.final_base_currency || "Select",
           chargable_rate: estimateData.chargeable ?? prev?.chargable_rate ?? "",
+          company_id: estimateData.company_id || prev?.company_id || "",
         }));
 
         if (estimateData.components && estimateData.components.length > 0) {
@@ -535,11 +563,12 @@ export default function ShippingEstimate() {
 
       const payload = {
         freight_id: parseInt(getdata.freight_id || getdata.id || localFreigtId),
-        client_id: parseInt(getdata.client_id || getdata.id || getdata.client_ref ),
+        client_id: parseInt(getdata.client_id || getdata.id || getdata.client_ref),
         client_name: getdata.client_name,
         supplier_id: parseInt(supperIdid) || parseInt(freight.supplier_id) || null,
         customer_invoice_no: freight.customer_invoice_no || "",
         invoice_for_country: freight.invoice_for_country || "",
+        company_id: companyAddress ? companyAddress.id : (freight.company_id || null),
         quote_type: "SUPPLIER",
         date: getdata.date ? new Date(getdata.date).toISOString().split('T')[0] : getTodayDate(),
         final_base_currency: freight.final_base_currency || "Select",
@@ -1096,7 +1125,7 @@ export default function ShippingEstimate() {
                     className="pdf-page"
                   >
                     <p>
-                      <table>
+                      <table style={{ width: "100%" }}>
                         <tbody>
                           <tr>
                             <td style={{ width: "50%" }}>
@@ -1108,36 +1137,45 @@ export default function ShippingEstimate() {
                                 />
                               </div>
                             </td>
-                            <td style={{ width: "50%", color: "#000", paddingBottom: "10px" }}>
-                              <p
-                                style={{
-                                  fontSize: 16,
-                                  fontWeight: 600,
-                                  marginBottom: "unset",
-                                  borderBottom: "1px solid #cb191e",
-                                  display: "inline-block",
-                                }}
-                              >
-                                Asia Direct - Africa
-                              </p>
-                              <p
-                                style={{
-                                  fontSize: 13,
-                                  fontWeight: 500,
-                                  marginBottom: "unset",
-                                  lineHeight: "1.5",
-                                  marginTop: 10,
-                                }}
-                              >
-                                Asia Direct, Unit 4 Villa Valencia 2 Anemoon Road
-                                Glen Marais 1619 South Africa Web
-                                www.asiaDirect.africa{" "}
-                              </p>
-                              <p>
-                                <span>VAT Number: 4740280377</span>
-                                <br />
-                                TEL: +27 10 448 0733
-                              </p>
+                            <td style={{ width: "50%", color: "#000", paddingBottom: "10px", textAlign: "right" }}>
+                              <div style={{ display: "inline-block", textAlign: "left" }}>
+                                <p
+                                  style={{
+                                    fontSize: 16,
+                                    fontWeight: 600,
+                                    marginBottom: "unset",
+                                    borderBottom: "1px solid #cb191e",
+                                    display: "inline-block",
+                                  }}
+                                >
+                                  Asia Direct - Africa
+                                </p>
+                                <p
+                                  style={{
+                                    fontSize: 13,
+                                    fontWeight: 500,
+                                    marginBottom: "unset",
+                                    lineHeight: "1.5",
+                                    marginTop: 10,
+                                  }}
+                                >
+                                  {companyAddress ? (
+                                    <>
+                                      {companyAddress.company_name || ""}<br/>
+                                      {companyAddress.address_line || ""}
+                                    </>
+                                  ) : (
+                                    <>
+
+                                    </>
+                                  )}
+                                </p>
+                                <p>
+                                  <span><b>Registration No.:-</b> {companyAddress ? companyAddress.company_registration_no : ""}</span><br />
+                                  <span><b>VAT N0.:-</b> {companyAddress ? companyAddress.tax_vat_no : ""}</span><br />
+                                  <span><b>Importers code:-</b></span> {companyAddress ? companyAddress.postal_code : ""}
+                                </p>
+                              </div>
                             </td>
                           </tr>
                         </tbody>

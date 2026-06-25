@@ -155,6 +155,7 @@ export default function Managefreight() {
     getStaff();
     getstaff();
   }, []);
+
   const getStaff = () => {
     axios
       .get(`${process.env.REACT_APP_BASE_URL}staff-list`)
@@ -165,6 +166,7 @@ export default function Managefreight() {
         console.log(error.response.data.message);
       });
   };
+
   const [clientdata, setClientdata] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const updatecountry = () => {
@@ -189,7 +191,6 @@ export default function Managefreight() {
   }, []);
   const userid = JSON.parse(localStorage.getItem("data123"))?.id;
   const usertype = JSON.parse(localStorage.getItem("data123"))?.user_type;
-
   const frightData = async () => {
     try {
       const response = await axios.post(
@@ -599,23 +600,22 @@ export default function Managefreight() {
         console.log(error.response.data);
       });
   };
-
-  // const handlestatus = (id) => {
-  //   console.log(id);
-  //   const data123 = {
-  //     freight_id: id,
-  //     status: "2",
-  //   };
-  //   axios
-  //     .post(`${process.env.REACT_APP_BASE_URL}supplier-freights`, data123)
-  //     .then((response) => {
-  //       toast.success(response.data.message);
-  //       frightData();
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response.data);
-  //     });
-  // };
+  const handlestatus = (id) => {
+    console.log(id);
+    const data123 = {
+      freight_id: id,
+      status: "2",
+    };
+    axios
+      .post(`${process.env.REACT_APP_BASE_URL}supplier-freights`, data123)
+      .then((response) => {
+        toast.success(response.data.message);
+        frightData();
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
 
   const handleclickopenmodal = () => {
     setIsModalOpen(true);
@@ -968,9 +968,9 @@ export default function Managefreight() {
                                         </label>
                                       </div> */}
                                       <div>
-                                        {item?.is_approved == "1"
-                                          ? <span className="text-success">Approved</span>  :item.is_approved == "2" ? <span className="text-danger">Rejected</span> : <span className="text-secondary">Pending</span>}
-                                        {item?.sales_name == "undefined"
+                                        {item?.approve_status === 1
+                                          ? <span className="text-success bold">Approved</span> : item.approve_status === 2 ? <span className="text-danger bold">Rejected</span> : <span className="text-secondary bold">Pending</span>}
+                                        {item?.sales_name === "undefined"
                                           ? ""
                                           : item?.sales_name}
                                       </div>
